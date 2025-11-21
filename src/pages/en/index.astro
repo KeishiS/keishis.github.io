@@ -1,0 +1,112 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import {
+    journal_papers,
+    refered_international_conference,
+    international_conference,
+    domestic_workshop,
+    educations,
+    experiences,
+} from "../../../info.json";
+
+import Timeline from "../../components/Timeline.astro";
+import SectionHeader from "../../components/SectionHeader.astro";
+import PaperSection from "../../components/PaperSection.astro";
+---
+
+<StarlightPage
+    frontmatter={{
+        title: "Research Profile",
+        description: "CV, publications, and research profile.",
+        tableOfContents: false,
+        editUrl: false,
+    }}
+    hasSidebar={false}
+>
+    <main
+        class="w-full sm:w-5/6 mx-auto px-4 sm:px-0 py-6 sm:py-12 space-y-6 sm:space-y-10"
+    >
+        {/* 自己紹介 */}
+        <section class="space-y-4">
+            <h1 class="text-3xl sm:text-4xl font-bold text-primary">
+                Keishi Sando
+            </h1>
+            <p class="text-lg text-secondary">
+                {/*（ここに短い自己紹介・研究分野・興味など）*/}
+            </p>
+        </section>
+
+        {/* Blog */}
+        <section>
+            <SectionHeader title="Blog" />
+            <div class="mt-4 p-4 sm:p-6 border rounded-xl bg-card border-card">
+                <p class="text-secondary mb-4">
+                    I've been posting articles about machine learning and
+                    research.
+                </p>
+                <a
+                    href="/blog"
+                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border rounded-lg border-accent text-accent bg-accent-low hover:bg-accent hover:text-primary transition-all duration-200 no-underline"
+                >
+                    View all posts
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        {/* Journal Papers */}
+        <PaperSection
+            title="Journal Papers"
+            papers={journal_papers}
+            locale="en"
+            publisherField="container-title"
+        />
+
+        {/* Refered International Conference Papers */}
+        <PaperSection
+            title="Refered International Conferences"
+            papers={refered_international_conference}
+            locale="en"
+            publisherField="container-title"
+        />
+
+        {/* International Conference Papers */}
+        <PaperSection
+            title="International Conferences"
+            papers={international_conference}
+            locale="en"
+            publisherField="event-title"
+        />
+
+        {/* 国内ワークショップ */}
+        <PaperSection
+            title="国内ワークショップ"
+            papers={domestic_workshop}
+            locale="ja"
+            publisherField="event-title"
+        />
+
+        {/* Education */}
+        <section>
+            <SectionHeader title="Education" marginBottom />
+            <Timeline items={educations} iconType="education" />
+        </section>
+
+        {/* Experience */}
+        <section>
+            <SectionHeader title="Experience" marginBottom />
+            <Timeline items={experiences} iconType="experience" />
+        </section>
+    </main>
+</StarlightPage>

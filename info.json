@@ -1,0 +1,205 @@
+{
+    "basic": {
+        "email": "sando.keishi.sp _at_ alumni.tsukuba.ac.jp",
+        "keybase": "https://keybase.io/keishis",
+        "orcid": "https://orcid.org/0009-0003-1849-5486"
+    },
+    "journal_papers": [
+        {
+            "id": 4,
+            "type": "article-journal",
+            "title": "Tree Structure for the Categorical Wasserstein Weisfeiler-Lehman Graph Kernel",
+            "author": [
+                { "family": "Sando", "given": "Keishi" },
+                { "family": "Le", "given": "Tam" },
+                { "family": "Hino", "given": "Hideitsu" }
+            ],
+            "container-title": "Transactions on Machine Learning Research",
+            "issued": { "raw": "November 2025" },
+            "URL": "https://openreview.net/forum?id=VwoSsFK22P",
+            "abstract": "The Wasserstein Weisfeiler-Lehman(WWL) graph kernel is a popular and efficient approach, utilized in various kernel-dependent machine learning frameworks for practical applications with graph data. It incorporates optimal transport geometry into the Weisfeiler-Lehman graph kernel, to mitigate the information loss inherent in aggregation strategies of graph kernels. While the WWL graph kernel demonstrates superior performance in many applications, it suffers a drawback in its computational complexity, i.e., at least $\\mathcal{O}(n_{1} n_{2})$, where $n_{1}, n_{2}$ denote the number of vertices in the input graphs. Consequently, it hinders the practical applicability of the WWL graph kernel, especially in large-scale settings. In this paper, we propose the \\emph{Tree Wasserstein Weisfeiler-Lehman}(TWWL) algorithm, which leverages a \\emph{tree structure} to scale up the exact computation of the WWL graph kernel for graph data with categorical node labels. In particular, the computational complexity of the TWWL algorithm is $\\mathcal{O}(n_{1} + n_{2})$, which enables its application to large-scale graphs. Numerical experiments demonstrate that the performance of the proposed algorithm compares favorably with baseline kernels, while its computation is several orders of magnitude faster than the classic WWL graph kernel. This paves the way for applications in large-scale datasets where the WWL kernel is computationally prohibitive."
+        },
+        {
+            "id": 3,
+            "type": "article-journal",
+            "title": "Complex non-backtracking matrix for directed graphs",
+            "author": [
+                { "family": "Sando", "given": "Keishi" },
+                { "family": "Hino", "given": "Hideitsu" }
+            ],
+            "container-title": "Journal of Complex Networks",
+            "issued": { "raw": "August 2025" },
+            "DOI": "10.1093/comnet/cnaf012",
+            "abstract": "Graph representation matrices are essential tools in graph data analysis. Recently, Hermitian adjacency matrices have been proposed to investigate directed graph structures. Previous studies have demonstrated that these matrices can extract valuable information for clustering. In this paper, we propose the complex non-backtracking matrix that integrates the properties of the Hermitian adjacency matrix and the non-backtracking matrix. The proposed matrix has similar properties with the non-backtracking matrix of undirected graphs. We reveal relationships between the complex non-backtracking matrix and the Hermitian adjacency matrix. Also, we provide intriguing insights that this matrix representation holds cluster information, particularly for sparse directed graphs."
+        },
+        {
+            "id": 2,
+            "type": "article-journal",
+            "title": "Modal Principal Component Analysis",
+            "author": [
+                { "family": "Sando", "given": "Keishi" },
+                { "family": "Hino", "given": "Hideitsu" }
+            ],
+            "container-title": "Neural Computation",
+            "issued": { "raw": "October 2020" },
+            "DOI": "10.1162/neco_a_01308",
+            "abstract": "Principal component analysis (PCA) is a widely used method for data processing, such as for dimension reduction and visualization. Standard PCA is known to be sensitive to outliers, and various robust PCA methods have been proposed. It has been shown that the robustness of many statistical methods can be improved using mode estimation instead of mean estimation, because mode estimation is not significantly affected by the presence of outliers. Thus, this study proposes a modal principal component analysis (MPCA), which is a robust PCA method based on mode estimation. The proposed method finds the minor component by estimating the mode of the projected data points. As a theoretical contribution, probabilistic convergence property, influence function, finite-sample breakdown point, and its lower bound for the proposed MPCA are derived. The experimental results show that the proposed method has advantages over conventional methods."
+        },
+        {
+            "id": 1,
+            "type": "article-journal",
+            "title": "Information Geometry of Modal Linear Regression",
+            "author": [
+                { "family": "Sando", "given": "Keishi" },
+                { "family": "Akaho", "given": "Shotaro" },
+                { "family": "Murata", "given": "Noboru" },
+                { "family": "Hino", "given": "Hideitsu" }
+            ],
+            "container-title": "Information Geometry",
+            "issued": { "raw": "June 2019" },
+            "DOI": "10.1007/s41884-019-00017-y",
+            "abstract": "Modal linear regression (MLR) is used for modeling the conditional mode of a response as a linear predictor of explanatory variables. It is an effective approach to dealing with response variables having a multimodal distribution or those contaminated by outliers. Because of the semiparametric nature of MLR, constructing a statistical model manifold is difficult with the conventional approach. To overcome this difficulty, we first consider the information geometric perspective of the modal expectation–maximization (EM) algorithm. Based on this perspective, model manifolds for MLR are constructed according to observations, and a data manifold is constructed based on the empirical distribution. In this paper, the em algorithm, which is a geometric formulation of the EM algorithm, of MLR is shown to be equivalent to the conventional EM algorithm of MLR. The robustness of the MLR model is also discussed in terms of the influence function and information geometry."
+        }
+    ],
+    "refered_international_conference": [
+        {
+            "id": 1,
+            "type": "paper-conference",
+            "title": "Information Geometric Perspective of Modal Linear Regression",
+            "author": [
+                { "family": "Sando", "given": "Keishi" },
+                { "family": "Akaho", "given": "Shotaro" },
+                { "family": "Murata", "given": "Noboru" },
+                { "family": "Hino", "given": "Hideitsu" }
+            ],
+            "container-title": "Proceedings of the 25th International Conference on Neural Information Processing",
+            "container-title-short": "ICONIP 2018",
+            "issued": { "raw": "December 2018" },
+            "DOI": "10.1007/978-3-030-04182-3_47",
+            "URL": "",
+            "abstract": "Modal linear regression (MLR) is a standard method for modeling the conditional mode of a response variable using a linear combination of explanatory variables. It is effective when dealing with response variables with an asymmetric, multi-modal distribution. Because of the nonparametric nature of MLR, it is difficult to construct a statistical model manifold in the sense of information geometry. In this work, a model manifold is constructed using observations instead of explicit parametric models. We also propose a method for constructing a data manifold based on an empirical distribution. The em algorithm, which is a geometric formulation of the EM algorithm, of MLR is shown to be equivalent to the conventional EM algorithm of MLR."
+        }
+    ],
+    "international_conference": [
+        {
+            "id": 1,
+            "type": "paper-conference",
+            "title": "Complex non-backtracking matrix for directed graphs and its application to clustering",
+            "author": [
+                { "family": "Sando", "given": "Keishi" },
+                { "family": "Hino", "given": "Hideitsu" }
+            ],
+            "container-title-short": "IASC-ARS",
+            "event-title": "The Interim Conference of the Asian Regional Section of the International Association for Statistical Computing",
+            "issued": { "raw": "November 2024" },
+            "DOI": "",
+            "URL": "",
+            "abstract": "Graph representation matrices are essential tools in graph data analysis. Recently, Hermitian adjacency matrices have been proposed to study the structure of directed graphs. Previous studies have demonstrated that these matrices can extract valuable information for clustering. In this paper, we introduce the complex non-backtracking (CNBT) matrix corresponding to a Hermitian adjacency matrix. The proposed matrix shares similar properties with the non-backtracking matrix of undirected graphs. We reveal relationships between the complex non-backtracking matrix and the Hermitian adjacency matrix. Furthermore, we experimentally show that our spectral clustering method based on the CNBT matrix outperforms an existing method, particularly for sparse directed graphs, which are common in real-world data where the number of edges is only a few times the number of vertices."
+        }
+    ],
+    "domestic_workshop": [
+        {
+            "id": 4,
+            "type": "paper-conference",
+            "title": "木構造によるCategorical Wasserstein Weisfeiler-Lehman Graph Kernelの高速化",
+            "author": [
+                { "family": "三戸", "given": "圭史" },
+                { "family": "Le", "given": "Tam" },
+                { "family": "日野", "given": "英逸" }
+            ],
+            "container-title-short": "IBIS 2025",
+            "event-title": "第28回情報論的学習理論ワークショップ",
+            "issued": { "raw": "November 2025" },
+            "DOI": "",
+            "URL": "https://ibisml.org/ibis2025/posters/#1b-regular",
+            "abstract": "グラフの頂点ラベルを用いるWeisfeiler-Lehman(WL)カーネルに最適輸送を導入したWasserstein WL(WWL)カーネルは優れた性能を示す一方で計算コストが高く大規模グラフデータセットへの適用が困難である．本研究はWLアルゴリズムで生成されるラベル構造に着目した高速化を提案し，離散ラベルWWLカーネルの厳密なWasserstein距離が頂点数の定数倍で得られることを示した．"
+        },
+        {
+            "id": 3,
+            "type": "paper-conference",
+            "title": "有向グラフでの複素Non-backtracking行列とクラスタリングへの応用",
+            "author": [
+                { "family": "三戸", "given": "圭史" },
+                { "family": "日野", "given": "英逸" }
+            ],
+            "container-title-short": "IBIS 2024",
+            "event-title": "第27回情報論的学習理論ワークショップ",
+            "issued": { "raw": "November 2024" },
+            "DOI": "",
+            "URL": "https://ibisml.org/ibis2024/posters/",
+            "abstract": "有向グラフの行列表現の1つであるエルミート隣接行列に対応するNon-backtracking(NBT)行列として，複素NBT(CNBT)行列を提案する．無向グラフの隣接行列とNBT行列間で成立するいくつかの関係がエルミート隣接行列とCNBT行列間でも成り立つことを示し，また数値実験によって，スパースグラフのノードクラスタリングでは提案手法が既存手法よりも頑健な推定が可能であることを示す．"
+        },
+        {
+            "id": 2,
+            "type": "paper-conference",
+            "title": "最頻値推定量を用いた主成分分析の提案",
+            "author": [
+                { "family": "三戸", "given": "圭史" },
+                { "family": "日野", "given": "英逸" }
+            ],
+            "container-title-short": "IBISML",
+            "event-title": "第39回情報論的学習理論と機械学習研究会",
+            "issued": { "raw": "March 2020" },
+            "DOI": "",
+            "URL": "https://ken.ieice.org/ken/paper/20200310U1vR/",
+            "abstract": "主成分分析は次元削減や可視化のようなデータ分析のための手法として広く一般に用いられている．しかしながら外れ値に対して脆弱であることが知られており，頑健化のために様々な手法が提案されている．また一般的な統計手法において，外れ値に対する頑健性を改善するために最頻値推定の概念を取り入れた手法が提案されているが，主成分分析への適用はこれまで行われていない．本稿では，主成分方向ではなくマイナー成分方向に着目することで最頻値推定の概念を主成分分析に取り入れた，最頻値主成分分析の提案を行う．提案する推定量の収束性や影響関数，破局点の側面から理論的な性質を評価し，数値実験によって，提案手法が既存手法と同程度の結果を示し，いくつかの状況において優位な性能を有することを確認した．"
+        },
+        {
+            "id": 1,
+            "type": "paper-conference",
+            "title": "最頻値線形回帰の情報幾何",
+            "author": [
+                { "family": "三戸", "given": "圭史" },
+                { "family": "赤穂", "given": "昭太郎" },
+                { "family": "村田", "given": "昇" },
+                { "family": "日野", "given": "英逸" }
+            ],
+            "container-title-short": "IBISML",
+            "event-title": "第32回情報論的学習理論と機械学習研究会",
+            "issued": { "raw": "March 2018" },
+            "DOI": "",
+            "URL": "https://ken.ieice.org/ken/paper/20180305u1cg/",
+            "abstract": "MLR（Modal Linear Regression, 最頻値線形回帰）は，出力の最頻値が説明変数の線形予測子で表されるというモデルに基づく回帰手法である．線形回帰と異なり，パラメトリックな分布の仮定がないという意味で制約が緩いことが, MLRの特徴の1つである. 一方, パラメトリックな分布の仮定がないことが，MLRを情報幾何学の枠組みで捉える際のモデル多様体，データ多様体の構成を非自明にする．本稿では，MLRを情報幾何学の枠組みで捉えるにあたり，一般に経験分布を構成するために用いる観測データを，モデル多様体を構成するために用いることを提案する．またMEMアルゴリズムの考察を通じて，MLRにおける誤差分布の最頻値の仮定を用いた経験分布の構成方法を提案する．本稿のモデル多様体，データ多様体における$em$アルゴリズムが，MLRをEMアルゴリズムの枠組みで捉えた際のE-Step，M-Stepの計算と等しくなるという結果を得た．"
+        }
+    ],
+    "educations": [
+        {
+            "title": "Ph.D. course of Statistical Science",
+            "subtitle": "The Graduate University for Advanced Studies",
+            "years": "April 2023 - Present",
+            "details": ""
+        },
+        {
+            "title": "Master of Computer Science",
+            "subtitle": "University of Tsukuba",
+            "years": "April 2018 - March 2020",
+            "details": ""
+        },
+        {
+            "title": "Bachelor of Computer Science",
+            "subtitle": "University of Tsukuba",
+            "years": "April 2014 - March 2018",
+            "details": ""
+        }
+    ],
+    "experiences": [
+        {
+            "title": "Research Assistant",
+            "subtitle": "National Institute for Environmental Studies",
+            "years": "August 2022 - March 2023",
+            "details": ""
+        },
+        {
+            "title": "Machine Learning Engineer",
+            "subtitle": "Global AI Innovations Laboratory",
+            "years": "March 2021 - July 2022",
+            "details": ""
+        },
+        {
+            "title": "System Engineer",
+            "subtitle": "KDDI CORPORATION",
+            "years": "April 2020 - February 2021",
+            "details": ""
+        }
+    ]
+}

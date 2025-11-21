@@ -1,0 +1,12 @@
+---
+interface Props {
+    title: string;
+    marginBottom?: boolean;
+}
+
+const { title, marginBottom = false } = Astro.props;
+---
+
+<h2 class:list={["text-2xl sm:text-3xl font-semibold opacity-70", { "mb-4 sm:mb-8": marginBottom }]}>
+    {title}
+</h2>

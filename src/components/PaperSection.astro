@@ -1,0 +1,60 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import Research from "./Research.astro";
+
+interface Author {
+    given: string;
+    family: string;
+}
+
+interface Paper {
+    id: number;
+    title: string;
+    author: Author[];
+    issued: { raw: string };
+    abstract: string;
+    DOI?: string;
+    URL?: string;
+    "container-title"?: string;
+    "event-title"?: string;
+}
+
+interface Props {
+    title: string;
+    papers: Paper[];
+    locale: "en" | "ja";
+    publisherField: "container-title" | "event-title";
+}
+
+const { title, papers, locale, publisherField } = Astro.props;
+
+const formatAuthorName = (author: Author, locale: "en" | "ja"): string => {
+    if (locale === "en") {
+        return `${author.given} ${author.family}`.trim();
+    } else {
+        return `${author.family}${author.given}`;
+    }
+};
+---
+
+<section class="my-16">
+    <SectionHeader title={title} />
+    <div class="mt-4 flex flex-col gap-4">
+        {
+            papers.map((paper) => (
+                <Research
+                    id={paper.id}
+                    title={paper.title}
+                    authors={paper.author.map((person) =>
+                        formatAuthorName(person, locale),
+                    )}
+                    date={paper.issued.raw}
+                    publisher={paper[publisherField] || ""}
+                    abstract={paper.abstract}
+                    doi={paper?.DOI}
+                    link={paper?.URL}
+                />
+            ))
+        }
+    </div>
+</section>

@@ -1,0 +1,9 @@
+project:
+    type: docusaurus
+    render:
+        - "**/*.qmd"
+        - "!src/content/docs/slides/**"
+
+format:
+    docusaurus-md:
+        code-fold: true

@@ -343,7 +343,7 @@ body {
     color: var(--color-fg-subtle);
     line-height: 1.7;
     max-width: 48rem;
-    word-break: keep-all;
+    /* word-break: keep-all; */
     font-size: 1.05rem;
 }
 .hero-meta {
@@ -542,6 +542,12 @@ body {
     .hero-grid {
         grid-template-columns: 1fr;
         text-align: center;
+        justify-items: center;
+    }
+    .hero-card {
+        text-align: center;
+        justify-items: center;
+        align-items: center;
     }
     .hero-copy {
         justify-self: center;
@@ -558,8 +564,8 @@ body {
         margin-right: auto;
     }
     .hero-meta {
-        grid-template-columns: 1fr;
-        justify-items: center;
+        justify-content: center;
+        width: 100%;
     }
     .hero-avatar {
         justify-self: center;

@@ -16,14 +16,10 @@ const t = useTranslations(lang as any);
     <div class="hero-grid">
         <div class="hero-card">
             <p class="eyebrow">{t("hero.eyebrow")}</p>
-            <div class="hero-title-block">
-                <div>
-                    <h1 class="hero-title">
-                        <span class="hero-name">{profile.name}</span>
-                    </h1>
-                    <p class="hero-role">{t("hero.role")}</p>
-                </div>
-            </div>
+            <h1 class="hero-title">
+                <span class="hero-name">{profile.name}</span>
+            </h1>
+            <p class="hero-role">{t("hero.role")}</p>
 
             <p class="hero-lead" set:html={profile.bio} />
 

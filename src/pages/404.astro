@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations } from "@/i18n/utils";
+
+// 言語判定ロジック (URLから推測)
+const url = Astro.url;
+const lang = url.pathname.startsWith("/en") ? "en" : "ja";
+const t = useTranslations(lang as any);
+
+const not_found_title = t("404.title");
+const not_found_description = t("404.description");
+const buttonText = t("404.back");
+const buttonLink = lang === "en" ? "/en" : "/";
+---
+
+<BaseLayout
+    subtitle={not_found_title}
+    description={not_found_description}
+    lang={lang}
+>
+    <main
+        class="grid min-h-full place-items-center bg-bg px-6 py-24 sm:py-32 lg:px-8 transition-colors duration-300"
+    >
+        <div class="text-center">
+            <p class="text-base font-semibold text-accent">404</p>
+            <h1
+                class="mt-4 text-3xl font-bold tracking-tight text-fg sm:text-5xl"
+            >
+                {not_found_title}
+            </h1>
+            <p class="mt-6 text-base leading-7 text-fg-subtle">
+                {not_found_description}
+            </p>
+            <div class="mt-10 flex items-center justify-center gap-x-6">
+                <a
+                    href={buttonLink}
+                    class="rounded-md bg-accent px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-accent-strong focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors"
+                >
+                    {buttonText}
+                </a>
+            </div>
+        </div>
+    </main>
+</BaseLayout>

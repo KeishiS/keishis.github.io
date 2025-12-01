@@ -1,0 +1,108 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Tag from "@/components/Tag.astro";
+import { useTranslations } from "@/i18n/utils";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    return posts.map((post: CollectionEntry<"blog">) => ({
+        params: { lang: post.data.lang, slug: post.data.slug },
+        props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const t = useTranslations(post.data.lang as any);
+
+const ogImageUrl = `/${post.data.lang}/blog/${post.data.slug}/og.png`;
+---
+
+<BaseLayout
+    subtitle={post.data.title}
+    description={post.data.description}
+    lang={post.data.lang}
+    image={ogImageUrl}
+>
+    <article class="py-16 bg-bg transition-colors duration-300">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <!-- Post Header -->
+            <header class="mb-10 text-center">
+                <div class="flex items-center justify-center gap-2 mb-6">
+                    {
+                        post.data.tags.map((tag) => (
+                            <Tag
+                                text={tag}
+                                href={`/${post.data.lang}/blog/tag/${tag}`}
+                            />
+                        ))
+                    }
+                </div>
+                <h1
+                    class="text-3xl font-bold tracking-tight text-fg sm:text-4xl mb-4"
+                >
+                    {post.data.title}
+                </h1>
+                <div class="text-muted text-sm mb-4">
+                    <p class="mb-1">
+                        <span class="font-semibold mr-2"
+                            >{t("post.published_at")}:</span
+                        >
+                        <time datetime={post.data.publishedAt.toISOString()}>
+                            {
+                                post.data.publishedAt.toLocaleDateString(
+                                    post.data.lang,
+                                    {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    },
+                                )
+                            }
+                        </time>
+                    </p>
+                    <p class="mb-1">
+                        <span class="font-semibold mr-2"
+                            >{t("post.updated_at")}:</span
+                        >
+                        <time datetime={post.data.updatedAt.toISOString()}>
+                            {
+                                post.data.updatedAt.toLocaleDateString(
+                                    post.data.lang,
+                                    {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    },
+                                )
+                            }
+                        </time>
+                    </p>
+                    <p>
+                        <span class="font-semibold mr-2"
+                            >{t("post.author")}:</span
+                        >
+                        {post.data.author}
+                    </p>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <div
+                class="prose prose-slate prose-lg max-w-none mx-auto dark:prose-invert"
+            >
+                <div set:html={post.data.bodyHtml} />
+            </div>
+
+            <!-- Post Footer / Navigation -->
+            <div class="mt-16 pt-8 border-t border-border flex justify-between">
+                <a
+                    href="/"
+                    class="text-sm font-semibold text-accent hover:text-accent-strong"
+                >
+                    &larr; {t("blog.back_to_home")}
+                </a>
+            </div>
+        </div>
+    </article>
+</BaseLayout>

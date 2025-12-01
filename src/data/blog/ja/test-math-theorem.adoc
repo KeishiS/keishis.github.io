@@ -1,0 +1,85 @@
+= 数学的な記法のテンプレート
+:author: KeishiS
+:description: AsciiDoc での数学的な定義や定理の記述方法のテンプレートです．
+:tags: AsciiDoc, Template
+:published_at: 2025-11-29
+:revdate: 2025-12-02
+
+// カウンターの初期化
+:definition-num: 0
+:theorem-num: 0
+:lemma-num: 0
+:proposition-num: 0
+
+== 基本的な定義と定理
+
+AsciiDocのカスタムスタイル（ロール）を使用して、定義や定理を記述します。
+
+[.definition]
+.定義 {counter:definition-num} (素数)
+--
+1より大きい自然数で、正の約数が1と自分自身のみであるものを *素数* と呼ぶ。
+--
+
+[.theorem]
+.定理 {counter:theorem-num} (素因数分解の一意性)
+--
+1より大きい任意の自然数は、素数の積として（積の順序を除いて）一意に表すことができる。
+--
+
+[.proof]
+.証明
+--
+（証明略）
+数学的帰納法により示される。
+--
+
+== 命題と補題
+
+[.proposition]
+.命題 {counter:proposition-num}
+--
+任意の偶数は2で割り切れる。
+--
+
+[.lemma]
+.補題 {counter:lemma-num}
+--
+もし \( n^2 \) が偶数ならば、\( n \) も偶数である。
+--
+
+[.proof]
+.証明
+--
+対偶を示す。\( n \) が奇数ならば、\( n = 2k + 1 \) と置ける。
+このとき \( n^2 = (2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1 \) となり、奇数である。
+よって対偶が真であるため、元の命題も真である。
+--
+
+== 系の記述
+
+[.corollary]
+.系
+--
+素数は無限に存在する。
+--
+
+== 応用例：オイラーの公式
+
+[.theorem]
+.定理 {counter:theorem-num} (オイラーの公式)
+--
+任意の \( \theta \in \mathbb{R} \) に対して、以下が成り立つ。
+
+[stem]
+++++
+e^{i\theta} = \cos\theta + i\sin\theta
+++++
+--
+
+[.proof]
+.証明
+--
+テイラー展開を用いて定義する。
+\( e^x, \sin x, \cos x \) のマクローリン展開において、\( x = i\theta \) を代入して比較することで導かれる。
+--

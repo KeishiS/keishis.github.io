@@ -1,0 +1,56 @@
+---
+import { type Publication } from "@/lib/siteData";
+import { useTranslations } from "@/i18n/utils";
+
+interface Props {
+    lang: string;
+    pub: Publication;
+}
+
+const { lang, pub } = Astro.props;
+const t = useTranslations(lang as any);
+const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
+    month: "long",
+    year: "numeric",
+});
+---
+
+<details class="pub-card pub-card-details">
+    <summary class="pub-summary">
+        <div class="pub-meta">
+            <p class="chip">{date}</p>
+            <p class="pub-link-text">{t("publications.show_abstract")}</p>
+        </div>
+        <h4 class="pub-title">{pub.title}</h4>
+        <p class="pub-authors">{pub.author.join(", ")}</p>
+        <p class="pub-venue">{pub.container}</p>
+        {pub.URL && pub.DOI && <p>{`https://doi.org/${pub.DOI}`}</p>}
+    </summary>
+    <p class="pub-abstract">{pub.abstract}</p>
+    {
+        (pub.URL || pub.DOI) && (
+            <div class="pub-link-row">
+                {pub.URL && (
+                    <a
+                        href={pub.URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-primary-soft text-sm"
+                    >
+                        {t("publications.open_link")}
+                    </a>
+                )}
+                {pub.DOI && (
+                    <a
+                        href={`https://doi.org/${pub.DOI}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-primary-soft text-sm"
+                    >
+                        DOI: {pub.DOI}
+                    </a>
+                )}
+            </div>
+        )
+    }
+</details>

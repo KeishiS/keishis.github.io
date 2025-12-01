@@ -1,0 +1,68 @@
+---
+import { useTranslations } from "@/i18n/utils";
+import { type Profile } from "@/lib/siteData";
+
+interface Props {
+    lang: string;
+    profile: Profile;
+}
+
+const { lang, profile } = Astro.props;
+
+const t = useTranslations(lang as any);
+---
+
+<section class="hero-shell">
+    <div class="hero-grid">
+        <div class="hero-card">
+            <p class="eyebrow">{t("hero.eyebrow")}</p>
+            <div class="hero-title-block">
+                <div>
+                    <h1 class="hero-title">
+                        <span class="hero-name">{profile.name}</span>
+                    </h1>
+                    <p class="hero-role">{t("hero.role")}</p>
+                </div>
+            </div>
+
+            <p class="hero-lead" set:html={profile.bio} />
+
+            <div class="hero-meta">
+                {
+                    profile?.focus && (
+                        <div class="meta-chip">
+                            <span class="meta-label">
+                                {t("hero.focus_label")}
+                            </span>
+                            <span class="meta-value">{profile.focus}</span>
+                        </div>
+                    )
+                }
+                {
+                    profile?.base && (
+                        <div class="meta-chip">
+                            <span class="meta-label">
+                                {t("hero.base_label")}
+                            </span>
+                            <span class="meta-value">{profile.base}</span>
+                        </div>
+                    )
+                }
+                {
+                    profile?.email && (
+                        <div class="meta-chip">
+                            <span class="meta-label">Email</span>
+                            <span class="meta-value">{profile.email}</span>
+                        </div>
+                    )
+                }
+            </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+            <div class="hero-photo">
+                <img src={profile.avatar} alt={profile.name} loading="eager" />
+            </div>
+        </div>
+    </div>
+</section>

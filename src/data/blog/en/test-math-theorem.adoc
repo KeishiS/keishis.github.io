@@ -1,0 +1,85 @@
+= A template for syntax of Mathematics
+:author: KeishiS
+:description: A template for describing mathematical definitions, theorems, and proofs in AsciiDoc.
+:tags: AsciiDoc, Template
+:published_at: 2025-11-29
+:revdate: 2025-12-02
+
+// Initialize counters
+:definition-num: 0
+:theorem-num: 0
+:lemma-num: 0
+:proposition-num: 0
+
+== Basic Definitions and Theorems
+
+We use AsciiDoc's custom roles to describe definitions and theorems.
+
+[.definition]
+.Definition {counter:definition-num} (Prime Number)
+====
+A natural number greater than 1 that has no positive divisors other than 1 and itself is called a *prime number*.
+====
+
+[.theorem]
+.Theorem {counter:theorem-num} (Fundamental Theorem of Arithmetic)
+====
+Every integer greater than 1 either is a prime number itself or can be represented as the product of prime numbers, and this representation is unique, up to the order of the factors.
+====
+
+[.proof]
+.Proof
+====
+(Proof omitted)
+It can be shown by mathematical induction.
+====
+
+== Propositions and Lemmas
+
+[.proposition]
+.Proposition {counter:proposition-num}
+====
+Any even number is divisible by 2.
+====
+
+[.lemma]
+.Lemma {lemma-num}
+====
+If \( n^2 \) is an even number, then \( n \) is also an even number.
+====
+
+[.proof]
+.Proof
+====
+We prove the contrapositive. If \( n \) is an odd number, then \( n \) can be written as \( n = 2k + 1 \) for some integer \( k \).
+Then \( n^2 = (2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1 \), which is an odd number.
+Since the contrapositive is true, the original proposition is also true.
+====
+
+== Describing Corollaries
+
+[.corollary]
+.Corollary
+====
+There are infinitely many prime numbers.
+====
+
+== Application: Euler's Formula
+
+[.theorem]
+.Theorem {theorem-num} (Euler's Formula)
+====
+For any \( \theta \in \mathbb{R} \), the following holds:
+
+[stem]
+++++
+e^{i\theta} = \cos\theta + i\sin\theta
+++++
+====
+
+[.proof]
+.Proof
+====
+Defined using Taylor series expansion.
+Derived by substituting \( x = i\theta \) into the Maclaurin series expansions of \( e^x, \sin x, \cos x \) and comparing.
+====

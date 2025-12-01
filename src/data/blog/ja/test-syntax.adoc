@@ -12,6 +12,11 @@
 上付き文字: E = mc^2^
 下付き文字: H~2~O
 
+== リンク
+
+http://asciidoctor.org これは自動的にリンクになりますし，
+http://asciidoctor.org[AsciiDoctor] とすれば表示テキストを指定できます．
+
 == リスト
 
 === 番号なしリスト

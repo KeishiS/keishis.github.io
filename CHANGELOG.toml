@@ -1,70 +1,15 @@
 [[versions]]
-version = "Unreleased"
-date = "2025-11-30" # 最新のリリース日以降の日付
-summary = "多言語対応UIテキストの一元管理、ブログ記事のメタ情報強化と表示改善、カスタムブロックデザインの洗練、コードベースの保守性向上など、多数の改善と新機能を追加。"
-
-added =  [
-    "アクセシビリティテスト環境の構築とREADMEへの追記",
-    "AsciiDocのExample Block, Verse Block, Keyboard Macroのテストケース追加",
-    "AsciiDocの定義、定理、証明ブロック用のカスタムスタイルの追加",
-    "AsciiDocのCollapsible Blockのテストケース追加",
-    "AsciiDocの画像クロスリファレンス機能のテストケース追加",
-]
-
-changed = [
-    "global.css をCSS変数ベースにリファクタリングし、色の一元管理とダークモード対応を強化",
-    "AsciiDocのコードブロックタイトルスタイルをモダンなデザインに修正",
-    "AsciiDocのインラインコード表示スタイルをモダンなデザインに修正",
-    "AsciiDocの定義リスト（Description List）スタイルをモダンなデザインに修正",
-    "AsciiDocの引用（Quoteblock）スタイルをモダンなデザインに修正",
-    "AsciiDocのVerse Blockスタイルをモダンなデザインに修正",
-    "AsciiDocのアドモニション（Admonition Block）のダークモード時の色合いを調整",
-    "AsciiDocのチェックリストからリストマーカー（黒丸）を削除",
-    "asciidocLoader で必須メタ情報（:description:, :revdate:, :published_at:, :author:）のチェックを導入",
-    "asciidocLoader でセクションアンカーをデフォルトで有効化",
-    "asciidocLoader でサブタイトル付きのタイトルを正しく取得するように変更",
-    "asciidocLoader で `:restricted: true` の記事をデータとして格納",
-    "各記事一覧ページやRSSフィードで `:restricted: true` の記事を除外するフィルタリングを実装",
-    "トップページの「About」セクションを削除し、ヒーローセクションに統合",
-    "トップページの「主な研究業績」と「最新の更新」の背景色を入れ替え",
-    "記事詳細ページに初版投稿日時、最終編集日時、著者を表示",
-    "ブログ記事のソート順を最終編集日時ではなく初版投稿日時でソートするように変更",
-    "src/i18n/ui.ts に各種UIテキストの翻訳キーを追加し、各コンポーネントで参照するようにリファクタリング",
-    "src/components/Home.astro を作成し、トップページのJP/ENコンテンツを共通化",
-    "GEMINI.md と README.md を最新の状態に更新",
-]
-
-fixed = [
-    "pnpm build 時の useTranslations is not defined エラーを修正",
-    "MathJaxの数式がレンダリングされない問題を修正",
-    "コードブロックに行番号を追加した際に表示される不自然な線を修正",
-    "public/.nojekyll ファイルを追加し、GitHub Pagesでのデプロイ問題を予防",
-    "AdmonitionのNoteタイプで表示されていたアイコンとコンテンツ間の区切り線を削除",
-]
+version = "0.1.0"
+date = "2025-12-02" # 最新のリリース日以降の日付
+summary = "情報の整備とコンテンツの移植"
+added =  []
+changed = []
+fixed = []
 
 [[versions]]
 version = "0.0.1"
 date = "2025-11-29"
-summary = "Astroプロジェクトの初期セットアップ、AsciiDoc統合、Tailwind CSS v4導入、多言語・ダークモード対応、各種UIコンポーネント実装、基本的なSEO対策などを完了。"
-
-added = [
-    "Astroプロジェクトの初期セットアップ",
-    "AsciiDocローダーの導入とAsciiDoc記事の読み込み",
-    "Tailwind CSS v4 の導入と基本デザインの適用",
-    "Astro の多言語ルーティング (ja, en) の設定",
-    "共通レイアウト (BaseLayout.astro) の作成",
-    "ヘッダー、フッター、PostCard、TagなどのUIコンポーネントの作成",
-    "ダークモード切り替え機能の実装",
-    "言語切り替え機能の実装",
-    "404カスタムページの実装",
-    "pnpm build での静的サイト生成と pnpm preview での確認",
-    "GEMINI.md ファイルによるプロジェクトドキュメントの生成",
-]
-
-changed = [
-    "src/styles/global.css に Tailwind Typography プラグインを有効化",
-]
-
-fixed = [
-    "global.css のインポート忘れによるスタイル未適用問題の修正",
-]
+summary = "Astroプロジェクトの初期セットアップ"
+added = []
+changed = []
+fixed = []

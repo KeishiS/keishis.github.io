@@ -61,6 +61,12 @@ const SiteSchema = object({
     copyright: string(),
 });
 
+const AffiliationSchema = object({
+    role: string(),
+    affiliation: string(),
+    duration: string(),
+});
+
 const ProfileSchema = object({
     name_ja: string(),
     name_en: string(),
@@ -79,6 +85,8 @@ const ProfileSchema = object({
         bluesky: optional(string()),
         x: optional(string()),
     }),
+    education: array(AffiliationSchema),
+    experience: array(AffiliationSchema),
 });
 
 export const InfoSchema = object({

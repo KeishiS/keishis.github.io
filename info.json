@@ -184,7 +184,41 @@
             "github": "https://github.com/KeishiS",
             "bluesky": "https://bsky.app/profile/nobuta05.bsky.social",
             "x": "https://x.com/nobuta05"
-        }
+        },
+        "education": [
+            {
+                "role": "Ph.D. course of Statistical Science",
+                "affiliation": "The Graduate University for Advanced Studies",
+                "duration": "April 2023 - Present"
+            },
+            {
+                "role": "Master of Computer Science",
+                "affiliation": "University of Tsukuba",
+                "duration": "April 2018 - March 2020"
+            },
+            {
+                "role": "Bachelor of Computer Science",
+                "affiliation": "University of Tsukuba",
+                "duration": "April 2014 - March 2018"
+            }
+        ],
+        "experience": [
+            {
+                "role": "Research Assistant",
+                "affiliation": "National Institute for Environmental Studies",
+                "duration": "August 2022 - March 2023"
+            },
+            {
+                "role": "Machine Learning Engineer",
+                "affiliation": "Global AI Innovations Laboratory",
+                "duration": "March 2021 - July 2022"
+            },
+            {
+                "role": "System Engineer",
+                "affiliation": "KDDI CORPORATION",
+                "duration": "April 2020 - February 2021"
+            }
+        ]
     },
     "site": {
         "title_ja": "KeishiS.github.io",

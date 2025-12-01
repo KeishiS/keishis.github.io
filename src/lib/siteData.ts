@@ -38,6 +38,8 @@ export interface Profile {
     base?: string;
     email?: string;
     socials: SocialLink[];
+    educations: Info["profile"]["education"];
+    experiences: Info["profile"]["experience"];
 }
 
 export interface ChangelogEntry {
@@ -231,6 +233,8 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
         base: locale === "ja" ? info.profile?.base_ja : info.profile?.base_en,
         email: info.profile.email,
         socials,
+        educations: info.profile.education,
+        experiences: info.profile.experience,
     };
 
     const changelogEntries: ChangelogEntry[] = changelog.versions.map(

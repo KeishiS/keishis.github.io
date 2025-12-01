@@ -1,0 +1,17 @@
+= Conference Announcement
+:author: KeishiS
+:published_at: 2025-12-10
+:revdate: 2025-12-10
+:tags: Research, Conference
+:description: I will be presenting at an international conference next month. Here is an overview of my presentation.
+
+== Conference Overview
+
+* Name: International Conference on Web Engineering 2026
+* Date: January 15 - 17, 2026
+* Venue: Online
+
+== Presentation Details
+
+I will present under the title "Optimizing Content Pipelines in Next-Generation SSGs."
+I will propose a theoretical framework based on the insights gained from building this website.

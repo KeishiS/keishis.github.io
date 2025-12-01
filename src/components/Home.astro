@@ -1,0 +1,23 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { loadSiteData } from "@/lib/siteData";
+import HeroSection from "./sections/HeroSection.astro";
+import PublicationsSection from "./sections/PublicationsSection.astro";
+import ChangelogSection from "./sections/ChangelogSection.astro";
+
+interface Props {
+    lang?: string;
+}
+
+const { lang = "ja" } = Astro.props;
+
+const { profile, publications, changelog } = await loadSiteData(lang as any);
+---
+
+<BaseLayout lang={lang} socials={profile.socials}>
+    <HeroSection lang={lang} profile={profile} />
+
+    <PublicationsSection lang={lang} publications={publications} />
+
+    <ChangelogSection lang={lang} entries={changelog} />
+</BaseLayout>

@@ -1,0 +1,110 @@
+---
+import { getCollection } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostCard from "@/components/PostCard.astro";
+import Tag from "@/components/Tag.astro";
+import Pagination from "@/components/Pagination.astro";
+import { useTranslations } from "@/i18n/utils";
+
+export const getStaticPaths = (async ({ paginate }) => {
+    const allPosts = await getCollection("blog");
+
+    // 日付順にソート
+    const sortedPosts = allPosts
+        .filter((p) => p.data.restricted !== true) // restricted: true の記事を除外
+        .sort(
+            (a, b) =>
+                b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+        );
+
+    // 言語ごとに分割
+    const jaPosts = sortedPosts.filter((p) => p.data.lang === "ja");
+    const enPosts = sortedPosts.filter((p) => p.data.lang === "en");
+
+    return [
+        ...paginate(jaPosts, { params: { lang: "ja" }, pageSize: 6 }),
+        ...paginate(enPosts, { params: { lang: "en" }, pageSize: 6 }),
+    ];
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { lang } = Astro.params;
+const t = useTranslations(lang as any);
+
+const list_title = t("blog.list_title");
+const list_description = t("blog.list_description");
+
+// 現在のページの投稿からタグ一覧を生成
+const allPosts = await getCollection("blog");
+const postsInLang = allPosts.filter((p) => p.data.lang === lang);
+const allTags = [
+    ...new Set(postsInLang.flatMap((post) => post.data.tags)),
+].sort();
+---
+
+<BaseLayout subtitle={list_title} description={list_description} lang={lang}>
+    <section class="py-16 bg-bg transition-colors duration-300">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <header class="mb-10 text-center md:text-left">
+                <h1
+                    class="text-3xl font-bold tracking-tight text-fg sm:text-4xl mb-4"
+                >
+                    {list_title}
+                </h1>
+                <p class="text-lg text-fg-subtle">
+                    {list_description}
+                </p>
+            </header>
+
+            <!-- タグクラウド -->
+            {
+                allTags.length > 0 && (
+                    <div class="mb-12 flex flex-wrap gap-2">
+                        {allTags.map((tag) => (
+                            <Tag text={tag} href={`/${lang}/blog/tag/${tag}`} />
+                        ))}
+                    </div>
+                )
+            }
+
+            <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+                {
+                    page.data.length > 0 ? (
+                        page.data.map((post) => (
+                            <PostCard post={post} lang={lang} />
+                        ))
+                    ) : (
+                        <div class="col-span-full text-center py-12">
+                            <p class="text-muted text-lg">
+                                {t("blog.no_posts")}
+                            </p>
+                        </div>
+                    )
+                }
+            </div>
+
+            <!-- ページネーション -->
+            {
+                page.lastPage > 1 && (
+                    <Pagination
+                        prevUrl={page.url.prev}
+                        nextUrl={page.url.next}
+                        currentPage={page.currentPage}
+                        lastPage={page.lastPage}
+                        lang={lang}
+                    />
+                )
+            }
+
+            <div class="mt-12 pt-8 border-t border-border">
+                <a
+                    href={lang === "en" ? "/en" : "/"}
+                    class="text-sm font-semibold text-accent hover:text-accent-strong"
+                >
+                    &larr; {t("blog.back_to_home")}
+                </a>
+            </div>
+        </div>
+    </section>
+</BaseLayout>

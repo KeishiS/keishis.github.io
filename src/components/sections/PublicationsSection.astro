@@ -1,0 +1,73 @@
+---
+import { type SiteData } from "@/lib/siteData";
+import { useTranslations } from "@/i18n/utils";
+import PubCard from "@/components/parts/PubCard.astro";
+
+interface Props {
+    lang: string;
+    publications: SiteData["publications"];
+}
+
+const { lang, publications } = Astro.props;
+const t = useTranslations(lang as any);
+---
+
+<section id="publications" class="section-shell">
+    <div class="section-header">
+        <h2 class="section-title">{t("publications.title")}</h2>
+    </div>
+
+    <div class="space-y-12">
+        <div>
+            <h3 class="text-xl font-semibold mb-4 text-fg">
+                {t("publications.category.journal_papers")}
+            </h3>
+            <div class="pub-stack card-stack">
+                {
+                    publications.journal_paper.map((pub) => (
+                        <PubCard lang={lang} pub={pub} />
+                    ))
+                }
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-xl font-semibold mb-4 text-fg">
+                {t("publications.category.refereed_international_conference")}
+            </h3>
+            <div class="pub-stack card-stack">
+                {
+                    publications.refereed_international_conference.map(
+                        (pub) => <PubCard lang={lang} pub={pub} />,
+                    )
+                }
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-xl font-semibold mb-4 text-fg">
+                {t("publications.category.international_conference")}
+            </h3>
+            <div class="pub-stack card-stack">
+                {
+                    publications.international_conference.map((pub) => (
+                        <PubCard lang={lang} pub={pub} />
+                    ))
+                }
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-xl font-semibold mb-4 text-fg">
+                {t("publications.category.domestic_workshop")}
+            </h3>
+            <div class="pub-stack card-stack">
+                {
+                    publications.domestic_workshop.map((pub) => (
+                        <PubCard lang={lang} pub={pub} />
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</section>

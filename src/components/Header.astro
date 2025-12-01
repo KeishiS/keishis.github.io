@@ -1,0 +1,216 @@
+---
+import SunIcon from "@/assets/icons/sun.svg";
+import MoonIcon from "@/assets/icons/moon.svg";
+import { useTranslations } from "@/i18n/utils";
+
+interface Props {
+    lang?: string;
+}
+
+const { lang = "ja" } = Astro.props;
+const t = useTranslations(lang as any);
+
+const currentPath = Astro.url.pathname;
+let jaPath = "/";
+let enPath = "/en";
+
+// ブログ記事ページの言語切り替えロジック
+if (currentPath.includes("/blog/")) {
+    if (currentPath.startsWith("/en/")) {
+        jaPath = currentPath.replace("/en/", "/ja/");
+        enPath = currentPath;
+    } else if (currentPath.startsWith("/ja/")) {
+        jaPath = currentPath;
+        enPath = currentPath.replace("/ja/", "/en/");
+    }
+}
+---
+
+<header
+    class="sticky top-0 z-50 w-full border-b border-border bg-surface/80 backdrop-blur-md transition-colors duration-300"
+>
+    <div
+        class="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8"
+    >
+        <a
+            href={lang === "en" ? "/en" : "/"}
+            class="text-xl font-bold tracking-tight text-fg hover:text-accent transition-colors"
+        >
+            Research Lab
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex gap-8" aria-label="Main navigation">
+            <a
+                href={lang === "en" ? "/en" : "/"}
+                class="text-sm font-medium text-fg-subtle hover:text-accent transition-colors"
+                >{t("nav.home")}</a
+            >
+            <a
+                href={lang === "en" ? "/en#publications" : "/#publications"}
+                class="text-sm font-medium text-fg-subtle hover:text-accent transition-colors"
+                >{t("nav.publications")}</a
+            >
+            <a
+                href={lang === "en" ? "/en/blog" : "/ja/blog"}
+                class="text-sm font-medium text-fg-subtle hover:text-accent transition-colors"
+                >{t("nav.blog")}</a
+            >
+        </nav>
+
+        <div class="flex items-center gap-4">
+            <!-- 言語切り替えリンク -->
+            <div
+                class="hidden md:flex gap-2 text-xs font-medium"
+                aria-label="Language selection"
+            >
+                <a
+                    href={jaPath}
+                    class={lang === "ja"
+                        ? "text-accent pointer-events-none"
+                        : "text-muted hover:text-fg-subtle"}
+                    aria-current={lang === "ja" ? "page" : undefined}>JA</a
+                >
+                <span class="text-muted" aria-hidden="true">/</span>
+                <a
+                    href={enPath}
+                    class={lang === "en"
+                        ? "text-accent pointer-events-none"
+                        : "text-muted hover:text-fg-subtle"}
+                    aria-current={lang === "en" ? "page" : undefined}>EN</a
+                >
+            </div>
+
+            <!-- Theme Toggle Button -->
+            <button
+                id="theme-toggle"
+                type="button"
+                class="text-muted hover:text-fg focus:outline-none rounded-lg p-1.5 hover:bg-surface-soft transition-colors"
+                aria-label="Toggle Dark Mode"
+            >
+                <!-- Sun Icon (show in dark mode) -->
+                <SunIcon
+                    id="theme-toggle-light-icon"
+                    class="hidden w-5 h-5"
+                    width="20"
+                    height="20"
+                />
+                <!-- Moon Icon (show in light mode) -->
+                <MoonIcon
+                    id="theme-toggle-dark-icon"
+                    class="hidden w-5 h-5"
+                    width="20"
+                    height="20"
+                />
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button
+                id="mobile-menu-btn"
+                type="button"
+                class="md:hidden p-2 text-fg-subtle hover:bg-surface-soft rounded-md"
+                aria-label="Menu"
+                aria-controls="mobile-menu"
+                aria-expanded="false"
+            >
+                <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Nav Menu -->
+    <div
+        id="mobile-menu"
+        class="hidden md:hidden border-t border-border bg-surface"
+    >
+        <div class="space-y-1 px-4 py-6">
+            <a
+                href={lang === "en" ? "/en" : "/"}
+                class="block py-2 text-base font-medium text-fg-subtle hover:text-accent hover:bg-surface-soft rounded-md px-3"
+                >{t("nav.home")}</a
+            >
+            <a
+                href={lang === "en" ? "/en#publications" : "/#publications"}
+                class="block py-2 text-base font-medium text-fg-subtle hover:text-accent hover:bg-surface-soft rounded-md px-3"
+                >{t("nav.publications")}</a
+            >
+            <a
+                href={lang === "en" ? "/en/blog" : "/ja/blog"}
+                class="block py-2 text-base font-medium text-fg-subtle hover:text-accent hover:bg-surface-soft rounded-md px-3"
+                >{t("nav.blog")}</a
+            >
+            <div class="pt-4 mt-4 border-t border-border">
+                <div class="flex gap-4 px-3">
+                    <a
+                        href={jaPath}
+                        class={`text-sm font-medium ${lang === "ja" ? "text-accent" : "text-muted"}`}
+                        aria-current={lang === "ja" ? "page" : undefined}>JP</a
+                    >
+                    <a
+                        href={enPath}
+                        class={`text-sm font-medium ${lang === "en" ? "text-accent" : "text-muted"}`}
+                        aria-current={lang === "en" ? "page" : undefined}>EN</a
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    // Mobile Menu Logic
+    const btn = document.getElementById("mobile-menu-btn");
+    const menu = document.getElementById("mobile-menu");
+
+    btn?.addEventListener("click", () => {
+        const isHidden = menu?.classList.toggle("hidden");
+        btn?.setAttribute("aria-expanded", isHidden ? "false" : "true");
+    });
+
+    // Theme Toggle Logic
+    const themeToggleBtn = document.getElementById("theme-toggle");
+    const themeToggleDarkIcon = document.getElementById(
+        "theme-toggle-dark-icon",
+    );
+    const themeToggleLightIcon = document.getElementById(
+        "theme-toggle-light-icon",
+    );
+
+    // アイコンの初期状態設定
+    if (
+        localStorage.getItem("theme") === "dark" ||
+        (!("theme" in localStorage) &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+        themeToggleLightIcon?.classList.remove("hidden");
+    } else {
+        themeToggleDarkIcon?.classList.remove("hidden");
+    }
+
+    themeToggleBtn?.addEventListener("click", function () {
+        // アイコン切り替え
+        themeToggleDarkIcon?.classList.toggle("hidden");
+        themeToggleLightIcon?.classList.toggle("hidden");
+
+        // テーマ切り替え
+        if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+        } else {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+        }
+    });
+</script>

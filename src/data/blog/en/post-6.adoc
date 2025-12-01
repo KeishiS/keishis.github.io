@@ -1,0 +1,17 @@
+= End of Year Review
+:author: KeishiS
+:published_at: 2025-12-25
+:revdate: 2025-12-25
+:tags: Life, Column
+:description: 2025 is coming to an end. I look back on my activities this year.
+
+== Achievements
+
+1. Started writing my doctoral dissertation
+2. Launched my new personal website (this site)
+3. Contributed to open source
+
+== Looking Ahead
+
+I want to continue my research with health as my top priority.
+Happy Holidays!

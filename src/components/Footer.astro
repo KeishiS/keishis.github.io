@@ -1,7 +1,70 @@
-<footer class="border-t border-card mt-16">
-    <div class="max-w-7xl mx-auto px-4 py-6 text-center">
-        <p class="text-sm text-secondary">
-            © 2025 Keishi Sando. All rights reserved.
-        </p>
+---
+import RssIcon from "@/assets/icons/rss.svg";
+import KeybaseIcon from "@/assets/icons/keybase.svg";
+import OrcidIcon from "@/assets/icons/orcid.svg";
+import XIcon from "@/assets/icons/x.svg";
+import GithubIcon from "@/assets/icons/github.svg";
+import BlueskyIcon from "@/assets/icons/bluesky.svg";
+import { type SocialLink } from "@/lib/siteData";
+
+interface Props {
+    lang?: string;
+    socials?: SocialLink[];
+    copyright?: string;
+}
+
+const { lang = "ja", socials = [], copyright } = Astro.props;
+
+const iconMap: Record<string, any> = {
+    keybase: KeybaseIcon,
+    orcid: OrcidIcon,
+    github: GithubIcon,
+    bluesky: BlueskyIcon,
+    x: XIcon,
+};
+---
+
+<footer
+    class="border-t border-border bg-surface-soft py-12 transition-colors duration-300"
+>
+    <div
+        class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6"
+    >
+        <div class="text-center md:text-left">
+            <p class="text-sm text-muted">
+                &copy; {copyright}
+            </p>
+        </div>
+        <div class="flex gap-6 items-center">
+            <a
+                href={`/${lang}/rss.xml`}
+                class="text-muted hover:text-fg transition-colors"
+                aria-label="RSS Feed"
+            >
+                <span class="sr-only">RSS</span>
+                <RssIcon width="20" height="20" class="h-5 w-5" />
+            </a>
+            {
+                socials.map((item) => {
+                    const Icon = iconMap[item.key];
+                    return (
+                        <a
+                            href={item.url}
+                            class="text-muted hover:text-fg transition-colors"
+                            aria-label={item.key}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <span class="sr-only">{item.key}</span>
+                            {Icon ? (
+                                <Icon width="20" height="20" class="h-5 w-5" />
+                            ) : (
+                                item.key
+                            )}
+                        </a>
+                    );
+                })
+            }
+        </div>
     </div>
 </footer>

@@ -1,0 +1,110 @@
+---
+import { useTranslations } from "@/i18n/utils";
+
+interface Props {
+    prevUrl?: string;
+    nextUrl?: string;
+    currentPage: number;
+    lastPage: number;
+    lang: string;
+}
+
+const { prevUrl, nextUrl, currentPage, lastPage, lang } = Astro.props;
+const t = useTranslations(lang as any);
+---
+
+<nav
+    class="mt-12 flex items-center justify-between border-t border-border px-4 sm:px-0"
+>
+    <div class="-mt-px flex w-0 flex-1">
+        {
+            prevUrl ? (
+                <a
+                    href={prevUrl}
+                    class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-fg-subtle hover:border-border hover:text-fg"
+                >
+                    <svg
+                        class="mr-3 h-5 w-5 text-muted"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M18 10a.75.75 0 01-.75.75H4.66l2.1 1.95a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 111.02 1.1l-2.1 1.95h12.59A.75.75 0 0118 10z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                    {t("pagination.prev")}
+                </a>
+            ) : (
+                <span class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-muted cursor-not-allowed">
+                    <svg
+                        class="mr-3 h-5 w-5 text-muted"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M18 10a.75.75 0 01-.75.75H4.66l2.1 1.95a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 111.02 1.1l-2.1 1.95h12.59A.75.75 0 0118 10z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                    {t("pagination.prev")}
+                </span>
+            )
+        }
+    </div>
+
+    <div class="hidden md:-mt-px md:flex">
+        <span
+            class="inline-flex items-center border-t-2 border-accent px-4 pt-4 text-sm font-medium text-accent"
+            aria-current="page"
+        >
+            {t("pagination.page")}
+            {currentPage} / {lastPage}
+        </span>
+    </div>
+
+    <div class="-mt-px flex w-0 flex-1 justify-end">
+        {
+            nextUrl ? (
+                <a
+                    href={nextUrl}
+                    class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-fg-subtle hover:border-border hover:text-fg"
+                >
+                    {t("pagination.next")}
+                    <svg
+                        class="ml-3 h-5 w-5 text-muted"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M2 10a.75.75 0 01.75-.75h12.59l-2.1-1.95a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.1-1.95H2.75A.75.75 0 012 10z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </a>
+            ) : (
+                <span class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-muted cursor-not-allowed">
+                    {t("pagination.next")}
+                    <svg
+                        class="ml-3 h-5 w-5 text-muted"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M2 10a.75.75 0 01.75-.75h12.59l-2.1-1.95a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.1-1.95H2.75A.75.75 0 012 10z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </span>
+            )
+        }
+    </div>
+</nav>

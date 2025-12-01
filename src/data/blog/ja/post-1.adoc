@@ -1,0 +1,19 @@
+= Research Report
+:description: AstroとAsciiDocを使ったブログ構築のメモです。
+:published_at: 2025-11-27
+:author: KeishiS
+:revdate: 2025-11-29
+:tags: Astro, AsciiDoc, Research
+
+:stem: latexmath
+
+== はじめに
+これは *AsciiDoc* で書かれた記事です。
+
+.数式の例 (MathJax等を入れる場合)
+[stem]
+++++
+e^{i\pi} + 1 = 0
+++++
+
+インラインの $\lambda$ 数式も確認中．

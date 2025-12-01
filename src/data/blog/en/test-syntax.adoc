@@ -1,0 +1,176 @@
+= AsciiDoc Syntax Test
+:author: KeishiS
+:published_at: 2025-12-31
+:revdate: 2025-12-31
+:tags: AsciiDoc, Test
+:description: A test article to verify if major AsciiDoc syntaxes are rendered correctly.
+
+== Text Formatting
+
+*Bold*, _Italic_, and `Monospace`.
+This is #highlighted# text.
+Superscript: E = mc^2^
+Subscript: H~2~O
+
+== Lists
+
+=== Unordered List
+
+* Item 1
+* Item 2
+** Indented Item
+* Item 3
+
+=== Ordered List
+
+. Step 1
+. Step 2
+.. Substep a
+.. Substep b
+. Step 3
+
+=== Checklist
+
+* [x] Completed task
+* [ ] Unfinished task
+
+=== Description List
+
+Term:: Definition description
+AsciiDoc:: One of the lightweight markup languages
+Multiline Definition::
+This is the first line of the definition.
+This is the second line of the definition.
+
+== Quote (Blockquote)
+
+[quote, Einstein, Albert]
+____
+The only source of knowledge is experience.
+____
+
+[quote, Anonymous]
+____
+A quote without a specific source structure.
+____
+
+== Verse Block
+
+[verse, Carl Sandburg, Fog]
+____
+The fog comes
+on little cat feet.
+It sits looking
+over harbor and city
+on silent haunches
+and then moves on.
+____
+
+== Example Block
+
+.Example Title
+====
+This is an Example Block.
+It is rendered like a normal paragraph but usually has a distinct style.
+====
+
+== Keyboard Macro
+
+Display keyboard shortcuts.
+Press kbd:[Ctrl+C] to copy and kbd:[Ctrl+V] to paste.
+Press kbd:[Ctrl+Shift+N] to open a new window.
+
+== Admonitions
+
+NOTE: This is a note.
+
+TIP: This is a tip.
+
+IMPORTANT: This is important.
+
+WARNING: This is a warning.
+
+CAUTION: This is a caution.
+
+.Block Admonition
+[NOTE]
+====
+This is a block-style note.
+It can contain multiple lines of content.
+
+* List item
+* List item
+====
+
+== Collapsible Block
+
+.Click to see details
+[%collapsible]
+====
+Here is the hidden content.
+Useful for hiding detailed data or long code snippets.
+
+[source,javascript]
+----
+console.log("Hidden code");
+----
+====
+
+== Code Block
+
+.TypeScript Example
+[source,typescript]
+----
+interface User {
+  name: string;
+  id: number;
+}
+
+const user: User = {
+  name: "Hayes",
+  id: 0,
+};
+----
+
+== Table
+
+.Simple Table
+|===
+| Col 1 | Col 2 | Col 3
+
+| Cell 1-1
+| Cell 1-2
+| Cell 1-3
+
+| Cell 2-1
+| Cell 2-2
+| Cell 2-3
+|===
+
+== Image
+
+[[fig-astro-rose]]
+.Astro Logo Image
+image::https://docs.astro.build/assets/rose.webp[Astro Rose, 300, 200]
+
+See <<fig-astro-rose, the image above>> for details.
+
+== Math (MathJax)
+
+Inline math: \( a^2 + b^2 = c^2 \)
+
+Display math:
+[stem]
+++++
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+++++
+
+== Footnote
+
+This is a sentence with a footnote.footnote:[This is the content of the footnote.]
+
+== Horizontal Rule
+
+---
+
+End of test.

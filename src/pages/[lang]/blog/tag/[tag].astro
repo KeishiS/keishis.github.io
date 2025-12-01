@@ -1,0 +1,75 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostCard from "@/components/PostCard.astro";
+import { useTranslations } from "@/i18n/utils";
+
+export async function getStaticPaths() {
+    const allPosts = await getCollection("blog");
+
+    // 言語とタグの組み合わせを一意に抽出
+    const uniqueCombinations = new Set<string>();
+    const paths: { params: { lang: string; tag: string } }[] = [];
+
+    allPosts.forEach((post) => {
+        post.data.tags.forEach((tag) => {
+            const combo = `${post.data.lang}/${tag}`;
+            if (!uniqueCombinations.has(combo)) {
+                uniqueCombinations.add(combo);
+                paths.push({
+                    params: { lang: post.data.lang, tag: tag },
+                });
+            }
+        });
+    });
+
+    return paths;
+}
+
+const { lang, tag } = Astro.params;
+const t = useTranslations(lang as any);
+
+const allPosts = await getCollection("blog");
+const posts = allPosts
+    .filter(
+        (post) =>
+            post.data.restricted !== true &&
+            post.data.lang === lang &&
+            post.data.tags.includes(tag),
+    ) // restricted: true の記事を除外
+    .sort(
+        (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+    );
+
+const tag_title = `${t("blog.tag_title")}#${tag}`;
+const tag_description = t("blog.tag_description", { tag });
+---
+
+<BaseLayout subtitle={tag_title} description={tag_description} lang={lang}>
+    <section class="py-16 bg-bg transition-colors duration-300">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <header class="mb-12 text-center md:text-left">
+                <div class="mb-4">
+                    <a
+                        href={`/${lang}/blog`}
+                        class="text-sm font-medium text-accent hover:text-accent-strong"
+                    >
+                        &larr; {t("blog.all_posts")}
+                    </a>
+                </div>
+                <h1
+                    class="text-3xl font-bold tracking-tight text-fg sm:text-4xl mb-4"
+                >
+                    {tag_title}
+                </h1>
+                <p class="text-lg text-fg-subtle">
+                    {tag_description}
+                </p>
+            </header>
+
+            <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+                {posts.map((post) => <PostCard post={post} lang={lang} />)}
+            </div>
+        </div>
+    </section>
+</BaseLayout>

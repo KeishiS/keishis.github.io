@@ -1,9 +1,9 @@
-= AsciiDoc記法のテスト
+= AsciiDoc記法のテンプレート
 :author: KeishiS
-:published_at: 2025-12-31
-:revdate: 2025-12-31
-:tags: AsciiDoc, Test
-:description: AsciiDocの主要な記法が正しくレンダリングされるかを確認するためのテスト記事です。
+:description: AsciiDoc の基本的な記法とレンダリング結果を確認するためのテンプレートです．
+:tags: AsciiDoc, Template
+:published_at: 2025-11-29
+:revdate: 2025-12-02
 
 == テキストフォーマット
 

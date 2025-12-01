@@ -1,11 +1,9 @@
-= Describing Definitions, Theorems, and Proofs
-:revdate: 2026-01-02
-:tags: AsciiDoc, Math, Theorem
-:description: Testing methods for describing mathematical definitions, theorems, and proofs.
-:sectnums:
-:toc:
+= A template for syntax of Mathematics
 :author: KeishiS
-:published_at: 2026-01-02
+:description: A template for describing mathematical definitions, theorems, and proofs in AsciiDoc.
+:tags: AsciiDoc, Template
+:published_at: 2025-11-29
+:revdate: 2025-12-02
 
 // Initialize counters
 :definition-num: 0

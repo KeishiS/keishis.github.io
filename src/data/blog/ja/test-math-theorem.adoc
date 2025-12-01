@@ -1,11 +1,9 @@
-= 定義・定理・証明の記述テスト
+= 数学的な記法のテンプレート
 :author: KeishiS
-:published_at: 2026-01-02
-:revdate: 2026-01-02
-:tags: AsciiDoc, Math, Theorem
-:description: 数学的な定義、定理、証明などの記述方法のテストです。
-:sectnums:
-:toc:
+:description: AsciiDoc での数学的な定義や定理の記述方法のテンプレートです．
+:tags: AsciiDoc, Template
+:published_at: 2025-11-29
+:revdate: 2025-12-02
 
 // カウンターの初期化
 :definition-num: 0

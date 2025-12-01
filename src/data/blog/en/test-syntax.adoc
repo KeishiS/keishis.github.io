@@ -1,9 +1,9 @@
 = AsciiDoc Syntax Test
 :author: KeishiS
-:published_at: 2025-12-31
-:revdate: 2025-12-31
-:tags: AsciiDoc, Test
-:description: A test article to verify if major AsciiDoc syntaxes are rendered correctly.
+:description: A template for verifying major AsciiDoc syntaxes.
+:tags: AsciiDoc, Template
+:published_at: 2025-11-29
+:revdate: 2025-12-02
 
 == Text Formatting
 

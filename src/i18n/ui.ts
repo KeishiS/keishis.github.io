@@ -12,10 +12,14 @@ export const ui = {
         "nav.blog": "ブログ",
         "nav.changelog": "更新履歴",
 
-        "hero.role": "ウェブ工学・技術文書",
+        "hero.role": "Ph.D. candidate in Statistical Science",
         "hero.eyebrow": "About Me",
         "hero.focus_label": "専門",
         "hero.base_label": "拠点",
+
+        "career.title": "経歴",
+        "career.education": "学歴",
+        "career.experience": "職歴",
 
         "site.subtitle": "Research CV",
         "publications.title": "研究業績",
@@ -56,10 +60,14 @@ export const ui = {
         "nav.blog": "Blog",
         "nav.changelog": "Changelog",
 
-        "hero.role": "Web Engineering & Tech Writing",
+        "hero.role": "Ph.D. candidate in Statistical Science",
         "hero.eyebrow": "About Me",
         "hero.focus_label": "Focus",
         "hero.base_label": "Base",
+
+        "career.title": "Career",
+        "career.education": "Education",
+        "career.experience": "Experience",
 
         "site.subtitle": "Research CV",
         "publications.title": "Publications",

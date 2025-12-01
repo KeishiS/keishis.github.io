@@ -107,7 +107,7 @@ const { site } = await loadSiteData(lang as any);
     <body
         class="flex flex-col min-h-screen bg-bg text-fg transition-colors duration-300"
     >
-        <Header lang={lang} />
+        <Header lang={lang} title={site.title} />
 
         <!-- Main Content -->
         <main class="flex-1 w-full">

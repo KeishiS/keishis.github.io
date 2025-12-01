@@ -5,9 +5,10 @@ import { useTranslations } from "@/i18n/utils";
 
 interface Props {
     lang?: string;
+    title: string;
 }
 
-const { lang = "ja" } = Astro.props;
+const { lang = "ja", title } = Astro.props;
 const t = useTranslations(lang as any);
 
 const currentPath = Astro.url.pathname;
@@ -36,7 +37,7 @@ if (currentPath.includes("/blog/")) {
             href={lang === "en" ? "/en" : "/"}
             class="text-xl font-bold tracking-tight text-fg hover:text-accent transition-colors"
         >
-            Research Lab
+            {title}
         </a>
 
         <!-- Desktop Nav -->

@@ -1230,3 +1230,14 @@ body {
 .prose :where(li > .ulist, li > .olist):not(:where([class~="not-prose"] *)) {
     margin-block: 0.25em 0;
 }
+
+/* Link Styles */
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+    text-decoration: none;
+    color: var(--color-accent-strong);
+    transition: color 0.2s ease;
+}
+
+.prose :where(a):not(:where([class~="not-prose"] *)):hover {
+    color: var(--color-accent);
+}

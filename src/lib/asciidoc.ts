@@ -27,7 +27,7 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                         const doc = asciidoctor.load(content, {
                             safe: "server",
                             attributes: {
-                                showtitle: true,
+                                showtitle: false, // タイトルをHTML出力に含めない（Astroテンプレート側で表示）
                                 stem: "latexmath", // MathJaxを有効化 (LaTeXモード)
                                 "source-highlighter": "highlightjs", // ソースコードハイライトを有効化
                                 sectnums: true, // セクション番号を有効化

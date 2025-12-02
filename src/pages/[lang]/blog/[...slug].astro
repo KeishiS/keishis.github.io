@@ -27,7 +27,7 @@ const ogImageUrl = `/${post.data.lang}/blog/${post.data.slug}/og.png`;
     <article class="py-16 bg-bg transition-colors duration-300">
         <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <!-- Post Header -->
-            <header class="mb-10 text-center">
+            <header class="mb-12">
                 <div class="flex items-center justify-center gap-2 mb-6">
                     {
                         post.data.tags.map((tag) => (
@@ -39,15 +39,15 @@ const ogImageUrl = `/${post.data.lang}/blog/${post.data.slug}/og.png`;
                     }
                 </div>
                 <h1
-                    class="text-3xl font-bold tracking-tight text-fg sm:text-4xl mb-4"
+                    class="text-3xl font-bold tracking-tight text-fg sm:text-4xl mb-6 text-center"
                 >
                     {post.data.title}
                 </h1>
-                <div class="text-muted text-sm mb-4">
-                    <p class="mb-1">
-                        <span class="font-semibold mr-2"
-                            >{t("post.published_at")}:</span
-                        >
+
+                <!-- Meta Information -->
+                <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-fg-muted mb-8">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-muted">📅</span>
                         <time datetime={post.data.publishedAt.toISOString()}>
                             {
                                 post.data.publishedAt.toLocaleDateString(
@@ -60,36 +60,37 @@ const ogImageUrl = `/${post.data.lang}/blog/${post.data.slug}/og.png`;
                                 )
                             }
                         </time>
-                    </p>
-                    <p class="mb-1">
-                        <span class="font-semibold mr-2"
-                            >{t("post.updated_at")}:</span
-                        >
-                        <time datetime={post.data.updatedAt.toISOString()}>
-                            {
-                                post.data.updatedAt.toLocaleDateString(
-                                    post.data.lang,
-                                    {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    },
-                                )
-                            }
-                        </time>
-                    </p>
-                    <p>
-                        <span class="font-semibold mr-2"
-                            >{t("post.author")}:</span
-                        >
-                        {post.data.author}
-                    </p>
+                    </div>
+                    {post.data.publishedAt.toDateString() !== post.data.updatedAt.toDateString() && (
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-muted">🔄</span>
+                            <time datetime={post.data.updatedAt.toISOString()}>
+                                {
+                                    post.data.updatedAt.toLocaleDateString(
+                                        post.data.lang,
+                                        {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric",
+                                        },
+                                    )
+                                }
+                            </time>
+                        </div>
+                    )}
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-muted">✍️</span>
+                        <span>{post.data.author}</span>
+                    </div>
                 </div>
+
+                <!-- Divider -->
+                <div class="border-t border-border"></div>
             </header>
 
             <!-- Post Content -->
             <div
-                class="prose prose-slate prose-lg max-w-none mx-auto dark:prose-invert"
+                class="prose prose-slate prose-lg max-w-none mx-auto dark:prose-invert prose-theme"
             >
                 <div set:html={post.data.bodyHtml} />
             </div>

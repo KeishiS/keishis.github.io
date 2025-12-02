@@ -1227,3 +1227,32 @@ body {
     margin-top: 0em;
     margin-bottom: 0em;
 }
+
+/* List Item Spacing Adjustment */
+.prose :where(li):not(:where([class~="not-prose"] *)) {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+.prose :where(ul > li, ol > li):not(:where([class~="not-prose"] *)) {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+/* Paragraph inside list items */
+.prose :where(li > p):not(:where([class~="not-prose"] *)) {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+/* Nested list spacing */
+.prose :where(ul ul, ul ol, ol ul, ol ol):not(:where([class~="not-prose"] *)) {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+/* Nested div.ulist spacing */
+.prose :where(li > .ulist, li > .olist):not(:where([class~="not-prose"] *)) {
+    margin-top: 0.25em;
+    margin-bottom: 0;
+}

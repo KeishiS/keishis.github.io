@@ -76,7 +76,7 @@ Cloud-initでは `user-data` と呼ばれる，
 
 === Autoinstallの設定ファイル準備
 
-ここでは簡単のために @lst-user_data で示す設定を用います．
+ここでは簡単のために <<lst-user_data>> で示す設定を用います．
 
 .user-data
 [source,shellscript]

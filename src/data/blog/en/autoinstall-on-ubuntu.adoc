@@ -1,0 +1,150 @@
+= Autoinstall on Ubuntu
+:author: KeishiS
+:description: Provisioning from yaml files using subiquity's autoinstall feature
+:tags: Linux
+:published_at: 2024-08-26
+:revdate: 2024-08-26
+
+[WARNING]
+====
+This article was automatically translated from the Japanese original. Please refer to the Japanese article for accurate information.
+====
+
+== Introduction
+
+In my private life, I only use ArchLinux and NixOS, so I usually provision my systems by writing `configuration.nix` or writing shell scripts vigorously.
+However, recently I had to deal with a Linux server running in a workplace/playground environment, and I wanted to be able to export the configuration details to a file in the future.
+This is a common scenario, but since the people in charge of server operations are not doing it as their main job, they have been adding settings and maintaining it in their spare time, resulting in a situation where it is difficult to grasp the full picture.
+
+I plan to codify the current status eventually, but since I want to add a new machine to the cluster soon, I want to codify all the provisioning and environment setup for it.
+This article summarizes some of the information I collected for that purpose.
+
+== What this article covers
+
+The above proposition is a problem faced by many organizations, so many solutions are published on the internet.
+The problem is to choose the better option for ourselves, taking into account the organization, system scale, budget, and future burden on administrators.
+In this article, we assume:
+
+* The target is a physical server
+* There is no additional financial budget
+* The administrator has a certain level of Linux knowledge
+* This is the 1st step to write out the current status into code
+
+Based on this, we assume solving the problem with the following procedure:
+
+* Use subiquity's Autoinstall to provision an environment accessible by Ansible from a yaml file
+* Use Ansible to perform detailed settings
+
+Since there is enough information on the internet for the latter, this article introduces the results of investigating the former procedure.
+
+== Operating Environment
+
+Although the actual provisioning target is a physical server, a physical server is inconvenient for trial and error.
+Therefore, this article explains assuming a virtual machine on VirtualBox.
+Just in case, the detailed versions are summarized as follows:
+
+* Host OS: ArchLinux, kernel: 6.10.6-arch1-1
+    * VirtualBox 7.0.20
+* Guest OS: Ubuntu-Server 24.04
+
+== About Subiquity Autoinstall
+
+https://github.com/canonical/subiquity[Subiquity] is the Ubuntu-Server installer currently adopted by Ubuntu, and it also runs in the backend of the Ubuntu Desktop installer. The desktop version provides a GUI, and the server version also provides a TUI, providing an environment where you can install Ubuntu just by selecting items. If it is an installation work for 1 or 2 units, that is fine, but if there are multiple units, or if there is a request to reproduce the previous environment, it is necessary to record which items were selected, and it takes time and effort in terms of having to work manually.
+Autoinstall is a feature that solves this problem, and it is available in Ubuntu-Server since 20.04 and Ubuntu-Desktop since 23.04.
+In this feature, settings are prepared in advance as a text file or an installation media reflecting it, and by referring to them during work, troublesome processes such as item selection are skipped.
+
+=== Autoinstall and Cloud-init
+
+https://cloudinit.readthedocs.io/en/17.1/index.html[Cloud-init] is a utility for performing initial settings of instances on the cloud, and it is a tool for performing preparations essential for access after startup, such as:
+
+* locale information and host name
+* SSH public key
+* Network settings
+
+Although it seems to have been originally developed for AWS EC2, I will omit it here because it deviates from the main subject.
+
+Cloud-init operates based on https://cloudinit.readthedocs.io/en/latest/explanation/format.html[configuration data] written in a text file called `user-data`.
+Details are omitted in the link above, but in Autoinstall, settings are described in a similar format within a directive named `autoinstall`.
+
+== Simple Autoinstall and Operation Check with VirtualBox
+
+Here, we prepare a simple Autoinstall and try to install Ubuntu-Server into a virtual machine based on it.
+As a preparation for that, it is necessary to make the `cloud-localds` command available. In the case of ArchLinux, it is included when installing the `cloud-image-utils` package.
+
+=== Preparation of Autoinstall Configuration File
+
+Here, for the sake of simplicity, we use the settings shown in <<lst-user_data>>.
+
+.user-data
+[source,shellscript]
+[[lst-user_data]]
+----
+#cloud-config
+autoinstall:
+  version: 1
+  refresh-installer:
+    update: true
+  identity:
+    hostname: ubuntu-keishis-vm
+    username: keishis
+    password: "$6$FlXH7/vER13wjoQx$.cavce116EUsRWISViNr1AkURrCWFL6bCMr3xv9xPAI77v7obknrnKNNsth9zVcMnUpUDFjFtT492Vi3Gxbqo0"
+  source:
+    id: ubuntu-server
+    search_drivers: true
+  apt:
+    preserve_sources_list: false
+    geoip: true
+    fallback: abort
+  ssh:
+    install_server: true
+    authorized-keys:
+      - ssh-ed25519 AAxxxxx.....
+  locale: en_US
+  keyboard:
+    layout: jp
+  timezone: Asia/Tokyo
+  packages:
+    - git
+  snaps:
+    - name: nvim
+      classic: true
+----
+
+Since the role of Autoinstall including Cloud-init is to perform settings necessary for initial startup, looking at the list of configurable items in the https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html#late-commands[Reference], you can see that there are few types. (You can do complicated things with `late-commands` etc., but putting that aside...)
+
+It is worth noting that the password part of the user information is hashed.
+There are several ways to make it, but I make it with `mkpasswd -m sha-512`.
+The `mkpasswd` command is included in the `whois` package in ArchLinux.
+
+From this information, it is necessary to convert it to the ISO9660 file format and make it mountable.
+
+[source,shellscript]
+----
+> cloud-localds user-data.iso user-data
+----
+
+This completes the preparation regarding the setting items.
+
+=== Preparation of Ubuntu-Server ISO File
+
+Just like when making an installation media, download the Ubuntu-Server ISO file from the Ubuntu homepage.
+
+=== Installation to Virtual Machine
+
+When you come this far, the remaining work is simple.
+
+. First, create a virtual machine of an appropriate size with VirtualBox etc.
+. Open the `Settings > Storage` item of the individual virtual machine
+. Add the following two files with `adds optical drive`
+    * Ubuntu-Server ISO file
+    * Created `user-data.iso`
+. Start the virtual machine. After loading various things, `Continue with autoinstall? (yes/no)` is displayed, so answer it and the process proceeds.
+
+
+== Summary and Chat
+
+In this article, I explained the guide for proceeding with installation based on pre-configured items using subiquity's Autoinstall feature.
+Although it is necessary to consider the partition configuration of the storage individually, if you do not do anything special, I think you just need to connect via SSH and perform detailed setup with Ansible.
+
+I summarized the 1st Step for IaC in Ubuntu like this, but personally I prefer NixOS.
+However, considering handing over to other people, it is sad that it is difficult to list as an option in the current situation. If I use Puppet instead of Ansible, I might be able to do declarative setup, but since I haven't touched it, I will leave it for the time being.

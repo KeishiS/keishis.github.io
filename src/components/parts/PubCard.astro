@@ -54,3 +54,106 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
         )
     }
 </details>
+
+<style>
+    .pub-card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 18px;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+    }
+    .pub-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+    .pub-link {
+        color: var(--color-accent);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    .pub-title {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        letter-spacing: -0.01em;
+    }
+    .pub-authors {
+        color: var(--color-fg-subtle);
+        font-size: 0.95rem;
+    }
+    .pub-venue {
+        color: var(--color-muted);
+        font-size: 0.9rem;
+    }
+    .pub-abstract {
+        color: var(--color-fg-subtle);
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+    }
+    .pub-card-details {
+        cursor: pointer;
+        transition:
+            border-color 150ms ease,
+            box-shadow 150ms ease,
+            transform 120ms ease;
+    }
+    .pub-card-details:hover {
+        border-color: color-mix(
+            in srgb,
+            var(--color-accent) 30%,
+            var(--color-border)
+        );
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
+    .pub-card-details summary {
+        list-style: none;
+        display: grid;
+        gap: 0.35rem;
+    }
+    .pub-card-details summary::-webkit-details-marker {
+        display: none;
+    }
+    .pub-summary {
+        padding: 0;
+        margin: 0;
+    }
+    .pub-link-text {
+        color: var(--color-accent);
+        font-weight: 600;
+        font-size: var(--text-xs);
+    }
+    .pub-card-details[open] .pub-link-text {
+        color: var(--color-accent-strong);
+    }
+    .pub-link-row {
+        margin-top: 0.6rem;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 768px) {
+        .pub-card {
+            padding: 1rem;
+        }
+        .pub-meta {
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .pub-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .pub-authors,
+        .pub-venue,
+        .pub-abstract {
+            font-size: 0.92rem;
+        }
+    }
+</style>

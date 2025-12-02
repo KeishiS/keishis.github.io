@@ -19,6 +19,10 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                     try {
                         const content = await fs.readFile(filePath, "utf-8");
 
+                        // 言語判定
+                        const relativePath = path.relative(base, filePath);
+                        const lang = relativePath.split(path.sep)[0];
+
                         // Asciidoctor設定
                         const doc = asciidoctor.load(content, {
                             safe: "server",
@@ -29,6 +33,7 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                                 sectnums: true, // セクション番号を有効化
                                 sectanchors: true, // セクションアンカーを有効化
                                 xrefstyle: "short",
+                                "figure-caption": lang === "ja" ? "図" : "Figure",
                             },
                         });
 
@@ -70,9 +75,7 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                         const render = doc.convert();
 
                         // IDと各種パス情報の生成
-                        const relativePath = path.relative(base, filePath);
                         const parts = relativePath.split(path.sep);
-                        const lang = parts[0];
                         const slugBase = parts
                             .slice(1)
                             .join("/")

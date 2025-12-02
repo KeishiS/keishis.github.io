@@ -25,6 +25,11 @@
 
 /* セマンティックカラー変数の定義 */
 :root {
+    /* Highlight (Mark) Colors (Light) */
+    --color-highlight-bg: color-mix(in srgb, var(--color-warning) 20%, var(--color-surface));
+    --color-highlight-border: color-mix(in srgb, var(--color-warning) 40%, var(--color-border));
+    --color-highlight-text: var(--color-fg);
+
     /* Admonition Colors (Light) */
     --color-note-border: var(--color-info);
     --color-note-bg: color-mix(
@@ -136,6 +141,11 @@
     --color-danger: #f87171;
     --color-warning: #fbbf24;
     --color-info: #38bdf8;
+
+    /* Highlight (Mark) Colors (Dark) */
+    --color-highlight-bg: color-mix(in srgb, var(--color-warning) 25%, var(--color-surface));
+    --color-highlight-border: color-mix(in srgb, var(--color-warning) 50%, var(--color-border));
+    --color-highlight-text: var(--color-fg);
 
     /* Admonition Colors (Dark) */
     --color-note-border: var(--color-info);
@@ -1144,4 +1154,16 @@ body {
 
 .dark .prose ul.checklist input[type="checkbox"] {
     accent-color: var(--color-accent);
+}
+
+/* Highlight (Mark) */
+.prose mark {
+    background-color: var(--color-highlight-bg);
+    color: var(--color-highlight-text);
+    padding: 0.15em 0.35em;
+    border-radius: 0.25rem;
+    border: 1px solid var(--color-highlight-border);
+    font-weight: 500;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
 }

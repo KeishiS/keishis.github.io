@@ -34,6 +34,7 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                                 sectanchors: true, // セクションアンカーを有効化
                                 xrefstyle: "short",
                                 "figure-caption": lang === "ja" ? "図" : "Figure",
+                                "listing-caption": lang === "ja" ? "コード" : "Code",
                             },
                         });
 

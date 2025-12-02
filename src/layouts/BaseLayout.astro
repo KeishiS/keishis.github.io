@@ -11,12 +11,11 @@ interface Props {
     description?: string;
     lang?: string;
     image?: string;
-    socials?: SocialLink[];
 }
 
-const { subtitle, description, lang = "ja", image, socials = [] } = Astro.props;
+const { subtitle, description, lang = "ja", image } = Astro.props;
 
-const { site } = await loadSiteData(lang as any);
+const { profile, site } = await loadSiteData(lang as any);
 ---
 
 <!doctype html>
@@ -114,6 +113,10 @@ const { site } = await loadSiteData(lang as any);
             <slot />
         </main>
 
-        <Footer lang={lang} socials={socials} copyright={site.copyright} />
+        <Footer
+            lang={lang}
+            socials={profile.socials}
+            copyright={site.copyright}
+        />
     </body>
 </html>

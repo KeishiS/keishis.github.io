@@ -28,6 +28,7 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                                 "source-highlighter": "highlightjs", // ソースコードハイライトを有効化
                                 sectnums: true, // セクション番号を有効化
                                 sectanchors: true, // セクションアンカーを有効化
+                                xrefstyle: "short",
                             },
                         });
 

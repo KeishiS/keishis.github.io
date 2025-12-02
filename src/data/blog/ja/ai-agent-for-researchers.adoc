@@ -4,7 +4,6 @@
 :tags: Research, AI
 :published_at: 2025-12-02
 :revdate: 2025-12-02
-:xrefstyle: short
 
 == まえがき
 
@@ -267,7 +266,7 @@ GitHubでは *リポジトリ* と呼ばれるまとまりの単位で1つのプ
 
 すると<<new-repo-page>>のようなページに遷移され，色々な指示が書かれていますが，ほとんど無視して大丈夫です．
 今回はGUIでアップロードの操作をするため，ページ中央付近にある *uploading an existing file* リンクを押下してください．
-すると<<upload-files>>の左半分のような画面に遷移しますので， `Drag files here to add them to your repository` という部分へ テンプレートで作成した+編集したファイルをドラッグアンドドロップします．その際，画像のように #node_modules/ 以外# をアップロードしてください．
+すると<<upload-files>>の左半分のような画面に遷移しますので， `Drag files here to add them to your repository` という部分へ テンプレートで作成した+編集したファイルをドラッグアンドドロップします．その際，画像のように #`node_modules/` 以外# をアップロードしてください．
 
 コメント部分は空欄のままで構わないので， *Commit changes* ボタンを押下してください．
 

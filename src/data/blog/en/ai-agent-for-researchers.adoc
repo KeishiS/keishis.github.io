@@ -4,7 +4,6 @@
 :tags: Research, AI
 :published_at: 2025-12-02
 :revdate: 2025-12-02
-:xrefstyle: short
 
 NOTE: This article is a machine translation based on the Japanese page.
 
@@ -256,7 +255,7 @@ So let's jump to the repository creation page.
 
 Then you will be transitioned to a page like <<new-repo-page>>, and various instructions are written, but you can ignore most of them.
 Since we will perform the upload operation with GUI this time, press the *uploading an existing file* link near the center of the page.
-Then you will transition to a screen like the left half of <<upload-files>>, so drag and drop the files created with the template + edited to the part `Drag files here to add them to your repository`. At that time, please upload #everything except node_modules/# as shown in the image.
+Then you will transition to a screen like the left half of <<upload-files>>, so drag and drop the files created with the template + edited to the part `Drag files here to add them to your repository`. At that time, please upload #everything except `node_modules/`# as shown in the image.
 
 The comment part can be left blank, so press the *Commit changes* button.
 

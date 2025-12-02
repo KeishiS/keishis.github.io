@@ -1187,13 +1187,11 @@ body {
 
 /* Image Block with Caption */
 .prose .imageblock {
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-block: 1em;
+    padding-block: 1em;
     background-color: var(--color-surface-soft);
     border: 1px solid var(--color-border);
     border-radius: 0.5rem;
-    padding-top: 1em;
-    padding-bottom: 1em;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -1203,9 +1201,9 @@ body {
 }
 
 .prose .imageblock .title {
+    margin-bottom: 0.5em;
     font-weight: 600;
     color: var(--color-fg);
-    margin-bottom: 0;
     text-align: center;
     font-size: 0.95em;
     line-height: 1.5;
@@ -1215,8 +1213,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0;
-    margin-bottom: 0.5em;
 }
 
 .prose .imageblock img {
@@ -1224,35 +1220,13 @@ body {
     height: auto;
     border-radius: 0.375rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin-top: 0em;
-    margin-bottom: 0em;
 }
 
 /* List Item Spacing Adjustment */
-.prose :where(li):not(:where([class~="not-prose"] *)) {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
+.prose :where(li, li > p, ul ul, ul ol, ol ul, ol ol):not(:where([class~="not-prose"] *)) {
+    margin-block: 0.25em;
 }
 
-.prose :where(ul > li, ol > li):not(:where([class~="not-prose"] *)) {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
-}
-
-/* Paragraph inside list items */
-.prose :where(li > p):not(:where([class~="not-prose"] *)) {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
-}
-
-/* Nested list spacing */
-.prose :where(ul ul, ul ol, ol ul, ol ol):not(:where([class~="not-prose"] *)) {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
-}
-
-/* Nested div.ulist spacing */
 .prose :where(li > .ulist, li > .olist):not(:where([class~="not-prose"] *)) {
-    margin-top: 0.25em;
-    margin-bottom: 0;
+    margin-block: 0.25em 0;
 }

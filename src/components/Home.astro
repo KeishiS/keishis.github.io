@@ -15,7 +15,7 @@ const { lang = "ja" } = Astro.props;
 const { profile, publications, changelog } = await loadSiteData(lang as any);
 ---
 
-<BaseLayout lang={lang} socials={profile.socials}>
+<BaseLayout lang={lang}>
     <HeroSection lang={lang} profile={profile} />
 
     <PublicationsSection lang={lang} publications={publications} />

@@ -89,7 +89,7 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                             data: {
                                 slug: slugBase, // URL用スラッグをデータの一部として持たせる
                                 title: String(title),
-                                date: new Date(revdate), // revdate (最終更新) をデフォルトの date とする
+                                date: new Date(publishedAt), // 初版投稿日（RSS pubDate用）
                                 publishedAt: new Date(publishedAt), // 初版
                                 updatedAt: new Date(revdate), // 最終更新
                                 author: author,

@@ -106,4 +106,68 @@ const ogImageUrl = `/${post.data.lang}/blog/${post.data.slug}/og.png`;
             </div>
         </div>
     </article>
+
+    <!-- Image Lightbox -->
+    <div id="image-lightbox">
+        <button id="image-lightbox-close" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+        </button>
+        <img src="" alt="" id="image-lightbox-img" />
+    </div>
+
+    <script>
+        // Image Lightbox functionality
+        const lightbox = document.getElementById('image-lightbox');
+        const lightboxImg = document.getElementById('image-lightbox-img');
+        const closeBtn = document.getElementById('image-lightbox-close');
+
+        // Check if device is mobile (768px or less)
+        const isMobile = () => window.innerWidth <= 768;
+
+        // Add click event to all images in imageblock (desktop only)
+        document.querySelectorAll('.prose .imageblock img').forEach((img) => {
+            img.addEventListener('click', () => {
+                // Skip lightbox on mobile
+                if (isMobile()) return;
+
+                if (lightboxImg && lightbox) {
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        // Close lightbox
+        const closeLightbox = () => {
+            if (lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        };
+
+        // Close button click
+        closeBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeLightbox();
+        });
+
+        // Background click
+        lightbox?.addEventListener('click', closeLightbox);
+
+        // Prevent closing when clicking on image
+        lightboxImg?.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
 </BaseLayout>

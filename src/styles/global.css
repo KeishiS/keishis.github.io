@@ -1223,7 +1223,10 @@ body {
 }
 
 /* List Item Spacing Adjustment */
-.prose :where(li, li > p, ul ul, ul ol, ol ul, ol ol):not(:where([class~="not-prose"] *)) {
+.prose
+    :where(li, li > p, ul ul, ul ol, ol ul, ol ol):not(
+        :where([class~="not-prose"] *)
+    ) {
     margin-block: 0.25em;
 }
 
@@ -1240,4 +1243,63 @@ body {
 
 .prose :where(a):not(:where([class~="not-prose"] *)):hover {
     color: var(--color-accent);
+}
+
+/* Image Lightbox */
+@media (min-width: 769px) {
+    .prose .imageblock img {
+        cursor: zoom-in;
+    }
+}
+
+#image-lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+}
+
+#image-lightbox.active {
+    display: flex;
+}
+
+#image-lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+}
+
+#image-lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.2s ease;
+}
+
+#image-lightbox-close svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: white;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+#image-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3);
 }

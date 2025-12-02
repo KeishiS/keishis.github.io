@@ -1,0 +1,467 @@
+= 全研究者に役立つAIエージェントの用途
+:author: KeishiS
+:description: 研究者に有用なAIエージェントの活用方法として個人ページの作成を紹介します．
+:tags: Research, AI
+:published_at: 2025-12-02
+:revdate: 2025-12-02
+:xrefstyle: short
+
+== まえがき
+
+これは https://adventar.org/calendars/11703[総研大アドベントカレンダー 2025] 3日目の記事です．
+企画していただいた *とりさん* をはじめ，総研大アドベントカレンダーに関わってくださった皆さんに感謝します．
+
+こんにちは，総研大 統計科学コースで博士後期課程に在籍している https://www.keishis.me[KeishiS] です．
+今回，ML系の研究の話は他の方が書いてくれそうなので，全領域の研究者に有用なネタはないものかと考えた結果，
+*AIエージェントで個人ページを作成しよう* というテーマにたどり着きました．
+
+== 背景
+
+昨今AI技術の進展が目覚ましいですが，世の中でガッツリ使っているのはエンジニアがメインな印象を受けます．
+研究者の皆さんにもその能力を知っていただきたいと思う反面，研究者倫理的にどこまで使ってよいか判断が難しいため研究活動には導入しにくいです．
+色々応用先を考えた結果， #個人ページの作成# であれば問題は生じないだろうと考えました．
+
+個人ページの利点:: ページに載せる情報はすべて公開情報になるため，AIエージェントに読み込ませても問題がない．
+個人ページの必要性:: 皆さん https://researchmap.jp/[researchmap] や https://sites.google.com/[Google Sites] などで持ってますよね？はい．
+
+この記事自体も私の個人ページ上で公開されており， https://github.com/KeishiS/keishis.github.io[AIエージェントとの合作] です．
+完璧とまではいきませんが，動くものを作るには十分な能力を既にAIエージェントは持っており，特にデザインに関しては私より優れています．
+
+この記事でははじめに *研究者の個人ページに必要な機能やコンテンツ* を整理した後，
+*AIエージェントの導入説明* を簡単に行い，最後に *個人ページ作成* の例を紹介します．
+非エンジニア向けに書こうとは頑張りましたが，環境構築はプログラミングで最も難しい部分なのである程度はご容赦ください．
+
+CAUTION: この記事ではなるべくプログラミング的な編集操作は避けていますが，それゆえに生成物の品質は保証できません．こうやればそれっぽいことが簡単にできるよという紹介として捉えていただければ幸いです．
+
+== 個人ページの要件定義
+
+研究者のための個人ページに必要な機能，必須のコンテンツを洗い出した結果，以下のようなものがあれば良さそうという結論に至りました．
+
+* 機能
+** コンテンツ作成に手間がかからない
+** 多言語対応
+** レスポンシブデザイン（画面サイズに応じて崩れることなくレイアウトできる機能のこと）
+* コンテンツ
+** 差別化できるプロフィール紹介
+** 見やすい研究業績，経歴紹介
+** 関連する外部ページ（ORCiDやGoogle Scholar，大学の研究室ページ，etc...）へのリンク
+* オプション要件
+** 研究紹介の記事が書きやすい（相互参照が使える，bibファイルが使い回せる，コード表示がキレイ，etc...）
+
+特に *多言語対応* は海外研究者からの閲覧を考慮した際に重要となりますし，
+近年はPCではなくスマホでの閲覧が主流のため *レスポンシブデザイン* は必須です．
+それらを踏まえた具体的な技術選定は <<intro-to-personal-page>> で説明します．
+
+[[intro-to-ai-agent]]
+== AIエージェントの導入
+
+https://github.com/google-gemini/gemini-cli[Gemini(Gemini CLI)] や https://code.claude.com/docs/ja/overview[Claude(Claude Code)]， https://openai.com/ja-JP/codex/[ChatGPT(Codex)] の名前を
+聞いたことがない人はいないでしょうが，今回やる作業においてはどれを使っても問題なく実行できます．
+恐らく一番難しいのが， *これらの実行環境を準備したうえでAIエージェントをインストールすること* です．具体的には以下の事をやる必要があります．
+
+. https://nodejs.org/ja[Node.js] のインストール: その際に `npm/Yarn/pnpm` の選択画面が出てくるかもしれません．どれでも良いですがこの記事では `pnpm` を前提に記載します．
+. https://github.com/google-gemini/gemini-cli[Gemini] / https://code.claude.com/docs/ja/overview[Claude Code] / https://openai.com/ja-JP/codex/[Codex] のいずれかをリンク先の情報をもとにインストール
+
+残念ながら各用語の説明を行うには時間的な余白がないため各ページのインストール手順を参考に，ブラウザ上のChatGPTへ聞きながら頑張って進めてください．
+Windowsの方は *管理者権限で実行したPowerShell（<<powershell-with-admin>>）* 上でインストールを行う必要があったり， *環境変数へパスを通したり* する必要があるかもしれません．
+詳細はChatGPTが知っています．残念ながらMacPCを私は持っていないので何もアドバイスできません．Linux distroを使っている方は自力でできるでしょう．
+無事インストールできれば<<agent-startup>>のような画面のいずれかが表示されると思います．
+
+.WindowsでのPowerShell 管理者権限実行
+[[powershell-with-admin]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/win_powershell_exec.jpg[300,300]
+
+.各AIエージェントの実行画面
+[[agent-startup]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/agent-startup.png[400,360]
+
+[[intro-to-personal-page]]
+== 個人ページの技術的な導入
+
+さて本題である個人ページの作成ですが，さすがにHTML/JavaScript/CSSを一から書くのは面倒すぎます．
+本件のように「コンテンツ作成に注力し，webページとしての機能は汎用的なツールに委ねたい」場合，
+#静的サイトジェネレータ（Static Site Generator, SSG）# と呼ばれるツールを使うのが一般的です．
+
+静的サイトジェネレータ:: 表示するコンテンツが頻繁に変わらない（静的な）webページを効率的に作成するためのツール群で， https://gohugo.io/[HUGO] や https://jekyllrb.com/[Jekyll] などが有名．
+
+SSGに該当するツールは数多あり，私の周りでは https://quarto.org/[Quarto] を使っている人が多いですが，
+ここでは https://docs.astro.build/ja/getting-started/[#Astro#] を使うことにします．主な理由は以下の通りです．
+
+* 多言語対応が容易
+* 近年流行りのMarkdown形式 footnote:[なお筆者は https://asciidoc.org/[AsciiDoc] 信者です] で記事を書くことができ，またリッチなページを作りたいときは https://docs.astro.build/ja/basics/astro-components/[Astroコンポーネント] でHTML風にページを構成できる
+* 特定のディレクトリに配置した記事を（または記事に付与したタグ毎に）収集し，リスト化したページを自動的に生成できる（私の個人ページの http://localhost:4321/ja/blog[これ] みたいな感じ）
+
+=== テンプレートページの作成
+
+さて早速個人ページ作成に着手しましょう．WindowsであればPowerShell，Mac/Linuxの方は適当なターミナルソフトを起動して `pnpm create astro@latest --template blog` を実行してみましょう．すると _Where should we create your new project?_ と聞かれるので適当なプロジェクト名（ディレクトリ名，ここでは `personal-page` ）を入れてください．
+
+[source,shellscript]
+----
+> pnpm create astro@latest --template blog
+
+ astro   Launch sequence initiated.
+
+   dir   Where should we create your new project?
+         ./personal-page
+      ◼  tmpl Using blog as project template
+
+  deps   Install dependencies?
+         Yes
+
+   git   Initialize a new git repository?
+         No
+      ◼  Sounds good! You can always run git init manually.
+
+      ✔  Project initialized!
+         ■ Template copied
+         ■ Dependencies installed
+
+  next   Liftoff confirmed. Explore your project!
+
+         Enter your project directory using cd ./personal-page
+         Run pnpm dev to start the dev server. CTRL+C to stop.
+         Add frameworks like react or tailwind using astro add.
+
+         Stuck? Join us at https://astro.build/chat
+
+╭─────╮  Houston:
+│ ◠ ◡ ◠  Good luck out there, astronaut! 🚀
+╰─────╯
+----
+
+ちなみに `--template blog` の部分はテンプレートを変更することもできます．例えば以下のように利用できます．
+コミュニティ公開のテンプレートはライセンスをよく確認しましょう．
+
+* https://github.com/withastro/astro/tree/main/examples[公式が提供するサンプルテンプレート] ではリンク先のうち，使いたいもののディレクトリ名を指定
+* https://astro.build/themes/1/?search=&price%5B%5D=free[コミュニティが公開するテンプレート] では一覧から気に入ったものを探し，GitHubのユーザ名/リポジトリ名を `--template <username>/<repository name>` の形で指定
+
+次に作成されたディレクトリへ `cd personal-page` などで移動し `pnpm dev` を実行すると，
+
+[source,shellscript]
+----
+┃ Local    http://localhost:4322/
+┃ Network  use --host to expose
+
+17:41:36 watching for file changes...
+----
+
+と表示されるのでブラウザで `http://localhost:4322` へアクセスすると，雛形のwebページが表示されます．
+
+=== コンテンツの編集
+
+このままでは雛形そのものなのでコンテンツを自分のものに差し替えましょう．
+どこに手を加えるべきかはテンプレートに依存しますが，blogテンプレートの場合はひとまず
+
+* `src/consts.ts` : ページ名(`SITE_TITLE`)と簡単な説明文(`SITE_DESCRIPTION`)
+* `src/pages/{index.astro,about.astro}` : トップページと自己紹介ページ
+* `src/content/blog/` 以下のMarkdownファイル群の編集・削除
+* `src/assets/` 以下の画像ファイルの削除
+* `public/favicon.svg` の削除
+
+=== AIエージェントでカスタマイズ
+
+さて，ここからが本題のAIエージェントの出番です．blogテンプレートだと英語のみのため，
+日本語と英語の両方を表示できるようにカスタマイズしてもらいましょう．作業ディレクトリを `./personal-page/` へ移動した状態でAIエージェントを起動して，
+例えば以下のようなプロンプトを与えてみましょう．
+
+[source]
+----
+> Astro v5に準拠して，本ページを日本語/英語対応にしてください．なお日本語のページが存在しない場合，英語の記事を日本語に翻訳して生成し，不要なファイルや記述は削除してください．
+----
+
+するとディレクトリ以下の色々なファイルを読み込んだうえで「 `astro.config.mjs` へ `i18n` に関する記述を追加する」的な修正案を提示してくれるはずです．
+単発のファイル修正では失敗することはありますが，勝手に修正サイクルを回してくれるのでしばし待ちましょう．その結果，自分の場合は以下のようなファイル構成になりました．
+
+[source]
+----
+.
+├── astro.config.mjs
+├── package.json
+├── pnpm-lock.yaml
+├── public
+│   └── fonts
+│       ├── atkinson-bold.woff
+│       └── atkinson-regular.woff
+├── README.md
+├── src
+│   ├── assets
+│   ├── components
+│   │   ├── BaseHead.astro
+│   │   ├── Footer.astro
+│   │   ├── FormattedDate.astro
+│   │   ├── Header.astro
+│   │   └── HeaderLink.astro
+│   ├── consts.ts
+│   ├── content
+│   │   └── blog
+│   │       ├── en
+│   │       │   ├── first-post.md
+│   │       │   ├── markdown-style-guide.md
+│   │       │   ├── second-post.md
+│   │       │   └── third-post.md
+│   │       └── ja
+│   │           ├── first-post.md
+│   │           ├── markdown-style-guide.md
+│   │           ├── second-post.md
+│   │           └── third-post.md
+│   ├── content.config.ts
+│   ├── i18n
+│   │   ├── ui.ts
+│   │   └── utils.ts
+│   ├── layouts
+│   │   └── BlogPost.astro
+│   ├── pages
+│   │   ├── en
+│   │   │   ├── about.astro
+│   │   │   ├── blog
+│   │   │   │   ├── index.astro
+│   │   │   │   └── [...slug].astro
+│   │   │   └── index.astro
+│   │   ├── index.astro
+│   │   ├── ja
+│   │   │   ├── about.astro
+│   │   │   ├── blog
+│   │   │   │   ├── index.astro
+│   │   │   │   └── [...slug].astro
+│   │   │   └── index.astro
+│   │   └── rss.xml.js
+│   └── styles
+│       └── global.css
+└── tsconfig.json
+----
+
+人によっては構成が違うかもしれませんがおおよそこんな感じになっているはずです．
+最終的に `pnpm build` を実行してエラーが出ておらず， `pnpm dev` で見た時，
+日本語/英語両方のページが正しく表示されていればOKです．
+
+=== 一般公開のための手順
+
+`pnpm dev` を実行してブラウザから閲覧できているのは，手元のPCがサーバの役割を担い，
+ブラウザは手元のPCで立ち上がっているサーバへアクセスしているためです．
+`http://localhost:4322/` における `localhost` とは手元のPCを指しています．
+したがって誰もが閲覧できる状態にするには，インターネットに公開されているサーバへ
+`dist/` 以下のファイルをアップロードする必要があります．やり方は複数ありますが，
+せっかくですので #GitHub# を使う方法を紹介します．
+
+GitHub:: 一般にはプログラムのソースコードを管理するためのサービスとして知られますが，テキストデータであれば大抵のものをアップロードでき，webページを公開する機能である https://docs.github.com/ja/pages[GitHub Pages] も提供しています．
+
+ちゃんと真面目にwebページを公開したい方は https://docs.github.com/ja/pages[公式ドキュメント] を読んでいただくのが良いのですが，
+とりあえず試してみたいという方は以下の手順で十分です．
+
+==== GitHubアカウント作成
+
+はじめての方は https://github.com/[GitHub] へアクセスし，右上の *Sign up* からアカウントを作成しましょう．
+GoogleやAppleのアカウントと紐づけて登録すれば，入力項目が少なくて済みます．
+
+==== リポジトリの作成
+
+GitHubでは *リポジトリ* と呼ばれるまとまりの単位で1つのプロジェクトを管理します．
+それではリポジトリ作成のページに飛びましょう．
+
+. ページ右上のアカウントアイコンをクリックし， `Repositories` を押下
+. ページの右上にある *New* ボタンを押下（<<create-repo>>）
+. `Create a new repository` ページに遷移しますが，ここで入力するのは1箇所，確認するのは1箇所です
+** `Repository name` 欄にリポジトリ名を入力します．基本的には `<username>.github.io` としてください．例えばアカウント名が `nobuta05` であれば `nobuta05.github.io` とします
+** 確認項目として `Choose visibility` の値が `Public` になっていることを確認してください．これはリポジトリの内容を誰でも閲覧できるようにする設定ですが，元々個人ページは公開前提で作成するものなので問題はありません．
+. 残りの項目をいじる必要はありません．ページ下部の *Create repository* ボタンを押下
+
+すると<<new-repo-page>>のようなページに遷移され，色々な指示が書かれていますが，ほとんど無視して大丈夫です．
+今回はGUIでアップロードの操作をするため，ページ中央付近にある *uploading an existing file* リンクを押下してください．
+すると<<upload-files>>の左半分のような画面に遷移しますので， `Drag files here to add them to your repository` という部分へ テンプレートで作成した+編集したファイルをドラッグアンドドロップします．その際，画像のように #node_modules/ 以外# をアップロードしてください．
+
+コメント部分は空欄のままで構わないので， *Commit changes* ボタンを押下してください．
+
+.リポジトリ作成のボタン
+[[create-repo]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/create_repo.png[]
+
+.できたてのリポジトリページ
+[[new-repo-page]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/new_repo_page.png[]
+
+.ドラッグアンドドロップでのファイルアップロード
+[[upload-files]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/upload_files.png[]
+
+==== GitHub Pagesのためのリポジトリ設定の変更
+
+次にGitHub Pagesの設定を有効化するために，リポジトリの設定を1箇所変更します．
+
+. <<repo-page>>の上部に並んでいるタブの一番右にある *Settings* タブを押下
+. 左側メニューのうち *Pages* を押下
+. <<repo-setting>>の中央上部にある *Deploy from a branch* を押すと *GitHub Actions* という項目があるのでこれを選択
+
+設定項目から変更すべき項目は以上です．上部に並ぶタブの一番左にある *Code* タブを押してトップページに戻りましょう．
+
+.リポジトリページ
+[[repo-page]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/repo-page.png[]
+
+.リポジトリの設定ページ
+[[repo-setting]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/repo-setting.png[]
+
+==== GitHub Actions 設定ファイルの生成
+
+ここでまたAIエージェントに戻って，必要な設定ファイルを生成してもらいます．以下のようなプロンプトを与えましょう．
+
+[source]
+----
+> `pnpm build` による生成物をgithub actions経由でgithub pagesとしてデプロイするための設定を追加してください．
+----
+
+するとファイル名やその中身は若干異なるかもしれませんが， `.github/workflows/deploy.yml` というファイルが生成され，
+何らかの手順を教えてくれると思います．私の場合は <<deploy-instructions>> のような内容でした．
+
+.出力されたデプロイ手順
+[source]
+[[deploy-instructions]]
+----
+デプロイ手順
+
+  1. astro.config.mjs を更新
+
+  // ユーザー/組織ページ (username.github.io) の場合:
+  site: 'https://username.github.io'
+
+  // リポジトリページ (username.github.io/repo-name) の場合:
+  site: 'https://username.github.io/repository-name'
+  base: '/repository-name'  // この行も追加
+
+  2. GitHub リポジトリ設定
+
+  - Settings → Pages → Source を "GitHub Actions" に変更
+----
+
+..github/workflows/deploy.yml
+[source,yaml]
+[[deploy-yml]]
+----
+name: Deploy to GitHub Pages
+
+on:
+  # mainブランチへのpush時にトリガー
+  push:
+    branches: [main]
+  # GitHub UIから手動実行も可能
+  workflow_dispatch:
+
+# GitHub Pagesへのデプロイを許可
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時実行を1つに制限（進行中のデプロイをキャンセルしない）
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build with Astro
+        run: pnpm build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+----
+
+==== GitHub Actions 設定ファイルのアップロード
+
+最後に，生成された `.github/workflows/deploy.yml` をリポジトリへアップロードしましょう．
+
+.  <<repo-upload-file>>のように，リポジトリトップページにある *Add file* ボタンを押下
+. 出てくる *Create new file* ボタンを押下
+. <<upload-yml-file>> にある上部のボックスに `.github/workflows/deploy.yml` を入力．
+** `deploy.yml` の部分は，AIエージェントが生成したファイル名と異なる可能性があります．どんなファイル名でも動作するので `deploy.yml` で問題ありません．
+. 大きいテキストエリアに，生成されたファイルの中身をコピーアンドペースト
+. 右端にある *Commit changes...* ボタンを押下
+. テキストボックスがポップアップしますが，特に変更せずに *Commit changes* ボタンを押下
+
+完了したら上部タブにある *Code* を押してリポジトリのトップページに戻りましょう．
+
+.リポジトリページからアップロードページへの遷移
+[[repo-upload-file]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/repo-upload-file.png[]
+
+.設定ファイルのアップロード
+[[upload-yml-file]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/upload-yml-file.png[]
+
+==== GitHub Actions の動作確認
+
+あとは待つだけです．<<action-executing>>のように，黄色い丸アイコンが表示されていれば，処理が実行されていることを意味します．
+しばらく待ってページリロードすると緑色のチェックマークに変わるか，赤色のバツ印が表示されます．
+
+.GitHub Actions の動作確認
+[[action-executing]]
+image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/action-exec.png[]
+
+==== 緑色のチェックマークが表示された場合
+
+おめでとうございます．処理が成功しましたので， https://<username>.github.io にアクセス（ `<username>` は自身のアカウント名に置換）してみてください．
+`pnpm dev` で見ていたのと同じページが表示されるはずです．
+
+==== 赤色のバツ印が表示された場合
+
+残念ながら処理が失敗しています．その場合は上部タブのなかにある *Actions* を押してもらうと，実行した処理一覧が表示されます．
+最新のものをクリックすると色々情報が表示されますが，そのうち *Annotations* というセクションにエラーメッセージが表示されるので，
+これをコピーしてAIエージェントにプロンプトとして与えてみましょう．修正案を提示してくれます．
+
+=== リポジトリの削除
+
+ずっと公開しっぱなしでも基本的に問題ありませんが，削除による後片付けの仕方も書いておきましょう．
+といっても難しいことは何もありません．
+
+. 上部タブの右端にある *Settings* を押下
+. ページの一番下までスクロールし，赤文字で書かれた *Delete this repository* を押下
+. 案内に従って進み，確認のためにリポジトリ名を入力してボタンを押下
+
+これで綺麗サッパリ削除されます．
+
+== まとめ
+
+こんな感じにAIエージェントを使うことで，直接コードを書かずともwebページを公開できるレベルにまで到達していることを紹介しました．
+もちろん完璧なものができるわけではなく，生成物の品質を高めるにはプログラミング的な能力があるに越したことはありませんが，
+日常的にプログラミングをしない方が *Git/GitHub* や *AIエージェント* に慣れ親しむきっかけとして，
+個人ページ作成は良い題材になるのではないかと思います．
+
+正直に振り返ると，非エンジニア向けにはセットアップの箇所がきちんと噛み砕けてませんし，
+エンジニア向けには *Astro良いよ* という情報提供しかできていないので中途半端な記事になってしまった感は否めませんが，
+この記事によって皆さんの活動の幅が少しでも広がれば幸いです．

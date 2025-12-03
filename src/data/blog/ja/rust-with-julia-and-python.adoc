@@ -62,6 +62,8 @@ JuliaのGeneral Registryの場合，一度マージされるとそのメタ情�
 また全体はモノリポジトリ，つまり単一のGitリポジトリでRust/Python/Juliaコードのすべてを管理します．
 色々な良し悪しがありますが，小規模の範囲では連携の手間が減ります．
 
+最終的な完成コードは https://github.com/KeishiS/keishis_sandbox[私のリポジトリ] に置いてあります．
+
 === Rustでのコアアルゴリズムの実装
 
 Rust↔Pythonの連携に関しては既に https://github.com/PyO3/maturin[PyO3/maturin] というツールが提供されているため，

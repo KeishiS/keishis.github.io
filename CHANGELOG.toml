@@ -1,4 +1,12 @@
 [[versions]]
+version = "0.2.2"
+date = "2025-12-04"
+summary = "総研大 統計科学コース アドベントカレンダー2025の記事追加"
+added = []
+changed = []
+fixed = []
+
+[[versions]]
 version = "0.2.1"
 date = "2025-12-03"
 summary = "各要素の余白などデザインの微調整"

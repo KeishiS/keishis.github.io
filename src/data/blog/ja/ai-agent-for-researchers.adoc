@@ -88,7 +88,7 @@ SSGに該当するツールは数多あり，私の周りでは https://quarto.o
 
 * 多言語対応が容易
 * 近年流行りのMarkdown形式 footnote:[なお筆者は https://asciidoc.org/[AsciiDoc] 信者です] で記事を書くことができ，またリッチなページを作りたいときは https://docs.astro.build/ja/basics/astro-components/[Astroコンポーネント] でHTML風にページを構成できる
-* 特定のディレクトリに配置した記事を（または記事に付与したタグ毎に）収集し，リスト化したページを自動的に生成できる（私の個人ページの http://localhost:4321/ja/blog[これ] みたいな感じ）
+* 特定のディレクトリに配置した記事を（または記事に付与したタグ毎に）収集し，リスト化したページを自動的に生成できる（私の個人ページの http://www.keishis.me/ja/blog[これ] みたいな感じ）
 
 === テンプレートページの作成
 

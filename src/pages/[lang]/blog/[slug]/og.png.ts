@@ -48,15 +48,6 @@ export const GET: APIRoute = async ({ params, props }) => {
                         ${title}
                     </div>
                 </div>
-                <div
-                    style="display: flex; justify-content: flex-end; align-items: center;"
-                >
-                    <div
-                        style="font-size: 32px; color: #3b82f6; font-weight: bold;"
-                    >
-                        Researcher Name
-                    </div>
-                </div>
             </div>
         </div>
     ` as unknown as ReactNode;

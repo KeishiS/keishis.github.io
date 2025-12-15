@@ -25,6 +25,10 @@ const IssuedSchema = object({
     "date-parts": pipe(array(YearMonth), minLength(1), maxLength(1)),
 });
 
+const CustomSchema = object({
+    award: optional(string()),
+});
+
 const PublicationSchema = pipe(
     object({
         id: number(),
@@ -44,6 +48,7 @@ const PublicationSchema = pipe(
         URL: optional(string()),
         DOI: optional(string()),
         abstract: string(),
+        custom: optional(CustomSchema),
     }),
     check(
         (publication) =>

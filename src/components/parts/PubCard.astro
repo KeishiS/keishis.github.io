@@ -24,6 +24,7 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
         <h4 class="pub-title">{pub.title}</h4>
         <p class="pub-authors">{pub.author.join(", ")}</p>
         <p class="pub-venue">{pub.container}</p>
+        {pub.custom?.award && <p class="pub-award">🏆 {pub.custom.award}</p>}
         {pub.URL && pub.DOI && <p>{`https://doi.org/${pub.DOI}`}</p>}
     </summary>
     <p class="pub-abstract">{pub.abstract}</p>
@@ -89,6 +90,11 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
     .pub-venue {
         color: var(--color-muted);
         font-size: 0.9rem;
+    }
+    .pub-award {
+        color: var(--color-accent);
+        font-size: 0.9rem;
+        font-weight: 600;
     }
     .pub-abstract {
         color: var(--color-fg-subtle);

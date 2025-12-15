@@ -23,6 +23,9 @@ export type Publication = Omit<
     container: string;
     year: number;
     month: number;
+    custom?: {
+        award?: string;
+    };
 };
 
 export interface SocialLink {
@@ -155,6 +158,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 container: formatContainerName(paper),
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
+                custom: paper?.custom,
             };
         },
     );
@@ -174,6 +178,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                     container: formatContainerName(paper),
                     year: parseIssued(paper).year,
                     month: parseIssued(paper).month,
+                    custom: paper?.custom,
                 };
             },
         );
@@ -192,6 +197,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 container: formatContainerName(paper),
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
+                custom: paper?.custom,
             };
         },
     );
@@ -210,6 +216,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 container: formatContainerName(paper),
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
+                custom: paper?.custom,
             };
         },
     );

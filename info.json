@@ -146,7 +146,10 @@
             "issued": { "date-parts": [[2020, 3]] },
             "DOI": "",
             "URL": "https://ken.ieice.org/ken/paper/20200310U1vR/",
-            "abstract": "主成分分析は次元削減や可視化のようなデータ分析のための手法として広く一般に用いられている．しかしながら外れ値に対して脆弱であることが知られており，頑健化のために様々な手法が提案されている．また一般的な統計手法において，外れ値に対する頑健性を改善するために最頻値推定の概念を取り入れた手法が提案されているが，主成分分析への適用はこれまで行われていない．本稿では，主成分方向ではなくマイナー成分方向に着目することで最頻値推定の概念を主成分分析に取り入れた，最頻値主成分分析の提案を行う．提案する推定量の収束性や影響関数，破局点の側面から理論的な性質を評価し，数値実験によって，提案手法が既存手法と同程度の結果を示し，いくつかの状況において優位な性能を有することを確認した．"
+            "abstract": "主成分分析は次元削減や可視化のようなデータ分析のための手法として広く一般に用いられている．しかしながら外れ値に対して脆弱であることが知られており，頑健化のために様々な手法が提案されている．また一般的な統計手法において，外れ値に対する頑健性を改善するために最頻値推定の概念を取り入れた手法が提案されているが，主成分分析への適用はこれまで行われていない．本稿では，主成分方向ではなくマイナー成分方向に着目することで最頻値推定の概念を主成分分析に取り入れた，最頻値主成分分析の提案を行う．提案する推定量の収束性や影響関数，破局点の側面から理論的な性質を評価し，数値実験によって，提案手法が既存手法と同程度の結果を示し，いくつかの状況において優位な性能を有することを確認した．",
+            "custom": {
+                "award": "IBIS2019 Research Award Finalist"
+            }
         },
         {
             "id": 1,
@@ -173,8 +176,8 @@
         "bio_ja": "コンピュータサイエンスと機械学習を生業とする研究者・エンジニアです．",
         "bio_en": "A researcher and engineer specializing in computer science and machine learning.",
         "avatar": "/avatar.png",
-        "focus_ja": "グラフデータ解析",
-        "focus_en": "Graph Data Analysis",
+        "focus_ja": "グラフデータ解析, 最適輸送",
+        "focus_en": "Graph Data Analysis, Optimal Transport",
         "base_ja": "東京",
         "base_en": "Tokyo",
         "email": "sando.keishi.sp@alumni.tsukuba.ac.jp",
@@ -188,7 +191,7 @@
         "education": [
             {
                 "role": "Ph.D. course of Statistical Science",
-                "affiliation": "The Graduate University for Advanced Studies",
+                "affiliation": "The Graduate University for Advanced Studies @ Institute of Statistical Mathematics (ISM)",
                 "duration": "April 2023 - Present"
             },
             {
@@ -203,6 +206,11 @@
             }
         ],
         "experience": [
+            {
+                "role": "SOKENDAI Special Researcher",
+                "affiliation": "The Graduate University for Advanced Studies",
+                "duration": "April 2023 - Present"
+            },
             {
                 "role": "Research Assistant",
                 "affiliation": "National Institute for Environmental Studies",

@@ -4,6 +4,7 @@ import { loadSiteData } from "@/lib/siteData";
 import HeroSection from "./sections/HeroSection.astro";
 import CareerSection from "./sections/CareerSection.astro";
 import PublicationsSection from "./sections/PublicationsSection.astro";
+import PortfolioSection from "./sections/PortfolioSection.astro";
 import CertificationSection from "./sections/CertificationSection.astro";
 import ChangelogSection from "./sections/ChangelogSection.astro";
 
@@ -22,6 +23,8 @@ const { profile, publications, changelog } = await loadSiteData(lang as any);
     <PublicationsSection lang={lang} publications={publications} />
 
     <CareerSection lang={lang} profile={profile} />
+
+    <PortfolioSection lang={lang} portfolios={profile.portfolios} />
 
     <CertificationSection lang={lang} certifications={profile.certifications} />
 

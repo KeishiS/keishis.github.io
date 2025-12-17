@@ -227,6 +227,22 @@
                 "duration": "April 2020 - February 2021"
             }
         ],
+        "portfolio": [
+            {
+                "title": "KeyLytix",
+                "category": "web application",
+                "description_ja": "タイピング速度を計測し，QWERTY配列に代わる次世代のキーボード配列を提案するWebアプリです．",
+                "description_en": "A web application that measures typing speed and optimizes keyboard layouts as alternatives to the QWERTY layout.",
+                "url": "https://keylytix.net"
+            },
+            {
+                "title": "twwl (Tree Wasserstein Weisfeiler-Lehman graph kernel)",
+                "category": "machine learning library",
+                "description_ja": "頂点数の二乗オーダーで計算されていたCategorical Wasserstein Weisfeiler-Lehman graph kernelを，頂点数の線形オーダーで正確かつ高速に計算するMLライブラリです．",
+                "description_en": "A machine learning library that computes the Categorical Wasserstein Weisfeiler-Lehman graph kernel exactly and efficiently in linear time with respect to the number of vertices, improving upon the previous quadratic time complexity.",
+                "url": "https://github.com/KeishiS/twwl"
+            }
+        ],
         "certification": [
             {
                 "title": "簿記3級",

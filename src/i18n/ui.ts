@@ -10,6 +10,8 @@ export const ui = {
         "nav.home": "ホーム",
         "nav.publications": "研究業績",
         "nav.blog": "ブログ",
+        "nav.portfolio": "ポートフォリオ",
+        "nav.certification": "資格",
         "nav.changelog": "更新履歴",
 
         "hero.role": "Ph.D. candidate in Statistical Science",
@@ -43,6 +45,10 @@ export const ui = {
         "post.updated_at": "最終編集日時",
         "post.author": "著者",
 
+        "portfolio.no_entries": "ポートフォリオ情報はありません。",
+
+        "certification.no_entries": "資格情報はありません。",
+
         "changelog.no_entries": "更新履歴はありません。",
 
         "pagination.prev": "前へ",
@@ -58,6 +64,8 @@ export const ui = {
         "nav.home": "Home",
         "nav.publications": "Publications",
         "nav.blog": "Blog",
+        "nav.portfolio": "Portfolio",
+        "nav.certification": "Certifications",
         "nav.changelog": "Changelog",
 
         "hero.role": "Ph.D. candidate in Statistical Science",
@@ -90,6 +98,10 @@ export const ui = {
         "post.published_at": "Published At",
         "post.updated_at": "Updated At",
         "post.author": "Author",
+
+        "portfolio.no_entries": "No portfolio entries found.",
+
+        "certification.no_entries": "No certifications found.",
 
         "changelog.no_entries": "No changelog entries found.",
 

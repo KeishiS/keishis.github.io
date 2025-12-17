@@ -33,6 +33,13 @@ export interface SocialLink {
     url: string;
 }
 
+export interface Portfolio {
+    title: string;
+    category: string;
+    description: string;
+    url: string;
+}
+
 export interface Profile {
     name: string;
     bio: string;
@@ -43,6 +50,8 @@ export interface Profile {
     socials: SocialLink[];
     educations: Info["profile"]["education"];
     experiences: Info["profile"]["experience"];
+    portfolios: Portfolio[];
+    certifications: Info["profile"]["certification"];
 }
 
 export interface ChangelogEntry {
@@ -231,6 +240,14 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 url: info.profile.social[key] ?? "",
             }),
         );
+    const portfolios: Portfolio[] = info.profile.portfolio.map((item) => ({
+        title: item.title,
+        category: item.category,
+        description:
+            locale === "ja" ? item.description_ja : item.description_en,
+        url: item.url,
+    }));
+
     const profile: Profile = {
         name: locale === "ja" ? info.profile.name_ja : info.profile.name_en,
         bio: locale === "ja" ? info.profile.bio_ja : info.profile.bio_en,
@@ -242,6 +259,8 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
         socials,
         educations: info.profile.education,
         experiences: info.profile.experience,
+        portfolios,
+        certifications: info.profile.certification,
     };
 
     const changelogEntries: ChangelogEntry[] = changelog.versions.map(

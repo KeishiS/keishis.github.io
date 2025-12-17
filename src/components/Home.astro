@@ -4,6 +4,7 @@ import { loadSiteData } from "@/lib/siteData";
 import HeroSection from "./sections/HeroSection.astro";
 import CareerSection from "./sections/CareerSection.astro";
 import PublicationsSection from "./sections/PublicationsSection.astro";
+import CertificationSection from "./sections/CertificationSection.astro";
 import ChangelogSection from "./sections/ChangelogSection.astro";
 
 interface Props {
@@ -22,5 +23,7 @@ const { profile, publications, changelog } = await loadSiteData(lang as any);
 
     <CareerSection lang={lang} profile={profile} />
 
-    <ChangelogSection lang={lang} entries={changelog} />
+    <CertificationSection lang={lang} certifications={profile.certifications} />
+
+    <ChangelogSection lang={lang} entries={changelog.slice(0, 3)} />
 </BaseLayout>

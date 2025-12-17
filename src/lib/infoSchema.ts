@@ -72,6 +72,11 @@ const AffiliationSchema = object({
     duration: string(),
 });
 
+const CertificationSchema = object({
+    title: string(),
+    date: string(),
+});
+
 const ProfileSchema = object({
     name_ja: string(),
     name_en: string(),
@@ -92,6 +97,7 @@ const ProfileSchema = object({
     }),
     education: array(AffiliationSchema),
     experience: array(AffiliationSchema),
+    certification: array(CertificationSchema),
 });
 
 export const InfoSchema = object({

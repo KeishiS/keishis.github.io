@@ -43,6 +43,7 @@ export interface Profile {
     socials: SocialLink[];
     educations: Info["profile"]["education"];
     experiences: Info["profile"]["experience"];
+    certifications: Info["profile"]["certification"];
 }
 
 export interface ChangelogEntry {
@@ -242,6 +243,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
         socials,
         educations: info.profile.education,
         experiences: info.profile.experience,
+        certifications: info.profile.certification,
     };
 
     const changelogEntries: ChangelogEntry[] = changelog.versions.map(

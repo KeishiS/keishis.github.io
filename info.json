@@ -226,6 +226,20 @@
                 "affiliation": "KDDI CORPORATION",
                 "duration": "April 2020 - February 2021"
             }
+        ],
+        "certification": [
+            {
+                "title": "簿記3級",
+                "date": "4th September 2024"
+            },
+            {
+                "title": "TOEIC 735点",
+                "date": "18th December 2022"
+            },
+            {
+                "title": "AWS Certificated Developer Associate (expired)",
+                "date": "5th October 2020 - 5th October 2023"
+            }
         ]
     },
     "site": {

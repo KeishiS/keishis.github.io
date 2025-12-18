@@ -192,39 +192,53 @@
             {
                 "role": "Ph.D. course of Statistical Science",
                 "affiliation": "The Graduate University for Advanced Studies @ Institute of Statistical Mathematics (ISM)",
-                "duration": "April 2023 - Present"
+                "duration": "April 2023 - Present",
+                "description_ja": "統計数理研究所にて，グラフデータ解析手法に関する研究に従事しています．",
+                "description_en": "Conducting research on graph data analysis methods at the Institute of Statistical Mathematics."
             },
             {
                 "role": "Master of Computer Science",
                 "affiliation": "University of Tsukuba",
-                "duration": "April 2018 - March 2020"
+                "duration": "April 2018 - March 2020",
+                "description_ja": "最頻値が局所情報であることから外れ値に対して頑健である性質に着目し，最頻値を用いることで外れ値に脆弱な主成分分析を頑健化する研究課題に取り組みました．",
+                "description_en": "Focused on the robustness of mode estimation against outliers due to its reliance on local information, I worked on a research project to enhance the robustness of principal component analysis, which is vulnerable to outliers, by utilizing mode estimation."
             },
             {
                 "role": "Bachelor of Computer Science",
                 "affiliation": "University of Tsukuba",
-                "duration": "April 2014 - March 2018"
+                "duration": "April 2014 - March 2018",
+                "description_ja": "学部2年までコンピュータサイエンスを学んでいましたが，3年次から数学に目覚め，群環体論や位相・集合，解析学を独学し，機械学習の研究室に所属しました．",
+                "description_en": "Studied computer science until the second year, then developed an interest in mathematics from the third year, self-studying group/ring theory, topology, and analysis, and joined a laboratory focused on machine learning research."
             }
         ],
         "experience": [
             {
                 "role": "SOKENDAI Special Researcher",
                 "affiliation": "The Graduate University for Advanced Studies",
-                "duration": "April 2023 - Present"
+                "duration": "April 2023 - Present",
+                "description_ja": "グラフデータ解析手法に関する研究課題を採択され，SOKENDAI特別研究員として給付型奨学金を受給して活動しています．",
+                "description_en": "Conducting research on graph data analysis methods as a SOKENDAI Special Researcher, receiving a scholarship for my activities."
             },
             {
                 "role": "Research Assistant",
                 "affiliation": "National Institute for Environmental Studies",
-                "duration": "August 2022 - March 2023"
+                "duration": "August 2022 - March 2023",
+                "description_ja": "化学物質による影響を潜在アウトカムの枠組みで評価するプロジェクトにおいて，解析データやRでの分析コードの整備を担いました．",
+                "description_en": "In a project evaluating the effects of chemical substances within the framework of potential outcomes, I was responsible for organizing analysis data and R analysis code."
             },
             {
                 "role": "Machine Learning Engineer",
                 "affiliation": "Global AI Innovations Laboratory",
-                "duration": "March 2021 - July 2022"
+                "duration": "March 2021 - July 2022",
+                "description_ja": "主に鉄鋼領域での切り出し最適化問題のソリューション開発に従事し，お客様との打ち合わせから要件定義，データスキーマの整備，求解アルゴリズムの実装とPoC準備までの一連の業務を担当しました．",
+                "description_en": "Mainly engaged in solution development for cutting optimization problems in the steel domain, I was responsible for a series of tasks from meetings with clients, requirement definition, data schema organization, implementation of solving algorithms, to PoC preparation."
             },
             {
                 "role": "System Engineer",
                 "affiliation": "KDDI CORPORATION",
-                "duration": "April 2020 - February 2021"
+                "duration": "April 2020 - February 2021",
+                "description_ja": "通信モジュールのソリューション提供をする部門のシステムエンジニアとして，お客様との打ち合わせやdatadogを用いた監視基盤の構築を担当しました．",
+                "description_en": "As a system engineer in a department providing solutions for communication modules, I was responsible for meetings with clients and building monitoring infrastructure using Datadog."
             }
         ],
         "portfolio": [

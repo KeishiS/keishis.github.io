@@ -70,6 +70,8 @@ const AffiliationSchema = object({
     role: string(),
     affiliation: string(),
     duration: string(),
+    description_ja: string(),
+    description_en: string(),
 });
 
 const CertificationSchema = object({

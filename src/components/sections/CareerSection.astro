@@ -25,19 +25,37 @@ const t = useTranslations(lang as any);
             </div>
             <div class="space-y-3">
                 {
-                    profile.educations.map((item) => (
-                        <article class="rounded-2xl border border-border bg-surface p-4 shadow-[0_12px_32px_rgba(15,23,42,0.06)] transition hover:translate-x-2.5">
-                            <div class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                                {item.duration}
-                            </div>
-                            <h3 class="mt-1 text-lg font-semibold text-fg">
-                                {item.role}
-                            </h3>
-                            <p class="text-sm text-fg-subtle">
-                                {item.affiliation}
-                            </p>
-                        </article>
-                    ))
+                    profile.educations.map((item, index) => {
+                        const description = lang === "ja" ? item.description_ja : item.description_en;
+                        return (
+                            <article
+                                class="career-card rounded-2xl border border-border bg-surface p-4 shadow-[0_12px_32px_rgba(15,23,42,0.06)] transition hover:translate-x-2.5 cursor-pointer"
+                                data-card-id={`education-${index}`}
+                            >
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="flex-1">
+                                        <div class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                                            {item.duration}
+                                        </div>
+                                        <h3 class="mt-1 text-lg font-semibold text-fg">
+                                            {item.role}
+                                        </h3>
+                                        <p class="text-sm text-fg-subtle">
+                                            {item.affiliation}
+                                        </p>
+                                    </div>
+                                    <svg class="career-icon w-5 h-5 text-muted transition-transform duration-300 ease-in-out flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                                <div class="career-description mt-3 overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
+                                    <p class="text-sm text-fg-subtle pt-2 border-t border-border">
+                                        {description}
+                                    </p>
+                                </div>
+                            </article>
+                        );
+                    })
                 }
             </div>
         </div>
@@ -50,21 +68,65 @@ const t = useTranslations(lang as any);
             </div>
             <div class="space-y-3">
                 {
-                    profile.experiences.map((item) => (
-                        <article class="rounded-2xl border border-border bg-surface p-4 shadow-[0_12px_32px_rgba(15,23,42,0.06)] transition hover:translate-x-2.5">
-                            <div class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                                {item.duration}
-                            </div>
-                            <h3 class="mt-1 text-lg font-semibold text-fg">
-                                {item.role}
-                            </h3>
-                            <p class="text-sm text-fg-subtle">
-                                {item.affiliation}
-                            </p>
-                        </article>
-                    ))
+                    profile.experiences.map((item, index) => {
+                        const description = lang === "ja" ? item.description_ja : item.description_en;
+                        return (
+                            <article
+                                class="career-card rounded-2xl border border-border bg-surface p-4 shadow-[0_12px_32px_rgba(15,23,42,0.06)] transition hover:translate-x-2.5 cursor-pointer"
+                                data-card-id={`experience-${index}`}
+                            >
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="flex-1">
+                                        <div class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+                                            {item.duration}
+                                        </div>
+                                        <h3 class="mt-1 text-lg font-semibold text-fg">
+                                            {item.role}
+                                        </h3>
+                                        <p class="text-sm text-fg-subtle">
+                                            {item.affiliation}
+                                        </p>
+                                    </div>
+                                    <svg class="career-icon w-5 h-5 text-muted transition-transform duration-300 ease-in-out flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                                <div class="career-description mt-3 overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
+                                    <p class="text-sm text-fg-subtle pt-2 border-t border-border">
+                                        {description}
+                                    </p>
+                                </div>
+                            </article>
+                        );
+                    })
                 }
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.career-card');
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const description = card.querySelector('.career-description') as HTMLElement;
+                const icon = card.querySelector('.career-icon') as SVGElement;
+                const isExpanded = card.classList.contains('expanded');
+
+                if (isExpanded) {
+                    // Collapse
+                    description.style.maxHeight = '0';
+                    icon.style.transform = 'rotate(0deg)';
+                    card.classList.remove('expanded');
+                } else {
+                    // Expand
+                    description.style.maxHeight = description.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                    card.classList.add('expanded');
+                }
+            });
+        });
+    });
+</script>

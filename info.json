@@ -82,6 +82,23 @@
     ],
     "international_conference": [
         {
+            "id": 2,
+            "type": "paper-conference",
+            "locale": "en",
+            "title": "Accelerating the Categorical Wasserstein Weisfeiler-Lehman Graph Kernel",
+            "author": [
+                { "family": "Sando", "given": "Keishi" },
+                { "family": "Le", "given": "Tam" },
+                { "family": "Hino", "given": "Hideitsu" }
+            ],
+            "container-title-short": "ISSAS 2026",
+            "event-title": "ISI-ISM-ISSAS Joint Conference 2026 (to appear)",
+            "issued": { "date-parts": [[2026, 2]] },
+            "DOI": "",
+            "URL": "https://www3.stat.sinica.edu.tw/3ijc2026/",
+            "abstract": "Graph kernels have long been established as effective and versatile tools for predicting graph properties in various classification and regression tasks on graph-structured data. Recently, the field has seen significant advancements with the introduction of graph kernels that incorporate the concept of Optimal Transport (OT), aiming to better capture geometric structures. However, high computational cost remains a major bottleneck. Many existing kernel methods struggle to scale effectively when faced with increasing numbers of graphs in a dataset or increasing node counts within individual graphs. Addressing this scalability issue, this study proposes a novel, fast computation algorithm for the Categorical Wasserstein Weisfeiler-Lehman (WWL) kernel. We reveal that the latent feature structure utilized by the WWL kernel can be effectively represented as a tree structure. By leveraging this insight, we reduce the kernel computation to the calculation of the Wasserstein distance on a tree, which allows for a drastic reduction in complexity. Specifically, while the original WWL kernel implementation relies on the Sinkhorn algorithm, which requires a quadratic computational cost of O(n1 n2) for graphs with n1 and n2 nodes, our proposed method achieves linear time complexity, O(n1+n2). A critical distinction is that the Sinkhorn algorithm only provides an entropically regularized approximate solution. In contrast, our tree-based approach yields the exact Wasserstein distance. Numerical experiments demonstrate that our method is significantly faster than existing approaches while achieving equal or superior classification performance, thereby proving its suitability for large-scale graph datasets."
+        },
+        {
             "id": 1,
             "type": "paper-conference",
             "locale": "en",

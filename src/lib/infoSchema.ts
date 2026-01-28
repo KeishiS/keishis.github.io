@@ -132,7 +132,7 @@ export const parseIssued = (
     publication: Publication,
 ): { year: number; month: number } => {
     const issued = publication.issued["date-parts"][0];
-    return { year: issued[0], month: issued[1] };
+    return { year: issued[0], month: issued[1] - 1 };
 };
 
 export const parseAuthorName = (publication: Publication): string[] => {

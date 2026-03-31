@@ -72,6 +72,7 @@ const AffiliationSchema = object({
     duration: string(),
     description_ja: string(),
     description_en: string(),
+    custom: optional(CustomSchema),
 });
 
 const CertificationSchema = object({

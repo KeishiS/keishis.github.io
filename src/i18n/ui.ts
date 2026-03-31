@@ -22,6 +22,7 @@ export const ui = {
         "career.title": "経歴",
         "career.education": "学歴",
         "career.experience": "職歴",
+        "career.award": "受賞",
 
         "site.subtitle": "Research CV",
         "publications.title": "研究業績",
@@ -76,6 +77,7 @@ export const ui = {
         "career.title": "Career",
         "career.education": "Education",
         "career.experience": "Experience",
+        "career.award": "Award",
 
         "site.subtitle": "Research CV",
         "publications.title": "Publications",

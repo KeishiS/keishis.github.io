@@ -209,9 +209,12 @@
             {
                 "role": "Ph.D. course of Statistical Science",
                 "affiliation": "The Graduate University for Advanced Studies @ Institute of Statistical Mathematics (ISM)",
-                "duration": "April 2023 - Present",
+                "duration": "April 2023 - March 2026",
                 "description_ja": "統計数理研究所にて，グラフデータ解析手法に関する研究に従事しています．",
-                "description_en": "Conducting research on graph data analysis methods at the Institute of Statistical Mathematics."
+                "description_en": "Conducting research on graph data analysis methods at the Institute of Statistical Mathematics.",
+                "custom": {
+                    "award": "統計数理研究所 優秀学生賞"
+                }
             },
             {
                 "role": "Master of Computer Science",
@@ -232,7 +235,7 @@
             {
                 "role": "SOKENDAI Special Researcher",
                 "affiliation": "The Graduate University for Advanced Studies",
-                "duration": "April 2023 - Present",
+                "duration": "April 2023 - March 2026",
                 "description_ja": "グラフデータ解析手法に関する研究課題を採択され，SOKENDAI特別研究員として給付型奨学金を受給して活動しています．",
                 "description_en": "Conducting research on graph data analysis methods as a SOKENDAI Special Researcher, receiving a scholarship for my activities."
             },

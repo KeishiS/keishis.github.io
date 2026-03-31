@@ -4,12 +4,11 @@ import AwardBadge from "@/components/primitives/AwardBadge.astro";
 
 interface Props {
     pub: Publication;
-    dateLabel: string;
     abstractToggleLabel: string;
     externalLinkLabel: string;
 }
 
-const { pub, dateLabel, abstractToggleLabel, externalLinkLabel } = Astro.props;
+const { pub, abstractToggleLabel, externalLinkLabel } = Astro.props;
 const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
     month: "long",
     year: "numeric",
@@ -19,7 +18,7 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
 <details class="pub-card pub-card-details">
     <summary class="pub-summary">
         <div class="pub-meta">
-            <p class="chip">{dateLabel}: {date}</p>
+            <p class="chip">{date}</p>
             <p class="pub-link-text">{abstractToggleLabel}</p>
         </div>
         <h4 class="pub-title">{pub.title}</h4>

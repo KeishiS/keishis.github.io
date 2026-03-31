@@ -86,6 +86,16 @@ const PortfolioSchema = object({
     description_ja: string(),
     description_en: string(),
     url: string(),
+    tech_stack: optional(
+        object({
+            algorithm: optional(array(string())),
+            frontend: optional(array(string())),
+            backend: optional(array(string())),
+            infra: optional(array(string())),
+            observability: optional(array(string())),
+            communication: optional(array(string())),
+        }),
+    ),
 });
 
 const ProfileSchema = object({

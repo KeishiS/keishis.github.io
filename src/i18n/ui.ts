@@ -47,6 +47,13 @@ export const ui = {
         "post.author": "著者",
 
         "portfolio.no_entries": "ポートフォリオ情報はありません。",
+        "portfolio.stack": "技術スタック",
+        "portfolio.stack.algorithm": "Algorithm",
+        "portfolio.stack.frontend": "Frontend",
+        "portfolio.stack.backend": "Backend",
+        "portfolio.stack.infra": "Infra",
+        "portfolio.stack.observability": "Observability",
+        "portfolio.stack.communication": "Communication",
 
         "certification.no_entries": "資格情報はありません。",
 
@@ -102,6 +109,13 @@ export const ui = {
         "post.author": "Author",
 
         "portfolio.no_entries": "No portfolio entries found.",
+        "portfolio.stack": "Tech Stack",
+        "portfolio.stack.algorithm": "Algorithm",
+        "portfolio.stack.frontend": "Frontend",
+        "portfolio.stack.backend": "Backend",
+        "portfolio.stack.infra": "Infra",
+        "portfolio.stack.observability": "Observability",
+        "portfolio.stack.communication": "Communication",
 
         "certification.no_entries": "No certifications found.",
 

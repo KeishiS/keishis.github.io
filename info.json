@@ -267,7 +267,34 @@
                 "category": "web application",
                 "description_ja": "タイピング速度を計測し，QWERTY配列に代わる次世代のキーボード配列を提案するWebアプリです．",
                 "description_en": "A web application that measures typing speed and optimizes keyboard layouts as alternatives to the QWERTY layout.",
-                "url": "https://keylytix.net"
+                "url": "https://keylytix.net",
+                "tech_stack": {
+                    "algorithm": ["Python", "POT"],
+                    "frontend": [
+                        "TypeScript",
+                        "React",
+                        "React Router",
+                        "Apollo Client"
+                    ],
+                    "backend": ["Rust", "Axum", "Async-GraphQL", "gRPC"],
+                    "infra": [
+                        "AWS",
+                        "NixOS (local)",
+                        "Cloudflare",
+                        "Nginx",
+                        "PostgreSQL",
+                        "Docker",
+                        "Terraform",
+                        "Atlas"
+                    ],
+                    "observability": [
+                        "OpenTelemetry",
+                        "Loki",
+                        "Prometheus",
+                        "Grafana"
+                    ],
+                    "communication": ["Resend"]
+                }
             },
             {
                 "title": "twwl (Tree Wasserstein Weisfeiler-Lehman graph kernel)",

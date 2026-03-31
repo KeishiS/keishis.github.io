@@ -10,9 +10,16 @@ interface Props {
     description?: string;
     lang?: string;
     image?: string;
+    showLanguageSwitch?: boolean;
 }
 
-const { subtitle, description, lang = "ja", image } = Astro.props;
+const {
+    subtitle,
+    description,
+    lang = "ja",
+    image,
+    showLanguageSwitch = true,
+} = Astro.props;
 
 const { profile, site } = await loadSiteData(lang as any);
 ---
@@ -105,7 +112,11 @@ const { profile, site } = await loadSiteData(lang as any);
     <body
         class="flex flex-col min-h-screen bg-bg text-fg transition-colors duration-300"
     >
-        <Header lang={lang} title={site.title} />
+        <Header
+            lang={lang}
+            title={site.title}
+            showLanguageSwitch={showLanguageSwitch}
+        />
 
         <!-- Main Content -->
         <main class="flex-1 w-full">

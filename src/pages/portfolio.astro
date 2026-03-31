@@ -1,0 +1,13 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { loadSiteData } from "@/lib/siteData";
+import PortfolioSection from "@/components/sections/PortfolioSection.astro";
+import CertificationSection from "@/components/sections/CertificationSection.astro";
+
+const { profile } = await loadSiteData("ja");
+---
+
+<BaseLayout lang="ja" subtitle="Portfolio" showLanguageSwitch={false}>
+    <PortfolioSection lang="ja" portfolios={profile.portfolios} />
+    <CertificationSection lang="ja" certifications={profile.certifications} />
+</BaseLayout>

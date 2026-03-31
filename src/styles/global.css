@@ -272,54 +272,94 @@
         "Hiragino Mincho ProN", serif;
 }
 
+@theme {
+    /* Spacing */
+    --spacing-section: 4rem;
+    --spacing-section-sm: 3rem;
+    --spacing-section-x: 1.5rem;
+    --spacing-section-x-alt: 2rem;
+    --spacing-content-max: 1100px;
+    --spacing-gap-xl: 3rem;
+    --spacing-gap-lg: 1.5rem;
+    --spacing-gap-md: 1rem;
+    --spacing-gap-sm: 0.5rem;
+
+    /* Typography scale */
+    --text-display: clamp(2rem, 4vw, 3rem);
+    --text-heading: clamp(1.75rem, 2.5vw, 2.25rem);
+    --text-subheading: clamp(1.25rem, 2vw, 1.5rem);
+    --text-body: 1rem;
+    --text-caption: 0.75rem;
+    --tracking-display: -0.02em;
+    --tracking-eyebrow: 0.2em;
+
+    /* Border radius */
+    --radius-card: 8px;
+    --radius-section: 12px;
+    --radius-pill: 9999px;
+    --radius-chip: 6px;
+
+    /* Shadow */
+    --shadow-card: none;
+    --shadow-card-hover: none;
+    --shadow-btn-primary: 0 10px 30px rgba(16, 185, 129, 0.28);
+    --shadow-btn-soft: 0 10px 30px rgba(16, 185, 129, 0.15);
+
+    /* Motion */
+    --duration-fast: 100ms;
+    --duration-base: 150ms;
+    --duration-slow: 300ms;
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
     @apply bg-bg text-fg font-sans antialiased;
 }
 
 /* Landing sections */
 .section-shell {
-    padding: 4rem 1.5rem;
-    max-width: 1100px;
+    padding: var(--spacing-section) var(--spacing-section-x);
+    max-width: var(--spacing-content-max);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: var(--spacing-gap-lg);
 }
 .section-shell.alt {
-    border-radius: 24px;
-    padding: 4rem 2rem;
+    border-radius: var(--radius-section);
+    padding: var(--spacing-section) var(--spacing-section-x-alt);
 }
 .section-shell.with-gap {
-    margin-bottom: 3rem;
+    margin-bottom: var(--spacing-gap-xl);
 }
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: var(--spacing-gap-md);
     flex-wrap: wrap;
 }
 .section-title {
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
-    letter-spacing: -0.02em;
+    font-size: var(--text-heading);
+    letter-spacing: var(--tracking-display);
     font-weight: 700;
 }
 .eyebrow {
-    letter-spacing: 0.2em;
+    letter-spacing: var(--tracking-eyebrow);
     text-transform: uppercase;
     color: var(--color-muted);
-    font-size: 0.75rem;
+    font-size: var(--text-caption);
     font-weight: 700;
 }
 
 /* Mobile tweaks */
 @media (max-width: 768px) {
     .section-shell {
-        padding: 3rem 1.25rem;
+        padding: var(--spacing-section-sm) var(--spacing-section-x);
     }
     .section-shell.alt {
-        padding: 3rem 1.25rem;
+        padding: var(--spacing-section-sm) var(--spacing-section-x);
     }
 }
 
@@ -327,31 +367,24 @@ body {
 .card {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 16px;
-    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.05);
-    transition:
-        transform 150ms ease,
-        box-shadow 150ms ease;
-}
-
-.card:hover {
-    box-shadow: 0 16px 45px rgba(15, 23, 42, 0.08);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
 }
 
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: var(--spacing-gap-sm);
     font-weight: 600;
-    border-radius: 9999px;
+    border-radius: var(--radius-pill);
     padding: 0.65rem 1.1rem;
     line-height: 1.1;
     transition:
-        background-color 150ms ease,
-        color 150ms ease,
-        box-shadow 150ms ease,
-        transform 150ms ease;
+        background-color var(--duration-base) var(--ease-standard),
+        color var(--duration-base) var(--ease-standard),
+        box-shadow var(--duration-base) var(--ease-standard),
+        transform var(--duration-base) var(--ease-standard);
     text-decoration: none;
     border: 1px solid transparent;
 }
@@ -360,14 +393,14 @@ body {
     background-color: var(--color-accent);
     color: #fff;
     border-color: color-mix(in srgb, var(--color-accent) 92%, #000 8%);
-    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.28);
+    box-shadow: var(--shadow-btn-primary);
 }
 
 .btn-primary-soft {
     background-color: var(--color-accent-soft);
     color: var(--color-accent-strong);
     border-color: color-mix(in srgb, var(--color-accent) 40%, #000 6%);
-    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+    box-shadow: var(--shadow-btn-soft);
 }
 
 .btn-primary:hover {

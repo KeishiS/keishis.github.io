@@ -1,0 +1,48 @@
+---
+import { type SiteData, getFeaturedPublications } from "@/lib/siteData";
+import { useTranslations } from "@/i18n/utils";
+import PubCard from "@/components/patterns/PubCard.astro";
+
+interface Props {
+    lang: string;
+    publications: SiteData["publications"];
+}
+
+const { lang, publications } = Astro.props;
+const t = useTranslations(lang as any);
+const featured = getFeaturedPublications(publications);
+---
+
+<section id="publications" class="section-shell">
+    <div class="section-header">
+        <div>
+            <p class="eyebrow">Research</p>
+            <h2 class="section-title">{t("publications.selected_title")}</h2>
+        </div>
+        <a href="/publications" class="btn btn-ghost text-sm">
+            {t("publications.view_all")} →
+        </a>
+    </div>
+
+    <div class="preview-stack">
+        {featured.map((pub) => (
+            <PubCard
+                pub={pub}
+                dateLabel={t("publications.date")}
+                abstractToggleLabel={t("publications.show_abstract")}
+                externalLinkLabel={t("publications.open_link")}
+            />
+        ))}
+    </div>
+</section>
+
+<style>
+    .preview-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 880px;
+        margin-inline: auto;
+        width: 100%;
+    }
+</style>

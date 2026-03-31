@@ -2,9 +2,9 @@
 import { getCollection } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import PostCard from "@/components/PostCard.astro";
-import Tag from "@/components/Tag.astro";
-import Pagination from "@/components/Pagination.astro";
+import PostCard from "@/components/patterns/PostCard.astro";
+import Tag from "@/components/primitives/Tag.astro";
+import Pagination from "@/components/patterns/Pagination.astro";
 import { useTranslations } from "@/i18n/utils";
 
 export const getStaticPaths = (async ({ paginate }) => {

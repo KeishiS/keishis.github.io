@@ -26,6 +26,9 @@ export const ui = {
 
         "site.subtitle": "Research CV",
         "publications.title": "研究業績",
+        "publications.selected_title": "主要業績",
+        "publications.view_all": "すべての業績を見る",
+        "publications.date": "日付",
         "publications.show_abstract": "概要を表示",
         "publications.open_link": "外部リンク",
         "publications.category.journal_papers": "Journal Papers",
@@ -88,6 +91,9 @@ export const ui = {
 
         "site.subtitle": "Research CV",
         "publications.title": "Publications",
+        "publications.selected_title": "Selected Publications",
+        "publications.view_all": "View all publications",
+        "publications.date": "Date",
         "publications.show_abstract": "Show abstract",
         "publications.open_link": "Open external link",
         "publications.category.journal_papers": "Journal Papers",

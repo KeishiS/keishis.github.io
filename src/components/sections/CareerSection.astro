@@ -1,6 +1,6 @@
 ---
 import { type Profile } from "@/lib/siteData";
-import AwardBadge from "@/components/parts/AwardBadge.astro";
+import AwardBadge from "@/components/primitives/AwardBadge.astro";
 import { useTranslations } from "@/i18n/utils";
 
 interface Props {
@@ -10,155 +10,191 @@ interface Props {
 
 const { lang, profile } = Astro.props;
 const t = useTranslations(lang as any);
+const groups = [
+    {
+        title: t("career.education"),
+        items: profile.educations,
+        key: "education",
+    },
+    {
+        title: t("career.experience"),
+        items: profile.experiences,
+        key: "experience",
+    },
+] as const;
 ---
 
 <section id="career" class="section-shell alt with-gap">
-    <div class="section-header justify-center">
-        <h2 class="section-title w-full text-center">{t("career.title")}</h2>
+    <div class="section-header">
+        <h2 class="section-title">{t("career.title")}</h2>
     </div>
 
     <div class="grid gap-6 md:grid-cols-2">
-        <div class="space-y-3">
-            <div
-                class="text-sm font-semibold tracking-wide text-muted uppercase"
-            >
-                {t("career.education")}
-            </div>
-            <div class="space-y-3">
-                {
-                    profile.educations.map((item, index) => {
-                        const description = lang === "ja" ? item.description_ja : item.description_en;
-                        const cardId = `education-${index}`;
-                        const award = item.custom?.award;
-                        return (
-                            <article
-                                class="career-card rounded-2xl border border-border bg-surface p-4 shadow-[0_12px_32px_rgba(15,23,42,0.06)] transition hover:translate-x-2.5"
-                                data-card-id={cardId}
-                            >
-                                <div class="flex items-start justify-between gap-3">
-                                    <div class="flex-1">
-                                        <div class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                                            {item.duration}
-                                        </div>
-                                        <h3 class="mt-1 text-lg font-semibold text-fg">
-                                            {item.role}
-                                        </h3>
-                                        <p class="text-sm text-fg-subtle">
-                                            {item.affiliation}
-                                        </p>
-                                        {award && (
-                                            <AwardBadge award={award} class="mt-3" />
-                                        )}
-                                    </div>
-                                    <button
-                                        type="button"
-                                        class="career-toggle inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
-                                        aria-expanded="false"
-                                        aria-controls={`${cardId}-description`}
-                                    >
-                                        <svg class="career-icon h-5 w-5 transition-transform duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div id={`${cardId}-description`} class="career-description mt-3 overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
-                                    <div class="pt-2 border-t border-border space-y-3">
-                                        <p class="text-sm text-fg-subtle">
-                                            {description}
-                                        </p>
-                                    </div>
-                                </div>
-                            </article>
-                        );
-                    })
-                }
-            </div>
-        </div>
+        {
+            groups.map((group) => (
+                <div class="space-y-3">
+                    <div class="career-group-title">{group.title}</div>
+                    <div class="career-list">
+                        {group.items.map((item) => {
+                            const description =
+                                lang === "ja"
+                                    ? item.description_ja
+                                    : item.description_en;
+                            const award = item.custom?.award;
 
-        <div class="space-y-3">
-            <div
-                class="text-sm font-semibold tracking-wide text-muted uppercase"
-            >
-                {t("career.experience")}
-            </div>
-            <div class="space-y-3">
-                {
-                    profile.experiences.map((item, index) => {
-                        const description = lang === "ja" ? item.description_ja : item.description_en;
-                        const cardId = `experience-${index}`;
-                        const award = item.custom?.award;
-                        return (
-                            <article
-                                class="career-card rounded-2xl border border-border bg-surface p-4 shadow-[0_12px_32px_rgba(15,23,42,0.06)] transition hover:translate-x-2.5"
-                                data-card-id={cardId}
-                            >
-                                <div class="flex items-start justify-between gap-3">
-                                    <div class="flex-1">
-                                        <div class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
-                                            {item.duration}
+                            return (
+                                <details class="career-card">
+                                    <summary class="career-summary">
+                                        <div class="career-summary-main">
+                                            <p class="career-duration">{item.duration}</p>
+                                            <h3 class="career-role">{item.role}</h3>
+                                            <p class="career-affiliation">
+                                                {item.affiliation}
+                                            </p>
+                                            {award && (
+                                                <AwardBadge
+                                                    award={award}
+                                                    class="career-award"
+                                                />
+                                            )}
                                         </div>
-                                        <h3 class="mt-1 text-lg font-semibold text-fg">
-                                            {item.role}
-                                        </h3>
-                                        <p class="text-sm text-fg-subtle">
-                                            {item.affiliation}
-                                        </p>
-                                        {award && (
-                                            <AwardBadge award={award} class="mt-3" />
-                                        )}
-                                    </div>
-                                    <button
-                                        type="button"
-                                        class="career-toggle inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition hover:border-accent hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
-                                        aria-expanded="false"
-                                        aria-controls={`${cardId}-description`}
-                                    >
-                                        <svg class="career-icon h-5 w-5 transition-transform duration-300 ease-in-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div id={`${cardId}-description`} class="career-description mt-3 overflow-hidden transition-all duration-300 ease-in-out" style="max-height: 0;">
-                                    <div class="pt-2 border-t border-border space-y-3">
-                                        <p class="text-sm text-fg-subtle">
+                                        <span class="career-toggle" aria-hidden="true">
+                                            <svg
+                                                class="career-toggle-icon"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M19 9l-7 7-7-7"
+                                                />
+                                            </svg>
+                                        </span>
+                                    </summary>
+                                    <div class="career-body">
+                                        <p class="career-description">
                                             {description}
                                         </p>
                                     </div>
-                                </div>
-                            </article>
-                        );
-                    })
-                }
-            </div>
-        </div>
+                                </details>
+                            );
+                        })}
+                    </div>
+                </div>
+            ))
+        }
     </div>
 </section>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const cards = document.querySelectorAll('.career-card');
+<style>
+    .career-group-title {
+        font-size: var(--text-caption);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--color-muted);
+        text-transform: uppercase;
+    }
+    .career-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+    }
+    .career-card {
+        border: 1px solid var(--color-border);
+        background: var(--color-surface);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-card);
+        padding: 1rem 1.1rem;
+    }
+    .career-card:hover {
+        border-color: var(--color-border-strong);
+    }
+    .career-summary {
+        list-style: none;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        cursor: pointer;
+    }
+    .career-summary::-webkit-details-marker {
+        display: none;
+    }
+    .career-summary-main {
+        display: grid;
+        gap: 0.25rem;
+        flex: 1;
+    }
+    .career-duration {
+        font-size: var(--text-caption);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--color-muted);
+        text-transform: uppercase;
+    }
+    .career-role {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--color-fg);
+    }
+    .career-affiliation {
+        color: var(--color-fg-subtle);
+        font-size: 0.95rem;
+    }
+    .career-award {
+        margin-top: 0.5rem;
+    }
+    .career-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: var(--radius-pill);
+        border: 1px solid var(--color-border);
+        background: var(--color-bg);
+        color: var(--color-muted);
+        flex-shrink: 0;
+        transition:
+            color var(--duration-base) var(--ease-standard),
+            border-color var(--duration-base) var(--ease-standard);
+    }
+    .career-toggle-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+        transition: transform var(--duration-base) var(--ease-standard);
+    }
+    .career-card[open] .career-toggle {
+        color: var(--color-accent);
+        border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
+    }
+    .career-card[open] .career-toggle-icon {
+        transform: rotate(180deg);
+    }
+    .career-body {
+        margin-top: 0.9rem;
+        padding-top: 0.9rem;
+        border-top: 1px solid var(--color-border);
+    }
+    .career-description {
+        color: var(--color-fg-subtle);
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
 
-        cards.forEach(card => {
-            const toggle = card.querySelector('.career-toggle');
-
-            toggle?.addEventListener('click', () => {
-                const description = card.querySelector('.career-description') as HTMLElement;
-                const icon = card.querySelector('.career-icon') as SVGElement;
-                const button = toggle as HTMLButtonElement;
-                const isExpanded = card.classList.contains('expanded');
-
-                if (isExpanded) {
-                    description.style.maxHeight = '0';
-                    icon.style.transform = 'rotate(0deg)';
-                    card.classList.remove('expanded');
-                    button.setAttribute('aria-expanded', 'false');
-                } else {
-                    description.style.maxHeight = description.scrollHeight + 'px';
-                    icon.style.transform = 'rotate(180deg)';
-                    card.classList.add('expanded');
-                    button.setAttribute('aria-expanded', 'true');
-                }
-            });
-        });
-    });
-</script>
+    @media (max-width: 768px) {
+        .career-card {
+            padding: 1rem;
+        }
+        .career-summary {
+            gap: 0.75rem;
+        }
+        .career-role {
+            font-size: 1rem;
+        }
+    }
+</style>

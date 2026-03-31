@@ -1,0 +1,12 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { loadSiteData } from "@/lib/siteData";
+import PublicationsSection from "@/components/sections/PublicationsSection.astro";
+
+// publications データは locale に依存しないためデフォルト ("ja") で読み込む
+const { publications } = await loadSiteData();
+---
+
+<BaseLayout subtitle="Publications" lang="en" showLanguageSwitch={false}>
+    <PublicationsSection lang="en" publications={publications} />
+</BaseLayout>

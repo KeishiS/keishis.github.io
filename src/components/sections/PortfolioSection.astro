@@ -34,8 +34,8 @@ const stackCategories = [
 ---
 
 <section id="portfolio" class="section-shell alt with-gap">
-    <div class="section-header justify-center">
-        <h2 class="section-title w-full text-center">{t("nav.portfolio")}</h2>
+    <div class="section-header">
+        <h2 class="section-title">{t("nav.portfolio")}</h2>
     </div>
 
     {
@@ -53,51 +53,51 @@ const stackCategories = [
                                         {portfolio.category}
                                     </span>
                                 </div>
-                                <div class="portfolio-actions">
-                                    <a
-                                        href={portfolio.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="portfolio-link"
-                                        aria-label={`Visit ${portfolio.title}`}
-                                        onclick="event.stopPropagation()"
+                                <span class="portfolio-toggle" aria-hidden="true">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
                                     >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                                            ></path>
-                                            <polyline points="15 3 21 3 21 9"></polyline>
-                                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                                        </svg>
-                                    </a>
-                                    <span class="portfolio-toggle" aria-hidden="true">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="18"
-                                            height="18"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path d="m6 9 6 6 6-6"></path>
-                                        </svg>
-                                    </span>
-                                </div>
+                                        <path d="m6 9 6 6 6-6"></path>
+                                    </svg>
+                                </span>
                             </div>
                             <p class="portfolio-description">{portfolio.description}</p>
                         </summary>
+                        <div class="portfolio-actions">
+                            <a
+                                href={portfolio.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="portfolio-link"
+                                aria-label={`Visit ${portfolio.title}`}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                                    ></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                <span>Open</span>
+                            </a>
+                        </div>
                         {portfolio.techStack && (
                             <div class="portfolio-stack-groups">
                                 <p class="portfolio-stack-title">{t("portfolio.stack")}</p>
@@ -136,23 +136,18 @@ const stackCategories = [
     .portfolio-card {
         border: 1px solid var(--color-border);
         background: var(--color-surface);
-        border-radius: 16px;
+        border-radius: var(--radius-card);
         padding: 1.2rem 1.3rem;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        box-shadow: var(--shadow-card);
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
-        transition: all 0.2s ease;
     }
     .portfolio-card-details {
         cursor: pointer;
     }
     .portfolio-card:hover {
-        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.1);
-        transform: translateY(-2px);
-    }
-    .portfolio-card-details[open] {
-        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.1);
+        border-color: var(--color-border-strong);
     }
     .portfolio-summary {
         list-style: none;
@@ -193,19 +188,18 @@ const stackCategories = [
         align-items: center;
         justify-content: center;
         padding: 0.5rem;
-        border-radius: 8px;
+        border-radius: var(--radius-chip);
         background: var(--color-bg);
         border: 1px solid var(--color-border);
     }
     .portfolio-link:hover {
-        color: var(--color-accent-hover);
-        background: var(--color-accent-subtle);
+        color: var(--color-accent-strong);
+        background: var(--color-accent-soft);
     }
     .portfolio-actions {
         display: flex;
-        align-items: center;
-        gap: 0.55rem;
-        flex-shrink: 0;
+        justify-content: flex-start;
+        margin-bottom: 0.35rem;
     }
     .portfolio-toggle {
         display: inline-flex;
@@ -221,6 +215,12 @@ const stackCategories = [
             transform 0.2s ease,
             color 0.2s ease,
             border-color 0.2s ease;
+    }
+    .portfolio-link {
+        gap: 0.4rem;
+        width: fit-content;
+        font-size: 0.9rem;
+        font-weight: 600;
     }
     .portfolio-card-details[open] .portfolio-toggle {
         color: var(--color-accent);

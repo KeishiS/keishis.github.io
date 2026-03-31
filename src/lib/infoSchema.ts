@@ -1,5 +1,6 @@
 import {
     array,
+    boolean,
     literal,
     object,
     optional,
@@ -49,6 +50,7 @@ const PublicationSchema = pipe(
         DOI: optional(string()),
         abstract: string(),
         custom: optional(CustomSchema),
+        featured: optional(boolean()),
     }),
     check(
         (publication) =>
@@ -96,6 +98,7 @@ const PortfolioSchema = object({
             communication: optional(array(string())),
         }),
     ),
+    featured: optional(boolean()),
 });
 
 const ProfileSchema = object({

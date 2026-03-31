@@ -3,9 +3,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { loadSiteData } from "@/lib/siteData";
 import HeroSection from "./sections/HeroSection.astro";
 import CareerSection from "./sections/CareerSection.astro";
-import PublicationsSection from "./sections/PublicationsSection.astro";
-import PortfolioSection from "./sections/PortfolioSection.astro";
-import CertificationSection from "./sections/CertificationSection.astro";
+import SelectedPublicationsSection from "./sections/SelectedPublicationsSection.astro";
+import FeaturedPortfolioSection from "./sections/FeaturedPortfolioSection.astro";
 import ChangelogSection from "./sections/ChangelogSection.astro";
 
 interface Props {
@@ -20,13 +19,11 @@ const { profile, publications, changelog } = await loadSiteData(lang as any);
 <BaseLayout lang={lang}>
     <HeroSection lang={lang} profile={profile} />
 
-    <PublicationsSection lang={lang} publications={publications} />
+    <SelectedPublicationsSection lang={lang} publications={publications} />
 
     <CareerSection lang={lang} profile={profile} />
 
-    <PortfolioSection lang={lang} portfolios={profile.portfolios} />
+    <FeaturedPortfolioSection lang={lang} profile={profile} />
 
-    <CertificationSection lang={lang} certifications={profile.certifications} />
-
-    <ChangelogSection lang={lang} entries={changelog.slice(0, 3)} />
+    <ChangelogSection lang={lang} entries={changelog} />
 </BaseLayout>

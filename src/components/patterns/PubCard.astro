@@ -1,15 +1,15 @@
 ---
 import { type Publication } from "@/lib/siteData";
-import AwardBadge from "@/components/parts/AwardBadge.astro";
-import { useTranslations } from "@/i18n/utils";
+import AwardBadge from "@/components/primitives/AwardBadge.astro";
 
 interface Props {
-    lang: string;
     pub: Publication;
+    dateLabel: string;
+    abstractToggleLabel: string;
+    externalLinkLabel: string;
 }
 
-const { lang, pub } = Astro.props;
-const t = useTranslations(lang as any);
+const { pub, dateLabel, abstractToggleLabel, externalLinkLabel } = Astro.props;
 const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
     month: "long",
     year: "numeric",
@@ -19,14 +19,13 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
 <details class="pub-card pub-card-details">
     <summary class="pub-summary">
         <div class="pub-meta">
-            <p class="chip">{date}</p>
-            <p class="pub-link-text">{t("publications.show_abstract")}</p>
+            <p class="chip">{dateLabel}: {date}</p>
+            <p class="pub-link-text">{abstractToggleLabel}</p>
         </div>
         <h4 class="pub-title">{pub.title}</h4>
         <p class="pub-authors">{pub.author.join(", ")}</p>
         <p class="pub-venue">{pub.container}</p>
         {pub.custom?.award && <AwardBadge award={pub.custom.award} />}
-        {pub.URL && pub.DOI && <p>{`https://doi.org/${pub.DOI}`}</p>}
     </summary>
     <p class="pub-abstract">{pub.abstract}</p>
     {
@@ -39,7 +38,7 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
                         rel="noopener noreferrer"
                         class="btn btn-primary-soft text-sm"
                     >
-                        {t("publications.open_link")}
+                        {externalLinkLabel}
                     </a>
                 )}
                 {pub.DOI && (
@@ -61,12 +60,12 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
     .pub-card {
         background: var(--color-surface);
         border: 1px solid var(--color-border);
-        border-radius: 18px;
+        border-radius: var(--radius-card);
         padding: 1.25rem;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+        box-shadow: var(--shadow-card);
     }
     .pub-meta {
         display: flex;
@@ -99,18 +98,10 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
     }
     .pub-card-details {
         cursor: pointer;
-        transition:
-            border-color 150ms ease,
-            box-shadow 150ms ease,
-            transform 120ms ease;
+        transition: border-color var(--duration-base) var(--ease-standard);
     }
     .pub-card-details:hover {
-        border-color: color-mix(
-            in srgb,
-            var(--color-accent) 30%,
-            var(--color-border)
-        );
-        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+        border-color: var(--color-border-strong);
     }
     .pub-card-details summary {
         list-style: none;
@@ -127,7 +118,7 @@ const date = new Date(pub.year, pub.month, 1).toLocaleString(pub.locale, {
     .pub-link-text {
         color: var(--color-accent);
         font-weight: 600;
-        font-size: var(--text-xs);
+        font-size: var(--text-caption);
     }
     .pub-card-details[open] .pub-link-text {
         color: var(--color-accent-strong);

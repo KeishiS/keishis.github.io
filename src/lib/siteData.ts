@@ -26,6 +26,7 @@ export type Publication = Omit<
     custom?: {
         award?: string;
     };
+    featured?: boolean;
 };
 
 export interface SocialLink {
@@ -38,6 +39,7 @@ export interface Portfolio {
     category: string;
     description: string;
     url: string;
+    featured?: boolean;
     techStack?: {
         algorithm?: string[];
         frontend?: string[];
@@ -84,6 +86,25 @@ export interface SiteData {
     };
     changelog: ChangelogEntry[];
     site: SiteInfo;
+}
+
+export function getFeaturedPublications(
+    publications: SiteData["publications"],
+): Publication[] {
+    return [
+        ...publications.journal_paper,
+        ...publications.refereed_international_conference,
+        ...publications.international_conference,
+        ...publications.domestic_workshop,
+    ]
+        .filter((publication) => publication.featured === true)
+        .sort((a, b) =>
+            b.year !== a.year ? b.year - a.year : b.month - a.month,
+        );
+}
+
+export function getFeaturedPortfolios(profile: Profile): Portfolio[] {
+    return profile.portfolios.filter((portfolio) => portfolio.featured === true);
 }
 
 const INFO_PATH = "info.json";
@@ -176,6 +197,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
                 custom: paper?.custom,
+                featured: paper?.featured,
             };
         },
     );
@@ -196,6 +218,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                     year: parseIssued(paper).year,
                     month: parseIssued(paper).month,
                     custom: paper?.custom,
+                    featured: paper?.featured,
                 };
             },
         );
@@ -215,6 +238,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
                 custom: paper?.custom,
+                featured: paper?.featured,
             };
         },
     );
@@ -234,6 +258,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
                 custom: paper?.custom,
+                featured: paper?.featured,
             };
         },
     );
@@ -254,6 +279,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
         description:
             locale === "ja" ? item.description_ja : item.description_en,
         url: item.url,
+        featured: item.featured,
         techStack: item.tech_stack,
     }));
 

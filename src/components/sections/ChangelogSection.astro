@@ -12,32 +12,89 @@ const t = useTranslations(lang as any);
 ---
 
 <section id="changelog" class="section-shell alt with-gap">
-    <div class="section-header justify-center">
-        <h2 class="section-title w-full text-center">{t("nav.changelog")}</h2>
-    </div>
+    <details class="changelog-details">
+        <summary class="changelog-toggle">
+            <h2 class="section-title">{t("nav.changelog")}</h2>
+            <svg
+                class="changelog-chevron"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                aria-hidden="true"
+            >
+                <path
+                    d="M5 7.5L10 12.5L15 7.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+            </svg>
+        </summary>
 
-    {
-        entries.length === 0 ? (
-            <p class="text-muted">{t("changelog.no_entries")}</p>
-        ) : (
-            <div class="changelog-list card-stack">
-                {entries.map((entry) => (
-                    <article class="changelog-card">
-                        <div class="flex items-center justify-between gap-3">
-                            <span class="changelog-version">
-                                {entry.version}
-                            </span>
-                            <span class="changelog-date">{entry.date}</span>
-                        </div>
-                        <p class="changelog-summary">{entry.summary}</p>
-                    </article>
-                ))}
-            </div>
-        )
-    }
+        <div class="changelog-body">
+            {
+                entries.length === 0 ? (
+                    <p class="text-muted">{t("changelog.no_entries")}</p>
+                ) : (
+                    <div class="changelog-list card-stack">
+                        {entries.map((entry) => (
+                            <article class="changelog-card">
+                                <div class="flex items-center justify-between gap-3">
+                                    <span class="changelog-version">
+                                        {entry.version}
+                                    </span>
+                                    <span class="changelog-date">
+                                        {entry.date}
+                                    </span>
+                                </div>
+                                <p class="changelog-summary">{entry.summary}</p>
+                            </article>
+                        ))}
+                    </div>
+                )
+            }
+        </div>
+    </details>
 </section>
 
 <style>
+    .changelog-details {
+        width: 100%;
+    }
+    .changelog-details > summary {
+        list-style: none;
+    }
+    .changelog-details > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .changelog-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        cursor: pointer;
+        user-select: none;
+        color: var(--color-fg);
+    }
+    .changelog-toggle:hover .section-title {
+        color: var(--color-accent);
+    }
+
+    .changelog-chevron {
+        color: var(--color-muted);
+        flex-shrink: 0;
+        transition: transform var(--duration-base) var(--ease-standard);
+    }
+    .changelog-details[open] .changelog-chevron {
+        transform: rotate(180deg);
+    }
+
+    .changelog-body {
+        margin-top: 1.5rem;
+    }
+
     .changelog-list {
         display: flex;
         flex-direction: column;
@@ -46,9 +103,9 @@ const t = useTranslations(lang as any);
     .changelog-card {
         border: 1px solid var(--color-border);
         background: var(--color-surface);
-        border-radius: 16px;
+        border-radius: var(--radius-card);
         padding: 1rem 1.1rem;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        box-shadow: var(--shadow-card);
         display: flex;
         flex-direction: column;
         gap: 0.6rem;
@@ -59,7 +116,7 @@ const t = useTranslations(lang as any);
     }
     .changelog-date {
         color: var(--color-muted);
-        font-size: 0.9rem;
+        font-size: var(--text-caption);
     }
     .changelog-summary {
         color: var(--color-fg-subtle);
@@ -72,7 +129,6 @@ const t = useTranslations(lang as any);
         width: 100%;
     }
 
-    /* Mobile tweaks */
     @media (max-width: 768px) {
         .changelog-card {
             padding: 1rem;

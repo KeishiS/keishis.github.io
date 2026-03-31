@@ -47,6 +47,7 @@ export function asciidocLoader({ base }: { base: string }): Loader {
         name: "asciidoc-loader",
         load: async ({ store, logger, watcher }: LoaderContext) => {
             logger.info(`Loading adoc files from ${base}`);
+            store.clear();
 
             // ベースディレクトリの絶対パス（ウォッチャーのパスと比較するため）
             const absoluteBase = path.resolve(base);

@@ -38,6 +38,14 @@ export interface Portfolio {
     category: string;
     description: string;
     url: string;
+    techStack?: {
+        algorithm?: string[];
+        frontend?: string[];
+        backend?: string[];
+        infra?: string[];
+        observability?: string[];
+        communication?: string[];
+    };
 }
 
 export interface Profile {
@@ -246,6 +254,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
         description:
             locale === "ja" ? item.description_ja : item.description_en,
         url: item.url,
+        techStack: item.tech_stack,
     }));
 
     const profile: Profile = {

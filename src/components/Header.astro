@@ -3,29 +3,46 @@ import SunIcon from "@/assets/icons/sun.svg";
 import MoonIcon from "@/assets/icons/moon.svg";
 import { useTranslations } from "@/i18n/utils";
 
+export interface HeaderConfig {
+    homeHref?: string;
+    blogHref?: string;
+    showLanguageSwitch?: boolean;
+    jaPath?: string;
+    enPath?: string;
+}
+
 interface Props {
     lang?: string;
     title: string;
-    showLanguageSwitch?: boolean;
+    config?: HeaderConfig;
 }
 
-const { lang = "ja", title, showLanguageSwitch = true } = Astro.props;
+const { lang = "ja", title, config } = Astro.props;
 const t = useTranslations(lang as any);
 
 const currentPath = Astro.url.pathname;
-let jaPath = "/";
-let enPath = "/en";
+let defaultJaPath = "/";
+let defaultEnPath = "/en";
 
 // ブログ記事ページの言語切り替えロジック
 if (currentPath.includes("/blog/")) {
     if (currentPath.startsWith("/en/")) {
-        jaPath = currentPath.replace("/en/", "/ja/");
-        enPath = currentPath;
+        defaultJaPath = currentPath.replace("/en/", "/ja/");
+        defaultEnPath = currentPath;
     } else if (currentPath.startsWith("/ja/")) {
-        jaPath = currentPath;
-        enPath = currentPath.replace("/ja/", "/en/");
+        defaultJaPath = currentPath;
+        defaultEnPath = currentPath.replace("/ja/", "/en/");
     }
 }
+
+const header = {
+    homeHref: lang === "en" ? "/en" : "/",
+    blogHref: lang === "en" ? "/en/blog" : "/ja/blog",
+    showLanguageSwitch: true,
+    jaPath: defaultJaPath,
+    enPath: defaultEnPath,
+    ...config,
+};
 ---
 
 <header
@@ -35,7 +52,7 @@ if (currentPath.includes("/blog/")) {
         class="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8"
     >
         <a
-            href={lang === "en" ? "/en" : "/"}
+            href={header.homeHref}
             class="text-xl font-bold tracking-tight text-fg hover:text-accent transition-colors"
         >
             {title}
@@ -44,7 +61,7 @@ if (currentPath.includes("/blog/")) {
         <!-- Desktop Nav -->
         <nav class="hidden md:flex gap-8" aria-label="Main navigation">
             <a
-                href={lang === "en" ? "/en" : "/"}
+                href={header.homeHref}
                 class="text-sm font-medium text-fg-subtle hover:text-accent transition-colors"
                 >{t("nav.home")}</a
             >
@@ -54,7 +71,7 @@ if (currentPath.includes("/blog/")) {
                 >{t("nav.publications")}</a
             >
             <a
-                href={lang === "en" ? "/en/blog" : "/ja/blog"}
+                href={header.blogHref}
                 class="text-sm font-medium text-fg-subtle hover:text-accent transition-colors"
                 >{t("nav.blog")}</a
             >
@@ -68,13 +85,13 @@ if (currentPath.includes("/blog/")) {
         <div class="flex items-center gap-4">
             <!-- 言語切り替えリンク -->
             {
-                showLanguageSwitch && (
+                header.showLanguageSwitch && (
                     <div
                         class="hidden md:flex gap-2 text-xs font-medium"
                         aria-label="Language selection"
                     >
                         <a
-                            href={jaPath}
+                            href={header.jaPath}
                             class={lang === "ja"
                                 ? "text-accent pointer-events-none"
                                 : "text-muted hover:text-fg-subtle"}
@@ -84,7 +101,7 @@ if (currentPath.includes("/blog/")) {
                         </a>
                         <span class="text-muted" aria-hidden="true">/</span>
                         <a
-                            href={enPath}
+                            href={header.enPath}
                             class={lang === "en"
                                 ? "text-accent pointer-events-none"
                                 : "text-muted hover:text-fg-subtle"}
@@ -152,7 +169,7 @@ if (currentPath.includes("/blog/")) {
     >
         <div class="space-y-1 px-4 py-6">
             <a
-                href={lang === "en" ? "/en" : "/"}
+                href={header.homeHref}
                 class="block py-2 text-base font-medium text-fg-subtle hover:text-accent hover:bg-surface-soft rounded-md px-3"
                 >{t("nav.home")}</a
             >
@@ -162,7 +179,7 @@ if (currentPath.includes("/blog/")) {
                 >{t("nav.publications")}</a
             >
             <a
-                href={lang === "en" ? "/en/blog" : "/ja/blog"}
+                href={header.blogHref}
                 class="block py-2 text-base font-medium text-fg-subtle hover:text-accent hover:bg-surface-soft rounded-md px-3"
                 >{t("nav.blog")}</a
             >
@@ -172,18 +189,18 @@ if (currentPath.includes("/blog/")) {
                 >{t("nav.portfolio")}</a
             >
             {
-                showLanguageSwitch && (
+                header.showLanguageSwitch && (
                     <div class="pt-4 mt-4 border-t border-border">
                         <div class="flex gap-4 px-3">
                             <a
-                                href={jaPath}
+                                href={header.jaPath}
                                 class={`text-sm font-medium ${lang === "ja" ? "text-accent" : "text-muted"}`}
                                 aria-current={lang === "ja" ? "page" : undefined}
                             >
                                 JP
                             </a>
                             <a
-                                href={enPath}
+                                href={header.enPath}
                                 class={`text-sm font-medium ${lang === "en" ? "text-accent" : "text-muted"}`}
                                 aria-current={lang === "en" ? "page" : undefined}
                             >

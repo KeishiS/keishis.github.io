@@ -1,0 +1,37 @@
+---
+import type { Publication } from "@/lib/siteData";
+import PubCard from "@/components/patterns/PubCard.astro";
+
+interface Props {
+    publications: Publication[];
+    dateLabel: string;
+    abstractToggleLabel: string;
+    externalLinkLabel: string;
+}
+
+const {
+    publications,
+    dateLabel,
+    abstractToggleLabel,
+    externalLinkLabel,
+} = Astro.props;
+---
+
+<div class="publication-card-list">
+    {publications.map((pub) => (
+        <PubCard
+            pub={pub}
+            dateLabel={dateLabel}
+            abstractToggleLabel={abstractToggleLabel}
+            externalLinkLabel={externalLinkLabel}
+        />
+    ))}
+</div>
+
+<style>
+    .publication-card-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+</style>

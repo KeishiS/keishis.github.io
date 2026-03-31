@@ -1,7 +1,8 @@
 ---
 import { type SiteData } from "@/lib/siteData";
 import { useTranslations } from "@/i18n/utils";
-import PubCard from "@/components/patterns/PubCard.astro";
+import SectionHeading from "@/components/primitives/SectionHeading.astro";
+import PublicationCards from "@/components/patterns/PublicationCards.astro";
 
 interface Props {
     lang: string;
@@ -13,11 +14,7 @@ const t = useTranslations(lang as any);
 ---
 
 <section id="publications" class="section-shell">
-    <div class="section-header justify-center">
-        <h2 class="section-title w-full text-center">
-            {t("publications.title")}
-        </h2>
-    </div>
+    <SectionHeading title={t("publications.title")} centered={true} />
 
     <div class="space-y-12">
         {
@@ -26,15 +23,13 @@ const t = useTranslations(lang as any);
                     <h3 class="text-xl font-semibold mb-4 text-fg">
                         {t("publications.category.journal_papers")}
                     </h3>
-                    <div class="pub-stack card-stack">
-                        {publications.journal_paper.map((pub) => (
-                            <PubCard
-                                pub={pub}
-                                dateLabel={t("publications.date")}
-                                abstractToggleLabel={t("publications.show_abstract")}
-                                externalLinkLabel={t("publications.open_link")}
-                            />
-                        ))}
+                    <div class="card-stack">
+                        <PublicationCards
+                            publications={publications.journal_paper}
+                            dateLabel={t("publications.date")}
+                            abstractToggleLabel={t("publications.show_abstract")}
+                            externalLinkLabel={t("publications.open_link")}
+                        />
                     </div>
                 </div>
             )
@@ -45,17 +40,13 @@ const t = useTranslations(lang as any);
                     <h3 class="text-xl font-semibold mb-4 text-fg">
                         {t("publications.category.refereed_international_conference")}
                     </h3>
-                    <div class="pub-stack card-stack">
-                        {publications.refereed_international_conference.map(
-                            (pub) => (
-                                <PubCard
-                                    pub={pub}
-                                    dateLabel={t("publications.date")}
-                                    abstractToggleLabel={t("publications.show_abstract")}
-                                    externalLinkLabel={t("publications.open_link")}
-                                />
-                            ),
-                        )}
+                    <div class="card-stack">
+                        <PublicationCards
+                            publications={publications.refereed_international_conference}
+                            dateLabel={t("publications.date")}
+                            abstractToggleLabel={t("publications.show_abstract")}
+                            externalLinkLabel={t("publications.open_link")}
+                        />
                     </div>
                 </div>
             )
@@ -66,15 +57,13 @@ const t = useTranslations(lang as any);
                     <h3 class="text-xl font-semibold mb-4 text-fg">
                         {t("publications.category.international_conference")}
                     </h3>
-                    <div class="pub-stack card-stack">
-                        {publications.international_conference.map((pub) => (
-                            <PubCard
-                                pub={pub}
-                                dateLabel={t("publications.date")}
-                                abstractToggleLabel={t("publications.show_abstract")}
-                                externalLinkLabel={t("publications.open_link")}
-                            />
-                        ))}
+                    <div class="card-stack">
+                        <PublicationCards
+                            publications={publications.international_conference}
+                            dateLabel={t("publications.date")}
+                            abstractToggleLabel={t("publications.show_abstract")}
+                            externalLinkLabel={t("publications.open_link")}
+                        />
                     </div>
                 </div>
             )
@@ -85,15 +74,13 @@ const t = useTranslations(lang as any);
                     <h3 class="text-xl font-semibold mb-4 text-fg">
                         {t("publications.category.domestic_workshop")}
                     </h3>
-                    <div class="pub-stack card-stack">
-                        {publications.domestic_workshop.map((pub) => (
-                            <PubCard
-                                pub={pub}
-                                dateLabel={t("publications.date")}
-                                abstractToggleLabel={t("publications.show_abstract")}
-                                externalLinkLabel={t("publications.open_link")}
-                            />
-                        ))}
+                    <div class="card-stack">
+                        <PublicationCards
+                            publications={publications.domestic_workshop}
+                            dateLabel={t("publications.date")}
+                            abstractToggleLabel={t("publications.show_abstract")}
+                            externalLinkLabel={t("publications.open_link")}
+                        />
                     </div>
                 </div>
             )
@@ -102,11 +89,6 @@ const t = useTranslations(lang as any);
 </section>
 
 <style>
-    .pub-stack {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
     .card-stack {
         max-width: 880px;
         margin-inline: auto;

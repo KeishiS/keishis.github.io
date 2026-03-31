@@ -1,6 +1,7 @@
 ---
 import { type Profile } from "@/lib/siteData";
 import AwardBadge from "@/components/primitives/AwardBadge.astro";
+import SectionHeading from "@/components/primitives/SectionHeading.astro";
 import { useTranslations } from "@/i18n/utils";
 
 interface Props {
@@ -25,9 +26,7 @@ const groups = [
 ---
 
 <section id="career" class="section-shell alt with-gap">
-    <div class="section-header">
-        <h2 class="section-title">{t("career.title")}</h2>
-    </div>
+    <SectionHeading title={t("career.title")} />
 
     <div class="grid gap-6 md:grid-cols-2">
         {

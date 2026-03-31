@@ -1,4 +1,5 @@
 ---
+import { useTranslations } from "@/i18n/utils";
 import { type Profile, getFeaturedPortfolios } from "@/lib/siteData";
 import PortfolioSection from "@/components/sections/PortfolioSection.astro";
 
@@ -8,7 +9,17 @@ interface Props {
 }
 
 const { lang, profile } = Astro.props;
+const t = useTranslations(lang as any);
 const featuredPortfolios = getFeaturedPortfolios(profile);
 ---
 
-<PortfolioSection lang={lang} portfolios={featuredPortfolios} />
+{
+    featuredPortfolios.length > 0 && (
+        <PortfolioSection
+            lang={lang}
+            portfolios={featuredPortfolios}
+            actionHref="/portfolio"
+            actionLabel={t("portfolio.view_all")}
+        />
+    )
+}

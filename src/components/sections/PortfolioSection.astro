@@ -1,27 +1,16 @@
 ---
+import type { Portfolio } from "@/lib/siteData";
 import { useTranslations } from "@/i18n/utils";
-
-interface Portfolio {
-    title: string;
-    category: string;
-    description: string;
-    url: string;
-    techStack?: {
-        algorithm?: string[];
-        frontend?: string[];
-        backend?: string[];
-        infra?: string[];
-        observability?: string[];
-        communication?: string[];
-    };
-}
+import SectionHeading from "@/components/primitives/SectionHeading.astro";
 
 interface Props {
     lang: string;
     portfolios: Portfolio[];
+    actionHref?: string;
+    actionLabel?: string;
 }
 
-const { lang, portfolios = [] } = Astro.props;
+const { lang, portfolios = [], actionHref, actionLabel } = Astro.props;
 const t = useTranslations(lang as any);
 const stackCategories = [
     "algorithm",
@@ -34,9 +23,11 @@ const stackCategories = [
 ---
 
 <section id="portfolio" class="section-shell alt with-gap">
-    <div class="section-header">
-        <h2 class="section-title">{t("nav.portfolio")}</h2>
-    </div>
+    <SectionHeading
+        title={t("nav.portfolio")}
+        actionHref={actionHref}
+        actionLabel={actionLabel}
+    />
 
     {
         portfolios.length === 0 ? (
@@ -95,7 +86,7 @@ const stackCategories = [
                                     <polyline points="15 3 21 3 21 9"></polyline>
                                     <line x1="10" y1="14" x2="21" y2="3"></line>
                                 </svg>
-                                <span>Open</span>
+                                <span>{t("portfolio.open_link")}</span>
                             </a>
                         </div>
                         {portfolio.techStack && (
@@ -207,7 +198,7 @@ const stackCategories = [
         justify-content: center;
         width: 2.25rem;
         height: 2.25rem;
-        border-radius: 9999px;
+        border-radius: var(--radius-pill);
         border: 1px solid var(--color-border);
         background: var(--color-bg);
         color: var(--color-muted);

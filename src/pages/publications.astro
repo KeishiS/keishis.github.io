@@ -1,12 +1,19 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { loadSiteData } from "@/lib/siteData";
+import { loadPublications } from "@/lib/siteData";
 import PublicationsSection from "@/components/sections/PublicationsSection.astro";
 
-// publications データは locale に依存しないためデフォルト ("ja") で読み込む
-const { publications } = await loadSiteData();
+const publications = await loadPublications();
 ---
 
-<BaseLayout subtitle="Publications" lang="en" showLanguageSwitch={false}>
-    <PublicationsSection lang="en" publications={publications} />
+<BaseLayout
+    subtitle="Publications"
+    lang="ja"
+    headerConfig={{
+        homeHref: "/",
+        blogHref: "/ja/blog",
+        showLanguageSwitch: false,
+    }}
+>
+    <PublicationsSection lang="ja" publications={publications} />
 </BaseLayout>

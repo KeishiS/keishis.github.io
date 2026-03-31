@@ -130,9 +130,9 @@ export function asciidocLoader({ base }: { base: string }): Loader {
 
                     logger.info(`Loaded ${article.relativePath}`);
                 } catch (e) {
-                    logger.error(
-                        `Failed to load ${filePath}: ${e instanceof Error ? e.message : String(e)}`
-                    );
+                    const message = e instanceof Error ? e.message : String(e);
+                    logger.error(`Failed to load ${filePath}: ${message}`);
+                    throw e;
                 }
             };
 

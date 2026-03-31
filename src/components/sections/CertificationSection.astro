@@ -1,4 +1,5 @@
 ---
+import SectionHeading from "@/components/primitives/SectionHeading.astro";
 import { useTranslations } from "@/i18n/utils";
 
 interface Certification {
@@ -16,9 +17,7 @@ const t = useTranslations(lang as any);
 ---
 
 <section id="certification" class="section-shell with-gap">
-    <div class="section-header justify-center">
-        <h2 class="section-title w-full text-center">{t("nav.certification")}</h2>
-    </div>
+    <SectionHeading title={t("nav.certification")} centered={true} />
 
     {
         certifications.length === 0 ? (

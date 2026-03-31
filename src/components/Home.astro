@@ -1,6 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { loadSiteData } from "@/lib/siteData";
+import {
+    loadProfile,
+    loadPublications,
+    loadChangelogEntries,
+} from "@/lib/siteData";
 import HeroSection from "./sections/HeroSection.astro";
 import CareerSection from "./sections/CareerSection.astro";
 import SelectedPublicationsSection from "./sections/SelectedPublicationsSection.astro";
@@ -13,7 +17,11 @@ interface Props {
 
 const { lang = "ja" } = Astro.props;
 
-const { profile, publications, changelog } = await loadSiteData(lang as any);
+const [profile, publications, changelog] = await Promise.all([
+    loadProfile(lang as any),
+    loadPublications(),
+    loadChangelogEntries(),
+]);
 ---
 
 <BaseLayout lang={lang}>

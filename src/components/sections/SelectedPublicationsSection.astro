@@ -1,7 +1,8 @@
 ---
 import { type SiteData, getFeaturedPublications } from "@/lib/siteData";
 import { useTranslations } from "@/i18n/utils";
-import PubCard from "@/components/patterns/PubCard.astro";
+import SectionHeading from "@/components/primitives/SectionHeading.astro";
+import PublicationCards from "@/components/patterns/PublicationCards.astro";
 
 interface Props {
     lang: string;
@@ -13,28 +14,27 @@ const t = useTranslations(lang as any);
 const featured = getFeaturedPublications(publications);
 ---
 
-<section id="publications" class="section-shell">
-    <div class="section-header">
-        <div>
-            <p class="eyebrow">Research</p>
-            <h2 class="section-title">{t("publications.selected_title")}</h2>
-        </div>
-        <a href="/publications" class="btn btn-ghost text-sm">
-            {t("publications.view_all")} →
-        </a>
-    </div>
-
-    <div class="preview-stack">
-        {featured.map((pub) => (
-            <PubCard
-                pub={pub}
-                dateLabel={t("publications.date")}
-                abstractToggleLabel={t("publications.show_abstract")}
-                externalLinkLabel={t("publications.open_link")}
+{
+    featured.length > 0 && (
+        <section id="publications" class="section-shell">
+            <SectionHeading
+                title={t("publications.selected_title")}
+                eyebrow={t("publications.eyebrow")}
+                actionHref="/publications"
+                actionLabel={t("publications.view_all")}
             />
-        ))}
-    </div>
-</section>
+
+            <div class="preview-stack">
+                <PublicationCards
+                    publications={featured}
+                    dateLabel={t("publications.date")}
+                    abstractToggleLabel={t("publications.show_abstract")}
+                    externalLinkLabel={t("publications.open_link")}
+                />
+            </div>
+        </section>
+    )
+}
 
 <style>
     .preview-stack {

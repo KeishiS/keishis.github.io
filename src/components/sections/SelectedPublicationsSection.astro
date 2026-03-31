@@ -1,0 +1,48 @@
+---
+import { type SiteData, getFeaturedPublications } from "@/lib/siteData";
+import { useTranslations } from "@/i18n/utils";
+import SectionHeading from "@/components/primitives/SectionHeading.astro";
+import PublicationCards from "@/components/patterns/PublicationCards.astro";
+
+interface Props {
+    lang: string;
+    publications: SiteData["publications"];
+}
+
+const { lang, publications } = Astro.props;
+const t = useTranslations(lang as any);
+const featured = getFeaturedPublications(publications);
+---
+
+{
+    featured.length > 0 && (
+        <section id="publications" class="section-shell">
+            <SectionHeading
+                title={t("publications.selected_title")}
+                eyebrow={t("publications.eyebrow")}
+                actionHref="/publications"
+                actionLabel={t("publications.view_all")}
+            />
+
+            <div class="preview-stack">
+                <PublicationCards
+                    publications={featured}
+                    dateLabel={t("publications.date")}
+                    abstractToggleLabel={t("publications.show_abstract")}
+                    externalLinkLabel={t("publications.open_link")}
+                />
+            </div>
+        </section>
+    )
+}
+
+<style>
+    .preview-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 880px;
+        margin-inline: auto;
+        width: 100%;
+    }
+</style>

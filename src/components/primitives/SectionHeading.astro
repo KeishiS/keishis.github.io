@@ -1,0 +1,33 @@
+---
+interface Props {
+    title: string;
+    eyebrow?: string;
+    centered?: boolean;
+    actionHref?: string;
+    actionLabel?: string;
+}
+
+const {
+    title,
+    eyebrow,
+    centered = false,
+    actionHref,
+    actionLabel,
+} = Astro.props;
+---
+
+<div class:list={["section-header", centered && "justify-center"]}>
+    <div class:list={[centered && "w-full text-center"]}>
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        <h2 class:list={["section-title", centered && "w-full text-center"]}>
+            {title}
+        </h2>
+    </div>
+    {
+        actionHref && actionLabel && (
+            <a href={actionHref} class="btn btn-ghost text-sm">
+                {actionLabel} →
+            </a>
+        )
+    }
+</div>

@@ -67,23 +67,11 @@ const t = useTranslations(lang as any);
     .hero-shell {
         position: relative;
         overflow: hidden;
-        border-radius: 28px;
+        border-radius: var(--radius-section);
         margin: 2.5rem 1rem 0;
         padding: clamp(2.5rem, 4vw, 4rem);
-        background:
-            radial-gradient(
-                circle at 20% 20%,
-                color-mix(in srgb, var(--color-accent) 18%, transparent),
-                transparent 32%
-            ),
-            radial-gradient(
-                circle at 90% 10%,
-                color-mix(in srgb, var(--color-info) 16%, transparent),
-                transparent 34%
-            ),
-            var(--color-surface);
+        background: var(--color-surface);
         border: 1px solid var(--color-border);
-        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
         max-width: 1180px;
         margin-inline: auto;
     }
@@ -132,7 +120,7 @@ const t = useTranslations(lang as any);
     .meta-chip {
         border: 1px solid var(--color-border);
         background: var(--color-surface);
-        border-radius: 14px;
+        border-radius: var(--radius-card);
         padding: 0.6rem 0.85rem;
         min-width: 80px;
     }
@@ -157,7 +145,7 @@ const t = useTranslations(lang as any);
     .hero-photo {
         width: clamp(220px, 30vw, 320px);
         aspect-ratio: 1;
-        border-radius: 24px;
+        border-radius: var(--radius-section);
         overflow: hidden;
         background: transparent;
     }

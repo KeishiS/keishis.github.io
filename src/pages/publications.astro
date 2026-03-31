@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { loadPublications } from "@/lib/siteData";
+import PublicationsSection from "@/components/sections/PublicationsSection.astro";
+
+const publications = await loadPublications();
+---
+
+<BaseLayout
+    subtitle="Publications"
+    lang="ja"
+    headerConfig={{
+        homeHref: "/",
+        blogHref: "/ja/blog",
+        showLanguageSwitch: false,
+    }}
+>
+    <PublicationsSection lang="ja" publications={publications} />
+</BaseLayout>

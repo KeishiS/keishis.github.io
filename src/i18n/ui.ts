@@ -26,6 +26,10 @@ export const ui = {
 
         "site.subtitle": "Research CV",
         "publications.title": "研究業績",
+        "publications.selected_title": "主要業績",
+        "publications.eyebrow": "研究",
+        "publications.view_all": "すべての業績を見る",
+        "publications.date": "日付",
         "publications.show_abstract": "概要を表示",
         "publications.open_link": "外部リンク",
         "publications.category.journal_papers": "Journal Papers",
@@ -47,6 +51,8 @@ export const ui = {
         "post.author": "著者",
 
         "portfolio.no_entries": "ポートフォリオ情報はありません。",
+        "portfolio.view_all": "すべてのポートフォリオを見る",
+        "portfolio.open_link": "Open",
         "portfolio.stack": "技術スタック",
         "portfolio.stack.algorithm": "Algorithm",
         "portfolio.stack.frontend": "Frontend",
@@ -88,6 +94,10 @@ export const ui = {
 
         "site.subtitle": "Research CV",
         "publications.title": "Publications",
+        "publications.selected_title": "Selected Publications",
+        "publications.eyebrow": "Research",
+        "publications.view_all": "View all publications",
+        "publications.date": "Date",
         "publications.show_abstract": "Show abstract",
         "publications.open_link": "Open external link",
         "publications.category.journal_papers": "Journal Papers",
@@ -109,6 +119,8 @@ export const ui = {
         "post.author": "Author",
 
         "portfolio.no_entries": "No portfolio entries found.",
+        "portfolio.view_all": "View all portfolio",
+        "portfolio.open_link": "Open",
         "portfolio.stack": "Tech Stack",
         "portfolio.stack.algorithm": "Algorithm",
         "portfolio.stack.frontend": "Frontend",

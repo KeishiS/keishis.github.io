@@ -26,6 +26,7 @@ export type Publication = Omit<
     custom?: {
         award?: string;
     };
+    featured?: boolean;
 };
 
 export interface SocialLink {
@@ -38,6 +39,7 @@ export interface Portfolio {
     category: string;
     description: string;
     url: string;
+    featured?: boolean;
     techStack?: {
         algorithm?: string[];
         frontend?: string[];
@@ -68,10 +70,15 @@ export interface ChangelogEntry {
     summary: string;
 }
 
-interface SiteInfo {
+export interface SiteInfo {
     title: string;
     description: string;
     copyright: string;
+}
+
+export interface SiteChrome {
+    site: SiteInfo;
+    socials: SocialLink[];
 }
 
 export interface SiteData {
@@ -86,8 +93,57 @@ export interface SiteData {
     site: SiteInfo;
 }
 
+export function getFeaturedPublications(
+    publications: SiteData["publications"],
+): Publication[] {
+    return [
+        ...publications.journal_paper,
+        ...publications.refereed_international_conference,
+        ...publications.international_conference,
+        ...publications.domestic_workshop,
+    ]
+        .filter((publication) => publication.featured === true)
+        .sort((a, b) =>
+            b.year !== a.year ? b.year - a.year : b.month - a.month,
+        );
+}
+
+export function getFeaturedPortfolios(profile: Profile): Portfolio[] {
+    return profile.portfolios.filter((portfolio) => portfolio.featured === true);
+}
+
 const INFO_PATH = "info.json";
 const CHANGELOG_PATH = "CHANGELOG.toml";
+
+async function loadRawSiteSources(): Promise<{ info: Info; changelog: Changelog }> {
+    const [info, changelog] = await Promise.all([
+        loadJsonFile(INFO_PATH),
+        loadTomlFile(CHANGELOG_PATH),
+    ]);
+
+    return { info, changelog };
+}
+
+function buildSocialLinks(profile: Info["profile"]): SocialLink[] {
+    return (
+        Object.keys(profile.social) as (keyof Info["profile"]["social"])[]
+    )
+        .filter((key) => profile.social[key] !== undefined)
+        .map(
+            (key): SocialLink => ({
+                key,
+                url: profile.social[key] ?? "",
+            }),
+        );
+}
+
+function buildSiteInfo(site: Info["site"], locale: Locale): SiteInfo {
+    return {
+        title: locale === "ja" ? site.title_ja : site.title_en,
+        description: locale === "ja" ? site.description_ja : site.description_en,
+        copyright: site.copyright,
+    };
+}
 
 async function loadJsonFile(path: string): Promise<Info> {
     const raw = await readFile(path, "utf-8");
@@ -155,11 +211,17 @@ const formatContainerName = (paper: InfoPub): string => {
     return container;
 };
 
-export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
-    // info.json
-    const info: Info = await loadJsonFile(INFO_PATH);
-    // changelog
-    const changelog: Changelog = await loadTomlFile(CHANGELOG_PATH);
+export async function loadSiteChrome(locale: Locale = "ja"): Promise<SiteChrome> {
+    const { info } = await loadRawSiteSources();
+
+    return {
+        site: buildSiteInfo(info.site, locale),
+        socials: buildSocialLinks(info.profile),
+    };
+}
+
+export async function loadPublications(): Promise<SiteData["publications"]> {
+    const { info } = await loadRawSiteSources();
 
     const journal_papers = info.journal_paper.map(
         (paper: InfoPub): Publication => {
@@ -176,6 +238,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
                 custom: paper?.custom,
+                featured: paper?.featured,
             };
         },
     );
@@ -196,6 +259,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                     year: parseIssued(paper).year,
                     month: parseIssued(paper).month,
                     custom: paper?.custom,
+                    featured: paper?.featured,
                 };
             },
         );
@@ -215,6 +279,7 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
                 custom: paper?.custom,
+                featured: paper?.featured,
             };
         },
     );
@@ -234,35 +299,37 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
                 year: parseIssued(paper).year,
                 month: parseIssued(paper).month,
                 custom: paper?.custom,
+                featured: paper?.featured,
             };
         },
     );
 
-    const socials = (
-        Object.keys(info.profile.social) as (keyof Info["profile"]["social"])[]
-    )
-        .filter((key) => info.profile.social[key] !== undefined)
-        .map(
-            (key): SocialLink => ({
-                key,
-                url: info.profile.social[key] ?? "",
-            }),
-        );
+    return {
+        journal_paper: journal_papers,
+        refereed_international_conference: refereed_international_conferences,
+        international_conference: international_conferences,
+        domestic_workshop: domestic_workshops,
+    };
+}
+
+export async function loadProfile(locale: Locale = "ja"): Promise<Profile> {
+    const { info } = await loadRawSiteSources();
+    const socials = buildSocialLinks(info.profile);
     const portfolios: Portfolio[] = info.profile.portfolio.map((item) => ({
         title: item.title,
         category: item.category,
         description:
             locale === "ja" ? item.description_ja : item.description_en,
         url: item.url,
+        featured: item.featured,
         techStack: item.tech_stack,
     }));
 
-    const profile: Profile = {
+    return {
         name: locale === "ja" ? info.profile.name_ja : info.profile.name_en,
         bio: locale === "ja" ? info.profile.bio_ja : info.profile.bio_en,
         avatar: info.profile.avatar,
-        focus:
-            locale === "ja" ? info.profile?.focus_ja : info.profile?.focus_en,
+        focus: locale === "ja" ? info.profile?.focus_ja : info.profile?.focus_en,
         base: locale === "ja" ? info.profile?.base_ja : info.profile?.base_en,
         email: info.profile.email,
         socials,
@@ -271,34 +338,30 @@ export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
         portfolios,
         certifications: info.profile.certification,
     };
+}
 
-    const changelogEntries: ChangelogEntry[] = changelog.versions.map(
-        (entry: Changelog["versions"][number]) => ({
-            version: entry.version,
-            date: entry.date,
-            summary: entry.summary,
-        }),
-    );
+export async function loadChangelogEntries(): Promise<ChangelogEntry[]> {
+    const { changelog } = await loadRawSiteSources();
 
-    const site: SiteInfo = {
-        title: locale === "ja" ? info.site.title_ja : info.site.title_en,
-        description:
-            locale === "ja"
-                ? info.site.description_ja
-                : info.site.description_en,
-        copyright: info.site.copyright,
-    };
+    return changelog.versions.map((entry: Changelog["versions"][number]) => ({
+        version: entry.version,
+        date: entry.date,
+        summary: entry.summary,
+    }));
+}
+
+export async function loadSiteData(locale: Locale = "ja"): Promise<SiteData> {
+    const [profile, publications, changelog, chrome] = await Promise.all([
+        loadProfile(locale),
+        loadPublications(),
+        loadChangelogEntries(),
+        loadSiteChrome(locale),
+    ]);
 
     return {
         profile,
-        publications: {
-            journal_paper: journal_papers,
-            refereed_international_conference:
-                refereed_international_conferences,
-            international_conference: international_conferences,
-            domestic_workshop: domestic_workshops,
-        },
-        changelog: changelogEntries,
-        site,
+        publications,
+        changelog,
+        site: chrome.site,
     };
 }

@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { loadProfile } from "@/lib/siteData";
+import PortfolioSection from "@/components/sections/PortfolioSection.astro";
+import CertificationSection from "@/components/sections/CertificationSection.astro";
+
+const profile = await loadProfile("ja");
+---
+
+<BaseLayout
+    lang="ja"
+    subtitle="Portfolio"
+    headerConfig={{
+        homeHref: "/",
+        blogHref: "/ja/blog",
+        showLanguageSwitch: false,
+    }}
+>
+    <PortfolioSection lang="ja" portfolios={profile.portfolios} />
+    <CertificationSection lang="ja" certifications={profile.certifications} />
+</BaseLayout>

@@ -6,6 +6,42 @@ import type { Loader, LoaderContext } from "astro/loaders";
 
 const asciidoctor = Asciidoctor();
 
+type ArticlePath = {
+    articleDir: string;
+    id: string;
+    lang: string;
+    relativePath: string;
+    slug: string;
+};
+
+function isArticleEntrypoint(filePath: string): boolean {
+    return path.basename(filePath) === "index.adoc";
+}
+
+function resolveArticlePath(absoluteBase: string, filePath: string): ArticlePath {
+    const relativePath = path.relative(absoluteBase, filePath);
+    const parts = relativePath.split(path.sep);
+
+    if (!isArticleEntrypoint(filePath) || parts.length < 3) {
+        throw new Error(`Expected article entrypoint at {lang}/{slug}/index.adoc: ${relativePath}`);
+    }
+
+    const lang = parts[0];
+    const slug = parts.slice(1, -1).join("/");
+
+    if (!slug) {
+        throw new Error(`Missing slug directory for ${relativePath}`);
+    }
+
+    return {
+        articleDir: path.dirname(filePath),
+        id: `${lang}/${slug}`,
+        lang,
+        relativePath,
+        slug,
+    };
+}
+
 export function asciidocLoader({ base }: { base: string }): Loader {
     return {
         name: "asciidoc-loader",
@@ -19,25 +55,22 @@ export function asciidocLoader({ base }: { base: string }): Loader {
             const loadEntry = async (filePath: string) => {
                 try {
                     const content = await fs.readFile(filePath, "utf-8");
-
-                    // filePath は絶対パス。store ID 用に base からの相対パスを計算
-                    const relativePath = path.relative(absoluteBase, filePath);
-
-                    // 言語判定 (ディレクトリ構造に基づく: src/data/blog/ja/...)
-                    const lang = relativePath.split(path.sep)[0];
+                    const article = resolveArticlePath(absoluteBase, filePath);
 
                     // Asciidoctor設定
                     const doc = asciidoctor.load(content, {
+                        base_dir: article.articleDir,
                         safe: "server",
                         attributes: {
+                            imagesdir: `/${article.lang}/blog/${article.slug}`,
                             showtitle: false,
                             stem: "latexmath",
                             "source-highlighter": "highlightjs",
                             sectnums: true,
                             sectanchors: true,
                             xrefstyle: "short",
-                            "figure-caption": lang === "ja" ? "図" : "Figure",
-                            "listing-caption": lang === "ja" ? "コード" : "Code",
+                            "figure-caption": article.lang === "ja" ? "図" : "Figure",
+                            "listing-caption": article.lang === "ja" ? "コード" : "Code",
                         },
                     });
 
@@ -77,19 +110,10 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                     // HTML変換
                     const render = doc.convert();
 
-                    // スラッグ生成
-                    const parts = relativePath.split(path.sep);
-                    const slugBase = parts
-                        .slice(1)
-                        .join("/")
-                        .replace(/\.adoc$/, "");
-                    
-                    const id = relativePath; // ストア上のID
-
                     store.set({
-                        id,
+                        id: article.id,
                         data: {
-                            slug: slugBase,
+                            slug: article.slug,
                             title: String(title),
                             date: new Date(publishedAt),
                             publishedAt: new Date(publishedAt),
@@ -97,13 +121,13 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                             author: author,
                             description: description,
                             tags,
-                            lang,
+                            lang: article.lang,
                             restricted: doc.getAttribute("restricted") === "true",
                             bodyHtml: render,
                         },
                     });
-                    
-                    logger.info(`Loaded ${relativePath}`);
+
+                    logger.info(`Loaded ${article.relativePath}`);
                 } catch (e) {
                     logger.error(
                         `Failed to load ${filePath}: ${e instanceof Error ? e.message : String(e)}`
@@ -112,28 +136,28 @@ export function asciidocLoader({ base }: { base: string }): Loader {
             };
 
             // 初期読み込み
-            const files = await fg("**/*.adoc", { cwd: base, absolute: true });
+            const files = await fg("**/index.adoc", { cwd: base, absolute: true });
             await Promise.all(files.map(loadEntry));
 
             // ウォッチャー設定 (開発モード時)
             if (watcher) {
                 watcher.on("change", async (filePath) => {
-                    if (filePath.startsWith(absoluteBase) && filePath.endsWith(".adoc")) {
+                    if (filePath.startsWith(absoluteBase) && isArticleEntrypoint(filePath)) {
                         logger.info(`Reloading ${filePath}`);
                         await loadEntry(filePath);
                     }
                 });
                 watcher.on("add", async (filePath) => {
-                    if (filePath.startsWith(absoluteBase) && filePath.endsWith(".adoc")) {
+                    if (filePath.startsWith(absoluteBase) && isArticleEntrypoint(filePath)) {
                         logger.info(`Adding ${filePath}`);
                         await loadEntry(filePath);
                     }
                 });
                 watcher.on("unlink", async (filePath) => {
-                    if (filePath.startsWith(absoluteBase) && filePath.endsWith(".adoc")) {
-                        const relativePath = path.relative(absoluteBase, filePath);
-                        logger.info(`Deleting ${relativePath}`);
-                        store.delete(relativePath);
+                    if (filePath.startsWith(absoluteBase) && isArticleEntrypoint(filePath)) {
+                        const article = resolveArticlePath(absoluteBase, filePath);
+                        logger.info(`Deleting ${article.relativePath}`);
+                        store.delete(article.id);
                     }
                 });
             }

@@ -127,12 +127,12 @@ const ogImageUrl = `/${post.data.lang}/blog/${post.data.slug}/og.png`;
         const isMobile = () => window.innerWidth <= 768;
 
         // Add click event to all images in imageblock (desktop only)
-        document.querySelectorAll('.prose .imageblock img').forEach((img) => {
+        document.querySelectorAll<HTMLImageElement>('.prose .imageblock img').forEach((img) => {
             img.addEventListener('click', () => {
                 // Skip lightbox on mobile
                 if (isMobile()) return;
 
-                if (lightboxImg && lightbox) {
+                if (lightboxImg instanceof HTMLImageElement && lightbox) {
                     lightboxImg.src = img.src;
                     lightboxImg.alt = img.alt;
                     lightbox.classList.add('active');

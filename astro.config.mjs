@@ -4,6 +4,8 @@ import fg from "fast-glob";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { createHash } from "node:crypto";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
@@ -13,12 +15,20 @@ import { loadLocalEnv } from "./src/lib/loadLocalEnv.js";
 const projectRoot = process.cwd();
 const blogSourceRoot = path.join(projectRoot, "src/data/blog");
 const privateSourceRoot = path.join(projectRoot, "src/data/private");
+const execFileAsync = promisify(execFile);
 loadLocalEnv();
 /** @typedef {"ja" | "en"} BlogLocale */
 
 /** @param {string} filePath */
 function isArticleEntrypoint(filePath) {
     return path.basename(filePath) === "index.adoc";
+}
+
+/**
+ * @param {string} filePath
+ */
+function isTypstSourceFile(filePath) {
+    return path.extname(filePath) === ".typ";
 }
 
 /**
@@ -154,7 +164,11 @@ async function copyArticleAssets(articleDir, targetDir) {
             continue;
         }
 
-        if (!entry.isFile() || isArticleEntrypoint(sourcePath)) {
+        if (
+            !entry.isFile() ||
+            isArticleEntrypoint(sourcePath) ||
+            isTypstSourceFile(sourcePath)
+        ) {
             continue;
         }
 
@@ -214,6 +228,164 @@ async function collectPrivatePageUrls() {
                 ? a.lang.localeCompare(b.lang)
                 : a.pageId.localeCompare(b.pageId),
         );
+}
+
+/**
+ * @param {string} filePath
+ */
+function isTypstFile(filePath) {
+    return isTypstSourceFile(filePath);
+}
+
+/**
+ * @param {string} root
+ * @param {string} filePath
+ */
+function isFileInside(root, filePath) {
+    return filePath === root || isPathInside(root, filePath);
+}
+
+/**
+ * @param {string} typPath
+ */
+function getTypstPdfPath(typPath) {
+    return typPath.slice(0, -path.extname(typPath).length) + ".pdf";
+}
+
+/**
+ * @param {string} typPath
+ */
+async function compileTypstFile(typPath) {
+    const pdfPath = getTypstPdfPath(typPath);
+
+    await execFileAsync("typst", ["compile", typPath, pdfPath], {
+        cwd: projectRoot,
+    });
+
+    return pdfPath;
+}
+
+async function compileAllTypstFiles() {
+    const typFiles = await fg(["src/data/blog/**/*.typ", "src/data/private/**/*.typ"], {
+        cwd: projectRoot,
+        absolute: true,
+    });
+
+    await Promise.all(typFiles.map((typFile) => compileTypstFile(typFile)));
+
+    return typFiles.length;
+}
+
+/**
+ * @param {string} filePath
+ */
+async function removeCompiledTypstPdf(filePath) {
+    const pdfPath = getTypstPdfPath(filePath);
+    await fs.rm(pdfPath, { force: true });
+}
+
+function createTypstCompilePlugin() {
+    /** @type {Promise<void> | null} */
+    let pendingInitialCompile = null;
+
+    async function ensureInitialCompile() {
+        if (!pendingInitialCompile) {
+            pendingInitialCompile = compileAllTypstFiles().then(
+                (count) => {
+                    if (count > 0) {
+                        console.log(`Compiled ${count} Typst file${count === 1 ? "" : "s"}.`);
+                    }
+                },
+                (error) => {
+                    pendingInitialCompile = null;
+                    throw error;
+                },
+            );
+        }
+
+        await pendingInitialCompile;
+    }
+
+    /**
+     * @param {string} filePath
+     */
+    function shouldHandleTypst(filePath) {
+        return (
+            isTypstFile(filePath) &&
+            (isFileInside(blogSourceRoot, filePath) || isFileInside(privateSourceRoot, filePath))
+        );
+    }
+
+    return {
+        name: "typst-compile",
+        async buildStart() {
+            await ensureInitialCompile();
+        },
+        /** @param {any} server */
+        configureServer(server) {
+            const runInitialCompile = async () => {
+                try {
+                    await ensureInitialCompile();
+                } catch (error) {
+                    server.config.logger.error(
+                        `Failed to compile Typst files: ${error instanceof Error ? error.message : String(error)}`,
+                    );
+                }
+            };
+
+            void runInitialCompile();
+
+            server.watcher.on("add", async (filePath) => {
+                if (!shouldHandleTypst(filePath)) {
+                    return;
+                }
+
+                try {
+                    await compileTypstFile(filePath);
+                    server.config.logger.info(`Compiled ${path.relative(projectRoot, filePath)}`);
+                    server.ws.send({ type: "full-reload" });
+                } catch (error) {
+                    server.config.logger.error(
+                        `Failed to compile ${filePath}: ${error instanceof Error ? error.message : String(error)}`,
+                    );
+                }
+            });
+
+            server.watcher.on("change", async (filePath) => {
+                if (!shouldHandleTypst(filePath)) {
+                    return;
+                }
+
+                try {
+                    await compileTypstFile(filePath);
+                    server.config.logger.info(`Compiled ${path.relative(projectRoot, filePath)}`);
+                    server.ws.send({ type: "full-reload" });
+                } catch (error) {
+                    server.config.logger.error(
+                        `Failed to compile ${filePath}: ${error instanceof Error ? error.message : String(error)}`,
+                    );
+                }
+            });
+
+            server.watcher.on("unlink", async (filePath) => {
+                if (!shouldHandleTypst(filePath)) {
+                    return;
+                }
+
+                try {
+                    await removeCompiledTypstPdf(filePath);
+                    server.config.logger.info(
+                        `Removed ${path.relative(projectRoot, getTypstPdfPath(filePath))}`,
+                    );
+                    server.ws.send({ type: "full-reload" });
+                } catch (error) {
+                    server.config.logger.error(
+                        `Failed to remove compiled PDF for ${filePath}: ${error instanceof Error ? error.message : String(error)}`,
+                    );
+                }
+            });
+        },
+    };
 }
 
 function createBlogAssetPlugin() {
@@ -368,6 +540,6 @@ export default defineConfig({
         },
     },
     vite: {
-        plugins: [tailwindcss(), createBlogAssetPlugin()],
+        plugins: [tailwindcss(), createTypstCompilePlugin(), createBlogAssetPlugin()],
     },
 });

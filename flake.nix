@@ -25,6 +25,10 @@
             pnpm
             nodejs_24
             bubblewrap
+
+            typst
+            typstyle
+            typst-live
           ]
           ++ [
             pkgs-unstable.claude-code

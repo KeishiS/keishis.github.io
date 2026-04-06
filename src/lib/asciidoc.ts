@@ -3,6 +3,11 @@ import fg from "fast-glob";
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { Loader, LoaderContext } from "astro/loaders";
+import {
+    getOptionalPrivatePageSalt,
+    getPrivatePageHash,
+    PRIVATE_PAGE_SALT_ENV,
+} from "./privatePages";
 
 const asciidoctor = Asciidoctor();
 
@@ -10,6 +15,7 @@ type ArticlePath = {
     articleDir: string;
     id: string;
     lang: string;
+    pageId: string;
     relativePath: string;
     slug: string;
 };
@@ -37,12 +43,21 @@ function resolveArticlePath(absoluteBase: string, filePath: string): ArticlePath
         articleDir: path.dirname(filePath),
         id: `${lang}/${slug}`,
         lang,
+        pageId: slug,
         relativePath,
         slug,
     };
 }
 
-export function asciidocLoader({ base }: { base: string }): Loader {
+type LoaderVariant = "blog" | "private";
+
+function createAsciidocLoader({
+    base,
+    variant,
+}: {
+    base: string;
+    variant: LoaderVariant;
+}): Loader {
     return {
         name: "asciidoc-loader",
         load: async ({ store, logger, watcher }: LoaderContext) => {
@@ -51,6 +66,7 @@ export function asciidocLoader({ base }: { base: string }): Loader {
 
             // ベースディレクトリの絶対パス（ウォッチャーのパスと比較するため）
             const absoluteBase = path.resolve(base);
+            const salt = getOptionalPrivatePageSalt();
 
             // 単一ファイルの読み込み処理
             const loadEntry = async (filePath: string) => {
@@ -58,12 +74,27 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                     const content = await fs.readFile(filePath, "utf-8");
                     const article = resolveArticlePath(absoluteBase, filePath);
 
+                    if (variant === "private" && article.slug.includes("/")) {
+                        throw new Error(
+                            `Private article entrypoint must be at {lang}/{pageId}/index.adoc: ${article.relativePath}`,
+                        );
+                    }
+
                     // Asciidoctor設定
+                    const privateHash =
+                        variant === "private"
+                            ? salt
+                                ? getPrivatePageHash(article.pageId, salt)
+                                : null
+                            : null;
                     const doc = asciidoctor.load(content, {
                         base_dir: article.articleDir,
                         safe: "server",
                         attributes: {
-                            imagesdir: `/${article.lang}/blog/${article.slug}`,
+                            imagesdir:
+                                variant === "private"
+                                    ? `/${article.lang}/private/${privateHash}`
+                                    : `/${article.lang}/blog/${article.slug}`,
                             showtitle: false,
                             stem: "latexmath",
                             "source-highlighter": "highlightjs",
@@ -84,16 +115,28 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                         : titleObj.getMain();
 
                     const description = doc.getAttribute("description");
-                    const revdate = doc.getAttribute("revdate");
-                    const publishedAt = doc.getAttribute("published_at");
-                    const author = doc.getAttribute("author");
 
                     // 必須属性チェック
                     const missingAttributes = [];
                     if (!description) missingAttributes.push("description");
-                    if (!revdate) missingAttributes.push("revdate");
-                    if (!publishedAt) missingAttributes.push("published_at");
-                    if (!author) missingAttributes.push("author");
+
+                    if (variant === "private") {
+                        if (!salt) missingAttributes.push(PRIVATE_PAGE_SALT_ENV);
+                    }
+
+                    const revdate =
+                        variant === "blog" ? doc.getAttribute("revdate") : undefined;
+                    const publishedAt =
+                        variant === "blog"
+                            ? doc.getAttribute("published_at")
+                            : doc.getAttribute("published_at");
+                    const author = doc.getAttribute("author");
+
+                    if (variant === "blog") {
+                        if (!revdate) missingAttributes.push("revdate");
+                        if (!publishedAt) missingAttributes.push("published_at");
+                        if (!author) missingAttributes.push("author");
+                    }
 
                     if (missingAttributes.length > 0) {
                         throw new Error(
@@ -114,17 +157,29 @@ export function asciidocLoader({ base }: { base: string }): Loader {
                     store.set({
                         id: article.id,
                         data: {
-                            slug: article.slug,
                             title: String(title),
-                            date: new Date(publishedAt),
-                            publishedAt: new Date(publishedAt),
-                            updatedAt: new Date(revdate),
-                            author: author,
                             description: description,
-                            tags,
                             lang: article.lang,
-                            restricted: doc.getAttribute("restricted") === "true",
                             bodyHtml: render,
+                            ...(variant === "blog"
+                                ? {
+                                      slug: article.slug,
+                                      date: new Date(publishedAt!),
+                                      publishedAt: new Date(publishedAt!),
+                                      updatedAt: new Date(revdate!),
+                                      author: author!,
+                                      tags,
+                                      restricted:
+                                          doc.getAttribute("restricted") === "true",
+                                  }
+                                : {
+                                      pageId: article.pageId,
+                                      hash: privateHash!,
+                                      author: author || undefined,
+                                      publishedAt: publishedAt
+                                          ? new Date(publishedAt)
+                                          : undefined,
+                                  }),
                         },
                     });
 
@@ -138,6 +193,13 @@ export function asciidocLoader({ base }: { base: string }): Loader {
 
             // 初期読み込み
             const files = await fg("**/index.adoc", { cwd: base, absolute: true });
+
+            if (variant === "private" && files.length > 0 && !salt) {
+                throw new Error(
+                    `${PRIVATE_PAGE_SALT_ENV} is required to build private pages from ${base}.`,
+                );
+            }
+
             await Promise.all(files.map(loadEntry));
 
             // ウォッチャー設定 (開発モード時)
@@ -164,4 +226,12 @@ export function asciidocLoader({ base }: { base: string }): Loader {
             }
         },
     };
+}
+
+export function asciidocLoader({ base }: { base: string }): Loader {
+    return createAsciidocLoader({ base, variant: "blog" });
+}
+
+export function privateAsciidocLoader({ base }: { base: string }): Loader {
+    return createAsciidocLoader({ base, variant: "private" });
 }

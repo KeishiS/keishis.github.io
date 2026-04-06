@@ -1,5 +1,5 @@
 import { defineCollection, z } from "astro:content";
-import { asciidocLoader } from "@/lib/asciidoc";
+import { asciidocLoader, privateAsciidocLoader } from "@/lib/asciidoc";
 
 const blogCollection = defineCollection({
     loader: asciidocLoader({ base: "src/data/blog" }),
@@ -18,6 +18,21 @@ const blogCollection = defineCollection({
     }),
 });
 
+const privateCollection = defineCollection({
+    loader: privateAsciidocLoader({ base: "src/data/private" }),
+    schema: z.object({
+        pageId: z.string(),
+        title: z.string(),
+        description: z.string(),
+        lang: z.enum(["ja", "en"]),
+        hash: z.string(),
+        author: z.string().optional(),
+        publishedAt: z.date().optional(),
+        bodyHtml: z.string(),
+    }),
+});
+
 export const collections = {
     blog: blogCollection,
+    private: privateCollection,
 };

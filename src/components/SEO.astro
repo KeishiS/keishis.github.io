@@ -4,6 +4,7 @@ interface Props {
     description: string;
     image?: string;
     lang?: string;
+    robots?: string;
 }
 
 const {
@@ -11,6 +12,7 @@ const {
     description,
     image = "/og-image.png",
     lang: _lang = "ja",
+    robots,
 } = Astro.props;
 
 const siteUrl = Astro.site ? Astro.site.href : "https://example.com";
@@ -32,6 +34,7 @@ const ogImage = new URL(image, siteUrl).href;
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+{robots && <meta name="robots" content={robots} />}
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />

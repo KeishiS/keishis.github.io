@@ -3,13 +3,17 @@ import { defineConfig } from "astro/config";
 import fg from "fast-glob";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { createHash } from "node:crypto";
 
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
+import { loadLocalEnv } from "./src/lib/loadLocalEnv.js";
 
 const projectRoot = process.cwd();
 const blogSourceRoot = path.join(projectRoot, "src/data/blog");
+const privateSourceRoot = path.join(projectRoot, "src/data/private");
+loadLocalEnv();
 /** @typedef {"ja" | "en"} BlogLocale */
 
 /** @param {string} filePath */
@@ -47,9 +51,31 @@ function parseBlogAssetRequest(requestPath) {
     };
 }
 
+/** @param {string} pageId */
+function getPrivatePageHash(pageId) {
+    const salt = process.env.PRIVATE_PAGE_SALT;
+
+    if (!salt) {
+        throw new Error("PRIVATE_PAGE_SALT is required to build private pages.");
+    }
+
+    return createHash("sha256")
+        .update(`${pageId}${salt}`)
+        .digest("hex")
+        .slice(0, 20);
+}
+
 /** @param {BlogLocale} lang */
 function getLanguageRoot(lang) {
     return path.join(blogSourceRoot, lang);
+}
+
+/**
+ * @param {"blog" | "private"} scope
+ * @param {BlogLocale} lang
+ */
+function getScopedLanguageRoot(scope, lang) {
+    return path.join(scope === "blog" ? blogSourceRoot : privateSourceRoot, lang);
 }
 
 /**
@@ -78,6 +104,38 @@ function resolveAssetCandidates(lang, relativeAssetPath) {
     return /** @type {string[]} */ (languageOrder
         .map((candidateLang) => buildAssetCandidate(candidateLang, relativeAssetPath))
         .filter((candidatePath) => candidatePath !== null));
+}
+
+/**
+ * @param {BlogLocale} lang
+ * @param {string} routeHash
+ * @param {string} relativeAssetPath
+ */
+function buildPrivateAssetCandidate(lang, routeHash, relativeAssetPath) {
+    const languageRoot = getScopedLanguageRoot("private", lang);
+    const candidatePath = path.join(languageRoot, routeHash, relativeAssetPath);
+
+    if (!isPathInside(languageRoot, candidatePath)) {
+        return null;
+    }
+
+    return candidatePath;
+}
+
+/**
+ * @param {BlogLocale} lang
+ * @param {string} routeHash
+ * @param {string} relativeAssetPath
+ */
+async function resolvePrivateAssetCandidates(lang, routeHash, relativeAssetPath) {
+    const languageRoot = getScopedLanguageRoot("private", lang);
+    const entrypoints = await fg("*/index.adoc", { cwd: languageRoot });
+
+    return entrypoints
+        .map((entrypoint) => entrypoint.split("/")[0])
+        .filter((pageId) => getPrivatePageHash(pageId) === routeHash)
+        .map((pageId) => buildPrivateAssetCandidate(lang, pageId, relativeAssetPath))
+        .filter((candidatePath) => candidatePath !== null);
 }
 
 /**
@@ -122,14 +180,70 @@ async function collectArticles() {
     });
 }
 
+async function collectPrivateArticles() {
+    const files = await fg("*/*/index.adoc", { cwd: privateSourceRoot });
+
+    if (files.length > 0 && !process.env.PRIVATE_PAGE_SALT) {
+        throw new Error("PRIVATE_PAGE_SALT is required to build private pages.");
+    }
+
+    return files.map((entrypoint) => {
+        const parts = entrypoint.split("/");
+        const lang = /** @type {BlogLocale} */ (parts[0]);
+        const pageId = parts[1];
+
+        return {
+            articleDir: path.join(privateSourceRoot, lang, pageId),
+            lang,
+            slug: getPrivatePageHash(pageId),
+        };
+    });
+}
+
+async function collectPrivatePageUrls() {
+    const privateArticles = await collectPrivateArticles();
+
+    return privateArticles
+        .map((article) => ({
+            lang: article.lang,
+            pageId: path.basename(article.articleDir),
+            url: `/${article.lang}/private/${article.slug}/`,
+        }))
+        .sort((a, b) =>
+            a.pageId === b.pageId
+                ? a.lang.localeCompare(b.lang)
+                : a.pageId.localeCompare(b.pageId),
+        );
+}
+
 function createBlogAssetPlugin() {
     /** @type {string} */
     let outDir = path.join(projectRoot, "dist");
+    let privateUrlsLogged = false;
 
     return {
         name: "blog-static-assets",
         /** @param {any} server */
         configureServer(server) {
+            server.httpServer?.once("listening", async () => {
+                if (privateUrlsLogged) {
+                    return;
+                }
+
+                privateUrlsLogged = true;
+
+                const privatePageUrls = await collectPrivatePageUrls();
+
+                if (privatePageUrls.length === 0) {
+                    return;
+                }
+
+                console.log("\nPrivate page URLs:");
+                for (const entry of privatePageUrls) {
+                    console.log(`- ${entry.pageId} [${entry.lang}]: ${entry.url}`);
+                }
+            });
+
             server.middlewares.use(
                 /**
                  * @param {any} req
@@ -141,12 +255,43 @@ function createBlogAssetPlugin() {
                     const pathname = requestUrl?.pathname ?? "";
                     const parsed = parseBlogAssetRequest(pathname);
 
-                    if (!parsed) {
+                    if (parsed) {
+                        for (const candidatePath of resolveAssetCandidates(
+                            parsed.lang,
+                            parsed.relativeAssetPath,
+                        )) {
+                            try {
+                                const stat = await fs.stat(candidatePath);
+                                if (!stat.isFile()) {
+                                    continue;
+                                }
+
+                                const buffer = await fs.readFile(candidatePath);
+                                res.setHeader("Content-Length", String(buffer.length));
+                                res.end(buffer);
+                                return;
+                            } catch {
+                                continue;
+                            }
+                        }
+                    }
+
+                    const privateMatch = pathname.match(
+                        /^\/(ja|en)\/private\/([^/]+)\/(.+)$/,
+                    );
+
+                    if (!privateMatch) {
                         next();
                         return;
                     }
 
-                    for (const candidatePath of resolveAssetCandidates(parsed.lang, parsed.relativeAssetPath)) {
+                    const [, lang, routeHash, relativeAssetPath] = privateMatch;
+
+                    for (const candidatePath of await resolvePrivateAssetCandidates(
+                        /** @type {BlogLocale} */ (lang),
+                        routeHash,
+                        path.posix.normalize(relativeAssetPath),
+                    )) {
                         try {
                             const stat = await fs.stat(candidatePath);
                             if (!stat.isFile()) {
@@ -172,6 +317,7 @@ function createBlogAssetPlugin() {
         },
         async closeBundle() {
             const articles = await collectArticles();
+            const privateArticles = await collectPrivateArticles();
 
             for (const article of articles) {
                 const targetDir = path.join(outDir, article.lang, "blog", article.slug);
@@ -190,6 +336,17 @@ function createBlogAssetPlugin() {
 
                 await copyArticleAssets(article.articleDir, targetDir);
             }
+
+            for (const article of privateArticles) {
+                const targetDir = path.join(
+                    outDir,
+                    article.lang,
+                    "private",
+                    article.slug,
+                );
+
+                await copyArticleAssets(article.articleDir, targetDir);
+            }
         },
     };
 }
@@ -197,7 +354,12 @@ function createBlogAssetPlugin() {
 // https://astro.build/config
 export default defineConfig({
     site: "https://www.keishis.me",
-    integrations: [react(), sitemap()],
+    integrations: [
+        react(),
+        sitemap({
+            filter: (page) => !page.includes("/private/"),
+        }),
+    ],
     i18n: {
         defaultLocale: "ja",
         locales: ["ja", "en"],

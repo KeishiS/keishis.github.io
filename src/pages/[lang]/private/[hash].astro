@@ -1,0 +1,71 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+    const privatePages = await getCollection("private");
+
+    return privatePages.map((page: CollectionEntry<"private">) => ({
+        params: { lang: page.data.lang, hash: page.data.hash },
+        props: { page },
+    }));
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout
+    subtitle={page.data.title}
+    description={page.data.description}
+    lang={page.data.lang}
+    robots="noindex, nofollow"
+>
+    <article class="py-16 bg-bg transition-colors duration-300">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <header class="mb-12">
+                <h1
+                    class="text-3xl font-bold tracking-tight text-fg sm:text-4xl mb-4 text-center"
+                >
+                    {page.data.title}
+                </h1>
+                <p class="text-lg text-fg-subtle text-center">
+                    {page.data.description}
+                </p>
+                {(page.data.publishedAt || page.data.author) && (
+                    <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-fg-muted mt-6 mb-8">
+                        {page.data.publishedAt && (
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-muted">📅</span>
+                                <time datetime={page.data.publishedAt.toISOString()}>
+                                    {
+                                        page.data.publishedAt.toLocaleDateString(
+                                            page.data.lang,
+                                            {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            },
+                                        )
+                                    }
+                                </time>
+                            </div>
+                        )}
+                        {page.data.author && (
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-muted">✍️</span>
+                                <span>{page.data.author}</span>
+                            </div>
+                        )}
+                    </div>
+                )}
+                <div class="mt-8 border-t border-border"></div>
+            </header>
+
+            <div
+                class="prose prose-slate prose-lg max-w-none mx-auto dark:prose-invert prose-theme"
+            >
+                <div set:html={page.data.bodyHtml} />
+            </div>
+        </div>
+    </article>
+</BaseLayout>

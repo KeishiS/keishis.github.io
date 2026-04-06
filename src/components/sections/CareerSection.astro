@@ -40,6 +40,27 @@ const groups = [
                                     ? item.description_ja
                                     : item.description_en;
                             const award = item.custom?.award;
+                            const hasDescription = description !== undefined;
+
+                            if (!hasDescription) {
+                                return (
+                                    <div class="career-card">
+                                        <div class="career-summary-main">
+                                            <p class="career-duration">{item.duration}</p>
+                                            <h3 class="career-role">{item.role}</h3>
+                                            <p class="career-affiliation">
+                                                {item.affiliation}
+                                            </p>
+                                            {award && (
+                                                <AwardBadge
+                                                    award={award}
+                                                    class="career-award"
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            }
 
                             return (
                                 <details class="career-card">

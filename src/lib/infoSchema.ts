@@ -72,8 +72,8 @@ const AffiliationSchema = object({
     role: string(),
     affiliation: string(),
     duration: string(),
-    description_ja: string(),
-    description_en: string(),
+    description_ja: optional(string()),
+    description_en: optional(string()),
     custom: optional(CustomSchema),
 });
 

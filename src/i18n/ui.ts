@@ -14,7 +14,7 @@ export const ui = {
         "nav.certification": "資格",
         "nav.changelog": "更新履歴",
 
-        "hero.role": "Ph.D. candidate in Statistical Science",
+        "hero.role": "Ph.D. in Statistical Science",
         "hero.eyebrow": "About Me",
         "hero.focus_label": "専門",
         "hero.base_label": "拠点",
@@ -81,7 +81,7 @@ export const ui = {
         "nav.certification": "Certifications",
         "nav.changelog": "Changelog",
 
-        "hero.role": "Ph.D. candidate in Statistical Science",
+        "hero.role": "Ph.D. in Statistical Science",
         "hero.eyebrow": "About Me",
         "hero.focus_label": "Focus",
         "hero.base_label": "Base",

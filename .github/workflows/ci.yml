@@ -13,6 +13,8 @@ name: Build and Deploy
 jobs:
     setup:
         runs-on: ubuntu-latest
+        environment:
+            name: github-pages
         env:
             PRIVATE_PAGE_SALT: ${{ secrets.PRIVATE_PAGE_SALT }}
         steps:

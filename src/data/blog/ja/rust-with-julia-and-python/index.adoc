@@ -314,7 +314,7 @@ bindings = "pyo3"
 これで該当のGitHub Actionsからアップロードできるようになります．
 
 .本記事設定でのPending Publisherの入力例
-image::https://keishi-sandbox.s3.ap-northeast-1.amazonaws.com/pending.png[]
+image::assets/pending.png[]
 
 ==== 頒布用のGitHub Actions設定
 

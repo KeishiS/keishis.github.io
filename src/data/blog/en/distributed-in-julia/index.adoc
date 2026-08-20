@@ -14,7 +14,7 @@ This article was automatically translated from the Japanese original. Please ref
 
 There was a calculation in my research that would take too much time without distributed processing, so I checked how to use `Distributed.jl` and wrote down what I found out.
 
-## Basic Usage
+== Basic Usage
 
 The basic idea is that there is a _main process_ and _worker processes_, and the main process throws tasks to the worker processes saying "do this work". There are several ways to start worker processes.
 

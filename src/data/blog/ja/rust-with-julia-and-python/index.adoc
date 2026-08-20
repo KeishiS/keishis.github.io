@@ -216,11 +216,11 @@ mod keishis_sandbox {
 }
 ----
 
-あとは通常のパッケージ作成のように `./python/keishis_sandbox/\\__init__.py` を<<rename_init_py>> のように記述したうえで
+あとは通常のパッケージ作成のように `+./python/keishis_sandbox/__init__.py+` を<<rename_init_py>> のように記述したうえで
 <<exec:rename_init_py>> を実行すると動作確認できます．
 これでRustで作った関数を内包しつつ，Pythonコードも内包したパッケージが作成できました．
 
-.python/test_keishis/\\__init__.py
+.`+python/test_keishis/__init__.py+`
 [source,python]
 [[rename_init_py]]
 ----
@@ -250,11 +250,11 @@ __all__ = ["mysub", "mysum"]
 
 ==== 頒布前の整理1: 型情報の追加
 
-エディタによっては `\\__init__.py` の `from ._keishis_sandbox import ...` で未解決シンボルの警告が出ているかもしれません．
+エディタによっては `+__init__.py+` の `from ._keishis_sandbox import ...` で未解決シンボルの警告が出ているかもしれません．
 これを修正するためにまず <<refactoring_pyi>> のように型情報ファイルを作成し，
 `touch python/keishis_sandbox/py.typed` で空のマーカーファイルを置くことで型情報のサポートを明示します．
 
-.python/keishis_sandbox/_keishis_sandbox.pyi
+.`python/keishis_sandbox/_keishis_sandbox.pyi`
 [source,python]
 [[refactoring_pyi]]
 ----

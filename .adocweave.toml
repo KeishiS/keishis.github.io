@@ -1,0 +1,12 @@
+# adocweave check / format の設定。HTML 変換時の設定は src/lib/asciidoc.ts と揃えます。
+schema-version = 1
+
+[lint.rules.line-too-long]
+enabled = false
+
+[lint.rules.macro-boundary]
+enabled = true
+severity = "warning"
+
+[html]
+roles = ["definition", "theorem", "lemma", "proposition", "corollary", "proof", "lead"]

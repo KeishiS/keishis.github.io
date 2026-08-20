@@ -126,8 +126,8 @@ const ogImageUrl = `/${post.data.lang}/blog/${post.data.slug}/og.png`;
         // Check if device is mobile (768px or less)
         const isMobile = () => window.innerWidth <= 768;
 
-        // Add click event to all images in imageblock (desktop only)
-        document.querySelectorAll<HTMLImageElement>('.prose .imageblock img').forEach((img) => {
+        // Add click event to all images in image blocks (desktop only)
+        document.querySelectorAll<HTMLImageElement>('.prose figure.image-block img').forEach((img) => {
             img.addEventListener('click', () => {
                 // Skip lightbox on mobile
                 if (isMobile()) return;

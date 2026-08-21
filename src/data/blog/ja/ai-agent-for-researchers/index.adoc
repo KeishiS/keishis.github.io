@@ -163,7 +163,7 @@ SSGに該当するツールは数多あり，私の周りでは https://quarto.o
 日本語と英語の両方を表示できるようにカスタマイズしてもらいましょう．作業ディレクトリを `./personal-page/` へ移動した状態でAIエージェントを起動して，
 例えば以下のようなプロンプトを与えてみましょう．
 
-[source]
+[source,text]
 ----
 > Astro v5に準拠して，本ページを日本語/英語対応にしてください．なお日本語のページが存在しない場合，英語の記事を日本語に翻訳して生成し，不要なファイルや記述は削除してください．
 ----
@@ -171,7 +171,7 @@ SSGに該当するツールは数多あり，私の周りでは https://quarto.o
 するとディレクトリ以下の色々なファイルを読み込んだうえで「 `astro.config.mjs` へ `i18n` に関する記述を追加する」的な修正案を提示してくれるはずです．
 単発のファイル修正では失敗することはありますが，勝手に修正サイクルを回してくれるのでしばし待ちましょう．その結果，自分の場合は以下のようなファイル構成になりました．
 
-[source]
+[source,text]
 ----
 .
 ├── astro.config.mjs
@@ -304,7 +304,7 @@ image::assets/repo-setting.png[]
 
 ここでまたAIエージェントに戻って，必要な設定ファイルを生成してもらいます．以下のようなプロンプトを与えましょう．
 
-[source]
+[source,text]
 ----
 > `pnpm build` による生成物をgithub actions経由でgithub pagesとしてデプロイするための設定を追加してください．
 ----
@@ -313,8 +313,8 @@ image::assets/repo-setting.png[]
 何らかの手順を教えてくれると思います．私の場合は <<deploy-instructions>> のような内容でした．
 
 .出力されたデプロイ手順
-[source]
 [[deploy-instructions]]
+[source,text]
 ----
 デプロイ手順
 
@@ -333,8 +333,8 @@ image::assets/repo-setting.png[]
 ----
 
 ..github/workflows/deploy.yml
-[source,yaml]
 [[deploy-yml]]
+[source,yaml]
 ----
 name: Deploy to GitHub Pages
 
@@ -434,7 +434,7 @@ image::assets/action-exec.png[]
 
 ==== 緑色のチェックマークが表示された場合
 
-おめでとうございます．処理が成功しましたので， https://<username>.github.io にアクセス（ `<username>` は自身のアカウント名に置換）してみてください．
+おめでとうございます．処理が成功しましたので， `+https://<username>.github.io+` にアクセス（ `<username>` は自身のアカウント名に置換）してみてください．
 `pnpm dev` で見ていたのと同じページが表示されるはずです．
 
 ==== 赤色のバツ印が表示された場合

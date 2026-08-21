@@ -45,14 +45,14 @@ Any even number is divisible by 2.
 [.lemma]
 .Lemma {lemma-num}
 ====
-If \( n^2 \) is an even number, then \( n \) is also an even number.
+If stem:[n^2] is an even number, then stem:[n] is also an even number.
 ====
 
 [.proof]
 .Proof
 ====
-We prove the contrapositive. If \( n \) is an odd number, then \( n \) can be written as \( n = 2k + 1 \) for some integer \( k \).
-Then \( n^2 = (2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1 \), which is an odd number.
+We prove the contrapositive. If stem:[n] is an odd number, then stem:[n] can be written as stem:[n = 2k + 1] for some integer stem:[k].
+Then stem:[n^2 = (2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1], which is an odd number.
 Since the contrapositive is true, the original proposition is also true.
 ====
 
@@ -69,7 +69,7 @@ There are infinitely many prime numbers.
 [.theorem]
 .Theorem {theorem-num} (Euler's Formula)
 ====
-For any \( \theta \in \mathbb{R} \), the following holds:
+For any stem:[\theta \in \mathbb{R}], the following holds:
 
 [stem]
 ++++
@@ -81,5 +81,5 @@ e^{i\theta} = \cos\theta + i\sin\theta
 .Proof
 ====
 Defined using Taylor series expansion.
-Derived by substituting \( x = i\theta \) into the Maclaurin series expansions of \( e^x, \sin x, \cos x \) and comparing.
+Derived by substituting stem:[x = i\theta] into the Maclaurin series expansions of stem:[e^x, \sin x, \cos x] and comparing.
 ====

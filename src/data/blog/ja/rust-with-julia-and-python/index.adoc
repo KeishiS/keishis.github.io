@@ -119,8 +119,8 @@ pyo3を使う場合，Pythonコードを全く書かず，Rustコード単体で
 例えば <<pymodule_in_rust>> のように記述すれば <<exec:pymodule_in_rust>> の流れで呼び出すことができます．
 
 .src/lib.rs
-[source,rust]
 [[pymodule_in_rust]]
+[source,rust]
 ----
 use pyo3::pymodule;
 
@@ -142,8 +142,8 @@ mod keishis_sandbox {
 ----
 
 .実行手順
-[source,shellscript]
 [[exec:pymodule_in_rust]]
+[source,shellscript]
 ----
 > uv sync
 > maturin develop
@@ -170,8 +170,8 @@ ML系であれば複雑な入力データを扱いたい状況が多々ありま
 * バインディング方式として `pyo3` を指定
 
 .pyproject.toml
-[source,toml]
 [[rename_pyproject]]
+[source,toml]
 ----
 [build-system]
 requires = ["maturin>=1.10,<2.0"]
@@ -197,8 +197,8 @@ bindings = "pyo3"
 のように明示的に `src/lib.rs` へ記述します．
 
 .src/lib.rs
-[source,rust]
 [[rename_pymodule_in_rust]]
+[source,rust]
 ----
 ...
 
@@ -216,13 +216,13 @@ mod keishis_sandbox {
 }
 ----
 
-あとは通常のパッケージ作成のように `./python/keishis_sandbox/\\__init__.py` を<<rename_init_py>> のように記述したうえで
+あとは通常のパッケージ作成のように `+./python/keishis_sandbox/__init__.py+` を<<rename_init_py>> のように記述したうえで
 <<exec:rename_init_py>> を実行すると動作確認できます．
 これでRustで作った関数を内包しつつ，Pythonコードも内包したパッケージが作成できました．
 
-.python/test_keishis/\\__init__.py
-[source,python]
+.`+python/test_keishis/__init__.py+`
 [[rename_init_py]]
+[source,python]
 ----
 from ._keishis_sandbox import mysum
 
@@ -235,8 +235,8 @@ __all__ = ["mysub", "mysum"]
 ----
 
 .実行手順
-[source,shellscript]
 [[exec:rename_init_py]]
+[source,shellscript]
 ----
 > maturin develop
 > source .venv/bin/activate
@@ -250,13 +250,13 @@ __all__ = ["mysub", "mysum"]
 
 ==== 頒布前の整理1: 型情報の追加
 
-エディタによっては `\\__init__.py` の `from ._keishis_sandbox import ...` で未解決シンボルの警告が出ているかもしれません．
+エディタによっては `+__init__.py+` の `from ._keishis_sandbox import ...` で未解決シンボルの警告が出ているかもしれません．
 これを修正するためにまず <<refactoring_pyi>> のように型情報ファイルを作成し，
 `touch python/keishis_sandbox/py.typed` で空のマーカーファイルを置くことで型情報のサポートを明示します．
 
-.python/keishis_sandbox/_keishis_sandbox.pyi
-[source,python]
+.`python/keishis_sandbox/_keishis_sandbox.pyi`
 [[refactoring_pyi]]
+[source,python]
 ----
 def mysum(a: int, b: int) -> int: ...
 ----
@@ -276,8 +276,8 @@ Pythonパッケージの情報は分けたほうがよいため，ここでは `
 最終的には <<final_pyproject>> のようになりました．
 
 .pyproject.toml
-[source,toml]
 [[final_pyproject]]
+[source,toml]
 ----
 [build-system]
 requires = ["maturin>=1.10,<2.0"]
@@ -327,8 +327,8 @@ image::assets/pending.png[]
 ということを考慮して <<init_python_deploy>> という形になります．
 
 ..github/workflows/deploy.yml
-[source,yaml]
 [[init_python_deploy]]
+[source,yaml]
 ----
 name: deploy
 
@@ -466,8 +466,8 @@ jobs:
 タグを付与してやればGitHub Actionsが動作し，PyPIへのアップロードが行われます（<<push_python_tag>>）．
 
 .タグのpush
-[source,shellscript]
 [[push_python_tag]]
+[source,shellscript]
 ----
 > git tag -a py-v0.1.0 -m "first deploy"
 > git push origin py-v0.1.0
@@ -476,8 +476,8 @@ jobs:
 一般に公開されたかはまっさらな環境で<<python_publish_check>>のように確認してください．
 
 .動作確認
-[source,shellscript]
 [[python_publish_check]]
+[source,shellscript]
 ----
 > uv init check && cd check
 > uv add keishis-sandbox # パッケージ名だとunderlineはハイフンになるので注意
@@ -505,8 +505,8 @@ Julia向けのビルドにPythonの情報は不要なのでそのあたりの整
 * featureフラグ付与によるPythonのデプロイ修正（`.github/workflows/deploy.yml` と `pyproject.toml`）
 
 .Cargo.toml
-[source,toml]
 [[add_features_cargo]]
+[source,toml]
 ----
 [package]
 name = "keishis_sandbox"
@@ -528,8 +528,8 @@ pyo3 = { version = "0.27.0", features = ["extension-module"], optional = true }
 ----
 
 .src/lib.rs
-[source,rust]
 [[add_features_lib]]
+[source,rust]
 ----
 #[cfg(feature = "python")]
 use pyo3::pymodule;
@@ -554,8 +554,8 @@ mod keishis_sandbox {
 ----
 
 ..github/workflows/deploy.yml
-[source,yaml]
 [[add_features_yaml]]
+[source,yaml]
 ----
 ...
 
@@ -718,8 +718,8 @@ tar.gzファイルが添付されているのでこれにJuliaパッケージか
 そのうえでわかりやすさのためにディレクトリ名を `mkdir keishis_sandbox julia` にしておきます．
 
 .手順
-[source,shellscript]
 [[generate_julia_pkg]]
+[source,shellscript]
 ----
 > julia
 
@@ -793,8 +793,8 @@ end
 問題なければ `git push` しておきます．
 
 .動作確認
-[source,shellscript]
 [[exec_julia]]
+[source,shellscript]
 ----
 > julia --project=.
 julia> using keishis_sandbox

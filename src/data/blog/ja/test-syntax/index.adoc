@@ -4,6 +4,7 @@
 :tags: AsciiDoc, Template
 :published_at: 2025-11-29
 :revdate: 2025-12-02
+:experimental:
 
 == テキストフォーマット
 
@@ -79,7 +80,7 @@ ____
 == Keyboard Macro
 
 キーボードショートカットを表示します。
-kbd:[Ctrl+C] でコピー、kbd:[Ctrl+V] で貼り付け。
+kbd:[Ctrl+C] でコピー、 kbd:[Ctrl+V] で貼り付け。
 kbd:[Ctrl+Shift+N] で新しいウィンドウを開く。
 
 == アドモニション (注釈)
@@ -159,7 +160,7 @@ image::https://docs.astro.build/assets/rose.webp[Astro Rose, 300, 200]
 
 == 数式 (MathJax)
 
-インライン数式: \( a^2 + b^2 = c^2 \)
+インライン数式: stem:[a^2 + b^2 = c^2]
 
 ディスプレイ数式:
 [stem]
@@ -169,10 +170,10 @@ image::https://docs.astro.build/assets/rose.webp[Astro Rose, 300, 200]
 
 == 脚注
 
-これは脚注付きの文です。footnote:[これは脚注の内容です。]
+これは脚注付きの文です。 footnote:[これは脚注の内容です。]
 
 == 水平線
 
----
+'''
 
 ここまでがテストです。

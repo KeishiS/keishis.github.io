@@ -9,7 +9,7 @@
 
 研究で分散処理しないと時間がかかりすぎる計算があり， `Distributed.jl` の使い方をチェックしたので，調べてわかったことをメモ書きします．
 
-## 基本的な使い方
+== 基本的な使い方
 
 _メインプロセス_ と _ワーカープロセス_ があり，メインプロセスから「この仕事やってねー」とワーカープロセスへタスクを投げるというのが基本的な考え方となる．ワーカープロセスを立ち上げる方法はいくつかある．
 
@@ -21,8 +21,8 @@ _メインプロセス_ と _ワーカープロセス_ があり，メインプ�
     * 最も柔軟に設定できる起動方法で working directory 等を指定できる．
 
 .hosts
-[source,shellscript]
 [[lst-hosts]]
+[source,shellscript]
 ----
 localhost
 2*localhost
@@ -69,8 +69,8 @@ remote-server-01
 後学のために，必要最小限のExample Codeを <<lst-example>> の通りにまとめた．
 
 .example code
-[source,julia]
 [[lst-example]]
+[source,julia]
 ----
 using Distributed
 

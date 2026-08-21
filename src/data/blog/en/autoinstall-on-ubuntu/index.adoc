@@ -76,8 +76,8 @@ As a preparation for that, it is necessary to make the `cloud-localds` command a
 Here, for the sake of simplicity, we use the settings shown in <<lst-user_data>>.
 
 .user-data
-[source,shellscript]
 [[lst-user_data]]
+[source,shellscript]
 ----
 #cloud-config
 autoinstall:

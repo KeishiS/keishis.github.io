@@ -301,8 +301,8 @@ Here, return to the AI agent and have it generate the necessary configuration fi
 Then, although the file name and its contents may differ slightly, a file called `.github/workflows/deploy.yml` will be generated, and it will probably teach you some procedure. In my case, it was content like <<deploy-instructions>>.
 
 .Output deployment instructions
-[source,text]
 [[deploy-instructions]]
+[source,text]
 ----
 Deployment Procedure
 
@@ -321,8 +321,8 @@ Deployment Procedure
 ----
 
 ..github/workflows/deploy.yml
-[source,yaml]
 [[deploy-yml]]
+[source,yaml]
 ----
 name: Deploy to GitHub Pages
 

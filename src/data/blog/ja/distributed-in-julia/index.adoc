@@ -21,8 +21,8 @@ _メインプロセス_ と _ワーカープロセス_ があり，メインプ�
     * 最も柔軟に設定できる起動方法で working directory 等を指定できる．
 
 .hosts
-[source,shellscript]
 [[lst-hosts]]
+[source,shellscript]
 ----
 localhost
 2*localhost
@@ -69,8 +69,8 @@ remote-server-01
 後学のために，必要最小限のExample Codeを <<lst-example>> の通りにまとめた．
 
 .example code
-[source,julia]
 [[lst-example]]
+[source,julia]
 ----
 using Distributed
 

@@ -210,6 +210,8 @@ async function convertArticle({
         diagnostics: {
             // 本文の折り返し幅は記事の書き方に委ねる
             rules: { "line-too-long": { enabled: false } },
+            // 解析時の URL 検査を renderPolicy.activeUrls と揃える
+            authoredUrls: { allowedSchemes: ["http", "https", "mailto"], allowRelative: true },
         },
     };
 
@@ -259,6 +261,9 @@ async function convertArticle({
                 roles: { allowed: ALLOWED_BLOCK_ROLES },
                 activeUrls: {
                     allowedSchemes: ["http", "https", "mailto"],
+                    // 記事に書かれた相対リンク（同じ記事ディレクトリの PDF など）を許可する
+                    allowAuthoredRelative: true,
+                    // 画像などの解決済みリソースはサイトのルート相対 URL で渡す
                     allowResolvedRootRelative: true,
                 },
             },

@@ -83,6 +83,27 @@ const { site, socials } = await loadSiteChrome(lang as any);
                     ignoreHtmlClass: "tex2jax_ignore",
                     processHtmlClass: "tex2jax_process",
                 },
+                startup: {
+                    // AdocWeave は数式を code/pre.math-latex として出力し、MathJax は code と pre の
+                    // 中身を処理しない。組版の前に、区切り文字付きのテキストへ置き換える。
+                    pageReady: () => {
+                        document
+                            .querySelectorAll("code.math-latex[data-math-display=\"inline\"]")
+                            .forEach((el) => {
+                                el.replaceWith(
+                                    document.createTextNode("\\(" + el.textContent + "\\)"),
+                                );
+                            });
+                        document.querySelectorAll("pre.math-latex").forEach((el) => {
+                            const block = document.createElement("div");
+                            block.className = "math-block";
+                            block.textContent =
+                                "\\[" + el.textContent.replace(/\n$/, "") + "\\]";
+                            el.replaceWith(block);
+                        });
+                        return MathJax.startup.defaultPageReady();
+                    },
+                },
             };
         </script>
         <script

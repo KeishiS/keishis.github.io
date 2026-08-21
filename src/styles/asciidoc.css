@@ -40,87 +40,80 @@
     content: none;
 }
 
-/* Admonition Blocks */
-.prose .admonitionblock {
+/* ------------------------------------------------------------------ */
+/* 以下は AdocWeave が生成する HTML 構造に対するスタイルです。          */
+/* 要素と class は vendor/adocweave の版に従います（html-contract）。    */
+/* ------------------------------------------------------------------ */
+
+/* Admonition Blocks (div.admonition.admonition-<type> > div.title + 本文) */
+.prose .admonition {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
-}
-.prose .admonitionblock table {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
-    margin: 0;
+    padding: 1rem 1.25rem;
     background-color: var(--color-surface-soft);
     border-radius: 0.5rem;
     border-left: 4px solid transparent;
-    overflow: hidden;
 }
-
-.prose .admonitionblock td.icon {
-    width: 4rem;
-    text-align: center;
-    padding: 1rem;
-    font-weight: bold;
+.prose .admonition > .title {
+    font-weight: 700;
     font-size: 0.875rem;
-    border-right: 1px solid transparent; /* set in variants */
-    vertical-align: middle;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.5em;
 }
-
-.prose .admonitionblock td.content {
-    padding: 1rem;
-    color: inherit;
+.prose .admonition > p:last-child,
+.prose .admonition > ul:last-child,
+.prose .admonition > ol:last-child {
+    margin-bottom: 0;
 }
-.dark .prose .admonitionblock td.content {
+.dark .prose .admonition {
     color: var(--color-fg-subtle);
 }
 
-/* Type-specific styles using variables */
 /* NOTE */
-.prose .admonitionblock.note table {
+.prose .admonition-note {
     border-left-color: var(--color-note-border);
     background-color: var(--color-note-bg);
 }
-.prose .admonitionblock.note td.icon {
+.prose .admonition-note > .title {
     color: var(--color-note-icon);
 }
 
 /* TIP */
-.prose .admonitionblock.tip table {
+.prose .admonition-tip {
     border-left-color: var(--color-tip-border);
     background-color: var(--color-tip-bg);
 }
-.prose .admonitionblock.tip td.icon {
+.prose .admonition-tip > .title {
     color: var(--color-tip-icon);
 }
 
 /* IMPORTANT */
-.prose .admonitionblock.important table {
+.prose .admonition-important {
     border-left-color: var(--color-important-border);
     background-color: var(--color-important-bg);
 }
-.prose .admonitionblock.important td.icon {
+.prose .admonition-important > .title {
     color: var(--color-important-icon);
 }
 
 /* WARNING */
-.prose .admonitionblock.warning table {
+.prose .admonition-warning {
     border-left-color: var(--color-warning-border);
     background-color: var(--color-warning-bg);
 }
-.prose .admonitionblock.warning td.icon {
+.prose .admonition-warning > .title {
     color: var(--color-warning-icon);
 }
 
 /* CAUTION */
-.prose .admonitionblock.caution table {
+.prose .admonition-caution {
     border-left-color: var(--color-caution-border);
     background-color: var(--color-caution-bg);
 }
-.prose .admonitionblock.caution td.icon {
+.prose .admonition-caution > .title {
     color: var(--color-caution-icon);
 }
 
-/* Highlight.js Line Numbers adjustments */
 /* コードブロックの基本スタイル */
 .prose pre {
     background-color: var(--color-code-bg);
@@ -129,8 +122,12 @@
     border-radius: 6px;
 }
 
-/* モダンなコードブロックタイトル */
-.prose .listingblock .title {
+/* タイトル付きコードブロック (figure.source-block > figcaption + pre) */
+.prose figure.source-block {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+.prose figure.source-block > figcaption {
     background-color: var(--color-code-title-bg);
     color: var(--color-code-title-text);
     font-family:
@@ -142,23 +139,18 @@
     border-bottom: 0;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    margin-bottom: 0;
+    margin: 0;
     display: block;
     width: 100%;
 }
-
-/* タイトル付きコードブロックの pre タグ調整 */
-.prose .listingblock .title + .content pre {
+.prose figure.source-block > pre {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     margin-top: 0;
+    margin-bottom: 0;
 }
 
-.content pre {
-    padding-block: 0;
-}
-
-/* 行番号テーブルの調整 */
+/* 行番号テーブルの調整 (highlight.js line numbers) */
 .prose table.hljs-ln {
     margin: 0;
     width: 100%;
@@ -170,8 +162,6 @@
 .prose table.hljs-ln tr {
     border: 0;
 }
-
-/* Line numbers column */
 .prose table.hljs-ln td.hljs-ln-numbers {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -184,7 +174,6 @@
     padding-right: 0.75em;
     width: 1.5em;
 }
-/* Code column */
 .prose table.hljs-ln td.hljs-ln-code {
     padding-left: 0.75em;
 }
@@ -211,8 +200,9 @@
     color: var(--color-dl-dd-text);
 }
 
-/* Example Block */
-.prose .exampleblock {
+/* Example Block (div.example > div.title) と折りたたみ (details > summary) */
+.prose .example,
+.prose details {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background-color: var(--color-surface-soft);
@@ -221,24 +211,37 @@
     padding: 1.5em;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
-.dark .prose .exampleblock {
+.dark .prose .example,
+.dark .prose details {
     background-color: var(--color-surface);
     border-color: var(--color-border);
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
-.prose .exampleblock .title {
+.prose .example > .title,
+.prose details > summary {
     font-weight: 600;
     margin-bottom: 0.5em;
     color: var(--color-fg-subtle);
     text-align: left;
     font-size: 0.9em;
 }
-.dark .prose .exampleblock .title {
+.dark .prose .example > .title,
+.dark .prose details > summary {
     color: var(--color-fg-muted);
 }
+.prose details > summary {
+    cursor: pointer;
+}
+.prose details:not([open]) > summary {
+    margin-bottom: 0;
+}
+.prose .example > :last-child,
+.prose details > :last-child {
+    margin-bottom: 0;
+}
 
-/* Quote Block (Blockquote) */
-.prose .quoteblock {
+/* Quote Block (div.quote > blockquote + div.attribution) */
+.prose .quote {
     background-color: var(--color-quote-bg);
     border-left: 4px solid var(--color-quote-border);
     padding: 2em 2em 1.5em 3.5em;
@@ -249,7 +252,7 @@
 }
 
 /* 引用符アイコン */
-.prose .quoteblock::before {
+.prose .quote::before {
     content: "“";
     font-family: "Merriweather", serif;
     font-size: 4rem;
@@ -262,7 +265,7 @@
     pointer-events: none;
 }
 
-.prose .quoteblock blockquote {
+.prose .quote blockquote {
     font-style: normal;
     font-weight: 400;
     border: none;
@@ -281,25 +284,22 @@
 }
 
 /* Attribution (出典) */
-.prose .quoteblock .attribution {
+.prose .quote .attribution,
+.prose .verse .attribution {
     margin-top: 1em;
     text-align: right;
     font-size: 0.875em;
     color: var(--color-quote-attribution);
     font-weight: 500;
 }
-.prose .quoteblock .attribution cite {
+.prose .attribution cite {
     font-style: normal;
-    color: var(--color-quote-attribution); /* Simplified */
+    color: var(--color-quote-attribution);
     margin-left: 0.5em;
 }
-.prose .quoteblock .attribution::before {
-    content: "— ";
-    color: var(--color-quote-attribution);
-}
 
-/* Verse Block */
-.prose .verseblock {
+/* Verse Block (div.verse > pre + div.attribution) */
+.prose .verse {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background-color: var(--color-verse-bg);
@@ -308,7 +308,7 @@
     border-radius: 0 0.5rem 0.5rem 0;
     position: relative;
 }
-.prose .verseblock pre {
+.prose .verse pre {
     font-family: "Merriweather", serif;
     background-color: transparent;
     border: none;
@@ -319,142 +319,110 @@
     font-style: italic;
     white-space: pre-wrap;
 }
-.prose .verseblock .attribution {
-    text-align: right;
-    font-size: 0.875em;
-    color: var(--color-quote-attribution); /* Reuse quote attribution color */
-    margin-top: 1em;
-}
 
-/* Math / Theorem Blocks (Open Blocks with roles) */
-/* Common styles */
-.prose .definition,
-.prose .theorem,
-.prose .lemma,
-.prose .proposition,
-.prose .corollary,
-.prose .proof {
+/* Math / Theorem Blocks (role 付き open/example block: div.role-<name> > div.title) */
+.prose .role-definition,
+.prose .role-theorem,
+.prose .role-lemma,
+.prose .role-proposition,
+.prose .role-corollary,
+.prose .role-proof {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     padding: 1.5em;
     border-radius: 0.5rem;
+    border: 0;
     border-left-width: 4px;
     border-left-style: solid;
+    box-shadow: none;
 }
-
-/* Titles */
-.prose .definition > .title,
-.prose .theorem > .title,
-.prose .lemma > .title,
-.prose .proposition > .title,
-.prose .corollary > .title,
-.prose .proof > .title {
+.prose .role-definition > .title,
+.prose .role-theorem > .title,
+.prose .role-lemma > .title,
+.prose .role-proposition > .title,
+.prose .role-corollary > .title,
+.prose .role-proof > .title {
     font-weight: 700;
     margin-bottom: 0.75em;
     display: block;
     font-size: 1em;
     line-height: 1.4;
 }
-
-/* Type-specific colors using variables */
+.prose .role-definition > :last-child,
+.prose .role-theorem > :last-child,
+.prose .role-lemma > :last-child,
+.prose .role-proposition > :last-child,
+.prose .role-corollary > :last-child {
+    margin-bottom: 0;
+}
 
 /* Definition */
-/* Definition */
-.prose .definition {
+.prose .role-definition {
     border-left-color: var(--color-definition-border);
     background-color: var(--color-definition-bg);
 }
-.prose .definition > .title {
+.prose .role-definition > .title {
     color: var(--color-definition-title);
 }
 
 /* Theorem */
-.prose .theorem {
+.prose .role-theorem {
     border-left-color: var(--color-theorem-border);
     background-color: var(--color-theorem-bg);
 }
-.prose .theorem > .title {
+.prose .role-theorem > .title {
     color: var(--color-theorem-title);
 }
 
 /* Lemma/Proposition/Corollary */
-.prose .lemma,
-.prose .proposition,
-.prose .corollary {
+.prose .role-lemma,
+.prose .role-proposition,
+.prose .role-corollary {
     border-left-color: var(--color-lemma-border);
     background-color: var(--color-lemma-bg);
 }
-.prose .lemma > .title,
-.prose .proposition > .title,
-.prose .corollary > .title {
+.prose .role-lemma > .title,
+.prose .role-proposition > .title,
+.prose .role-corollary > .title {
     color: var(--color-lemma-title);
 }
 
 /* Proof */
-.prose .proof {
+.prose .role-proof {
     background-color: transparent;
     border-left-color: var(--color-proof-border);
     padding: 0.5em 0 0.5em 1.5em;
     border-radius: 0;
 }
-.prose .proof > .title {
+.prose .role-proof > .title {
     color: var(--color-proof-title);
     font-style: italic;
     margin-bottom: 0.5em;
 }
-.prose .proof > .content {
+.prose .role-proof > :not(.title) {
     font-size: 0.95em;
     color: var(--color-proof-text);
 }
-
 /* Proofの終わりのQED記号 */
-
-.prose .proof::after {
+.prose .role-proof::after {
     content: "∎";
-
     display: block;
-
     text-align: right;
-
     color: var(--color-proof-title);
-
     margin-top: -1em;
 }
 
-/* Checklist (Task List) */
-
-.prose ul.checklist {
-    padding-left: 0;
+/* Checklist (li > span.checklist-marker) */
+.prose li:has(> .checklist-marker) {
+    list-style: none;
+    margin-left: -1.25em;
 }
-
-.prose ul.checklist li {
-    padding-left: 0.5em;
-
-    display: flex; /* チェックボックスとテキストを横並びに */
-
-    align-items: flex-start; /* 上揃え */
+.prose li:has(> .checklist-marker)::marker {
+    content: "";
 }
-
-.prose ul.checklist li > p {
-    margin: 0; /* 余分なマージン削除 */
-}
-
-/* リストマーカーの削除 */
-
-.prose ul.checklist li::before {
-    content: none;
-}
-
-/* チェックボックスのスタイル調整 */
-
-.prose ul.checklist input[type="checkbox"] {
-    margin-top: 0.3em; /* テキスト行と高さを合わせる */
-    margin-right: 0.5em;
-    accent-color: var(--color-accent);
-}
-
-.dark .prose ul.checklist input[type="checkbox"] {
-    accent-color: var(--color-accent);
+.prose .checklist-marker {
+    color: var(--color-accent);
+    margin-right: 0.4em;
 }
 
 /* Highlight (Mark) */
@@ -469,41 +437,93 @@
     -webkit-box-decoration-break: slice;
 }
 
-/* Image Block with Caption */
-.prose .imageblock {
+/* Image Block with Caption (figure.image-block > img + figcaption) */
+.prose figure.image-block {
     margin-block: 1em;
-    padding-block: 1em;
+    padding: 1em;
     background-color: var(--color-surface-soft);
     border: 1px solid var(--color-border);
     border-radius: 0.5rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
 }
-
-.dark .prose .imageblock {
+.dark .prose figure.image-block {
     background-color: var(--color-surface);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
-
-.prose .imageblock .title {
-    margin-bottom: 0.5em;
+.prose figure.image-block > figcaption {
+    margin-top: 0.75em;
+    margin-bottom: 0;
     font-weight: 600;
     color: var(--color-fg);
     text-align: center;
     font-size: 0.95em;
     line-height: 1.5;
 }
-
-.prose .imageblock .content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.prose .imageblock img {
+.prose figure.image-block img {
+    display: inline-block;
+    margin: 0 auto;
     max-width: 100%;
     height: auto;
     border-radius: 0.375rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Table caption */
+.prose table > caption {
+    caption-side: top;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: var(--color-fg-subtle);
+    margin-bottom: 0.5em;
+}
+
+/* Footnotes */
+.prose sup.footnote {
+    font-size: 0.75em;
+    vertical-align: super;
+    line-height: 0;
+}
+.prose sup.footnote a {
+    text-decoration: none;
+    font-weight: 600;
+}
+.prose .footnotes {
+    margin-top: 2.5em;
+    padding-top: 1em;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.875em;
+    color: var(--color-fg-subtle);
+}
+.prose .footnotes ol {
+    margin: 0;
+}
+.prose .footnotes .footnote-backref {
+    margin-left: 0.25em;
+    text-decoration: none;
+}
+
+/* Math (MathJax 前の AdocWeave 出力: code/pre.math-latex) */
+.prose :where(code.math-latex):not(:where([class~="not-prose"] *)) {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
+.prose pre.math-latex,
+.prose .math-block {
+    background-color: transparent;
+    border: none;
+    padding: 0.5em 0;
+    margin-block: 1em;
+    overflow-x: auto;
+    text-align: center;
+}
+.prose pre.math-latex > code {
+    font-family: inherit;
 }
 
 /* List Item Spacing Adjustment */
@@ -512,10 +532,6 @@
         :where([class~="not-prose"] *)
     ) {
     margin-block: 0.25em;
-}
-
-.prose :where(li > .ulist, li > .olist):not(:where([class~="not-prose"] *)) {
-    margin-block: 0.25em 0;
 }
 
 /* Link Styles */
@@ -531,11 +547,10 @@
 
 /* Image Lightbox */
 @media (min-width: 769px) {
-    .prose .imageblock img {
+    .prose figure.image-block img {
         cursor: zoom-in;
     }
 }
-
 #image-lightbox {
     display: none;
     position: fixed;

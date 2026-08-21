@@ -79,8 +79,8 @@ Cloud-initでは `user-data` と呼ばれる，
 ここでは簡単のために <<lst-user_data>> で示す設定を用います．
 
 .user-data
-[source,shellscript]
 [[lst-user_data]]
+[source,shellscript]
 ----
 #cloud-config
 autoinstall:

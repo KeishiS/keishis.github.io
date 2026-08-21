@@ -26,8 +26,8 @@ The basic idea is that there is a _main process_ and _worker processes_, and the
     * This is the most flexible startup method, allowing you to specify working directory, etc.
 
 .hosts
-[source,shellscript]
 [[lst-hosts]]
+[source,shellscript]
 ----
 localhost
 2*localhost
@@ -74,8 +74,8 @@ Considering the overhead due to context switching, it seems good to write separa
 For future reference, I summarized the minimum necessary Example Code as shown in <<lst-example>>.
 
 .example code
-[source,julia]
 [[lst-example]]
+[source,julia]
 ----
 using Distributed
 

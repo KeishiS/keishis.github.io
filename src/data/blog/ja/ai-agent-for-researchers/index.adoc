@@ -313,8 +313,8 @@ image::assets/repo-setting.png[]
 何らかの手順を教えてくれると思います．私の場合は <<deploy-instructions>> のような内容でした．
 
 .出力されたデプロイ手順
-[source,text]
 [[deploy-instructions]]
+[source,text]
 ----
 デプロイ手順
 
@@ -333,8 +333,8 @@ image::assets/repo-setting.png[]
 ----
 
 ..github/workflows/deploy.yml
-[source,yaml]
 [[deploy-yml]]
+[source,yaml]
 ----
 name: Deploy to GitHub Pages
 

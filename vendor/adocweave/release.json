@@ -1,6 +1,6 @@
 {
-  "version": "0.42.0",
-  "archive": "adocweave-browser-0.42.0.tar.xz",
-  "sha256": "e16555283f8c530ec580502b6770c39c414761585c9a0967ec90b3335e9abd19",
-  "source": "https://github.com/KeishiS/adocweave/releases/tag/v0.42.0"
+  "version": "0.43.0",
+  "archive": "adocweave-browser-0.43.0.tar.xz",
+  "sha256": "ac48c5c6c22dab08a3be7d44c2bfa398239ac3566c1d5d8eb31bc184efb86a91",
+  "source": "https://github.com/KeishiS/adocweave/releases/tag/v0.43.0"
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# AdocWeave の CLI を GitHub Releases から取得して <dest-dir> へ配置します。
-# 版は vendor/adocweave/release.json（サイトの変換に使う WebAssembly と同じ版）に従います。
+# AdocWeave の CLI を GitHub Releases から取得して <dest-dir> へ配置します（主に CI 用）。
+# 版は flake.lock に固定された adocweave の ref に従い、vendor/adocweave/release.json が
+# 同じ版であることも確認します（ずれていれば scripts/update-adocweave.sh で揃えます）。
 # 使い方: scripts/install-adocweave-cli.sh <dest-dir>
 #   環境変数 ADOCWEAVE_TARGET で target を変えられます（既定: x86_64-unknown-linux-musl）。
 set -euo pipefail
@@ -13,7 +14,14 @@ fi
 dest="$1"
 root="$(cd "$(dirname "$0")/.." && pwd)"
 repo="KeishiS/adocweave"
-version="$(jq -r .version "${root}/vendor/adocweave/release.json")"
+version="$(jq -r '.nodes.adocweave.original.ref' "${root}/flake.lock" | sed 's/^v//')"
+vendored="$(jq -r .version "${root}/vendor/adocweave/release.json")"
+if [ "${version}" != "${vendored}" ]; then
+    echo "flake.lock の adocweave (${version}) と vendor/adocweave/release.json (${vendored}) の版が一致しません。" >&2
+    echo "scripts/update-adocweave.sh を実行して揃えてください。" >&2
+    exit 1
+fi
+
 target="${ADOCWEAVE_TARGET:-x86_64-unknown-linux-musl}"
 asset="adocweave-cli-${target}.zip"
 work="$(mktemp -d)"

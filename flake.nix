@@ -25,6 +25,7 @@
           [
             pnpm
             nodejs_26
+            jq
 
             typst
             typstyle

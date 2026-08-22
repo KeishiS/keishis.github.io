@@ -28,6 +28,16 @@ jobs:
                   GIT_CRYPT_KEY_B64: ${{ secrets.GIT_CRYPT_KEY_B64 }}
             - name: Unlock private content
               run: git-crypt unlock /tmp/git-crypt-key
+            - name: Install AdocWeave CLI
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  scripts/install-adocweave-cli.sh "$RUNNER_TEMP/adocweave-cli"
+                  echo "$RUNNER_TEMP/adocweave-cli" >> "$GITHUB_PATH"
+            - name: Check AsciiDoc formatting
+              run: adocweave format --check src/data
+            - name: Check AsciiDoc syntax
+              run: adocweave check --fail-on warning --format github src/data
             - name: Setup pnpm
               uses: pnpm/action-setup@v5
               with:

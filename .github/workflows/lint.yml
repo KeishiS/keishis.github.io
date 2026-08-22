@@ -1,0 +1,41 @@
+name: Lint AsciiDoc
+on:
+    pull_request:
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    adoc:
+        runs-on: ubuntu-latest
+        env:
+            GIT_CRYPT_KEY_B64: ${{ secrets.GIT_CRYPT_KEY_B64 }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+            - name: Unlock private content
+              if: env.GIT_CRYPT_KEY_B64 != ''
+              run: |
+                  sudo apt-get update && sudo apt-get install -y git-crypt
+                  printf '%s' "$GIT_CRYPT_KEY_B64" | base64 -d > "$RUNNER_TEMP/git-crypt-key"
+                  git-crypt unlock "$RUNNER_TEMP/git-crypt-key"
+            - name: Select targets
+              id: targets
+              run: |
+                  if [ -n "$GIT_CRYPT_KEY_B64" ]; then
+                      echo "paths=src/data" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "::notice::GIT_CRYPT_KEY_B64 を参照できないため src/data/blog だけを検査します"
+                      echo "paths=src/data/blog" >> "$GITHUB_OUTPUT"
+                  fi
+            - name: Install AdocWeave CLI
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  scripts/install-adocweave-cli.sh "$RUNNER_TEMP/adocweave-cli"
+                  echo "$RUNNER_TEMP/adocweave-cli" >> "$GITHUB_PATH"
+            - name: Check formatting
+              run: adocweave format --check ${{ steps.targets.outputs.paths }}
+            - name: Check syntax
+              run: adocweave check --fail-on warning --format github ${{ steps.targets.outputs.paths }}

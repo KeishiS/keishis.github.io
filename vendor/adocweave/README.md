@@ -15,11 +15,16 @@ AdocWeaveはnpmへ公開されないため、GitHub Releasesの `adocweave-brows
 
 ## 更新手順
 
+版を書く場所は `flake.nix` の input（`github:KeishiS/adocweave?ref=vX.Y.Z`）だけです。
+`flake.lock`、このディレクトリのファイル、`release.json` はそこから生成します。
+
 ```console
-scripts/update-adocweave.sh 0.43.0
+scripts/update-adocweave.sh 0.44.1   # flake.nix の ref を書き換え、flake.lock と vendor を更新
+scripts/update-adocweave.sh          # flake.lock の版に vendor を揃え直す
 ```
 
 スクリプトは `gh release download` でarchiveと `sha256.sum` を取得し、ハッシュを検証してから
-上記のファイルを置き換え、`release.json` を書き換えます。更新後は `pnpm build` で記事の変換結果を確認してください。
+上記のファイルを置き換え、`release.json` を書き換えます。CI で使う CLI（`scripts/install-adocweave-cli.sh`）も
+`flake.lock` の版を使い、`release.json` と一致しない場合は失敗します。更新後は `pnpm build` で記事の変換結果を確認してください。
 AdocWeaveは 0.y.z の間、minor版で互換性のない変更を行うことがあるため、Release Notesの
 「公開仕様と破壊的変更」を先に確認します。

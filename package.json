@@ -6,7 +6,9 @@
         "dev": "astro dev",
         "build": "astro build",
         "preview": "astro preview",
-        "astro": "astro"
+        "astro": "astro",
+        "lint:adoc": "adocweave check --fail-on warning src/data",
+        "format:adoc": "adocweave format --write src/data"
     },
     "dependencies": {
         "@astrojs/check": "^0.9.6",

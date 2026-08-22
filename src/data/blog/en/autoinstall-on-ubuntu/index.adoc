@@ -140,7 +140,6 @@ When you come this far, the remaining work is simple.
     * Created `user-data.iso`
 . Start the virtual machine. After loading various things, `Continue with autoinstall? (yes/no)` is displayed, so answer it and the process proceeds.
 
-
 == Summary and Chat
 
 In this article, I explained the guide for proceeding with installation based on pre-configured items using subiquity's Autoinstall feature.

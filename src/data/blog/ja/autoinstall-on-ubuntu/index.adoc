@@ -145,7 +145,6 @@ https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinsta
     * 作成した `user-data.iso`
 . 仮想マシンをスタートしましょう．色々ロードされたのち， `Continue with autoinstall? (yes/no)` と表示されるので，回答すると処理が進みます．
 
-
 == まとめと雑談
 
 この記事ではsubiquityのAutoinstall機能を使って，

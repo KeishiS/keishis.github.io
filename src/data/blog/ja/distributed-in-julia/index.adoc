@@ -22,7 +22,7 @@ _メインプロセス_ と _ワーカープロセス_ があり，メインプ�
 
 .hosts
 [[lst-hosts]]
-[source,shellscript]
+[source,bash]
 ----
 localhost
 2*localhost

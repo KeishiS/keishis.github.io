@@ -77,7 +77,7 @@ Here, for the sake of simplicity, we use the settings shown in <<lst-user_data>>
 
 .user-data
 [[lst-user_data]]
-[source,shellscript]
+[source,bash]
 ----
 #cloud-config
 autoinstall:
@@ -118,7 +118,7 @@ The `mkpasswd` command is included in the `whois` package in ArchLinux.
 
 From this information, it is necessary to convert it to the ISO9660 file format and make it mountable.
 
-[source,shellscript]
+[source,bash]
 ----
 > cloud-localds user-data.iso user-data
 ----

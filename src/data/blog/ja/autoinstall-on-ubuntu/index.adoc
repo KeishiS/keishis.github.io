@@ -80,7 +80,7 @@ Cloud-initでは `user-data` と呼ばれる，
 
 .user-data
 [[lst-user_data]]
-[source,shellscript]
+[source,bash]
 ----
 #cloud-config
 autoinstall:
@@ -123,7 +123,7 @@ https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinsta
 
 この情報からISO9660のファイル形式へ変換して，マウント可能な状態にする必要があります．
 
-[source,shellscript]
+[source,bash]
 ----
 > cloud-localds user-data.iso user-data
 ----
@@ -144,7 +144,6 @@ https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinsta
     * Ubuntu-ServerのISOファイル
     * 作成した `user-data.iso`
 . 仮想マシンをスタートしましょう．色々ロードされたのち， `Continue with autoinstall? (yes/no)` と表示されるので，回答すると処理が進みます．
-
 
 == まとめと雑談
 

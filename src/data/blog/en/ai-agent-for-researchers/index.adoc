@@ -90,7 +90,7 @@ There are many tools that fall under SSG, and many people around me use https://
 
 Let's start creating a personal page immediately. If you are on Windows, launch PowerShell, and if you are on Mac/Linux, launch an appropriate terminal software and try running `pnpm create astro@latest --template blog`. Then you will be asked _Where should we create your new project?_, so enter an appropriate project name (directory name, here `personal-page`).
 
-[source,shellscript]
+[source,bash]
 ----
 > pnpm create astro@latest --template blog
 
@@ -132,7 +132,7 @@ Check the license of community-published templates carefully.
 
 Next, move to the created directory with `cd personal-page` etc. and run `pnpm dev`.
 
-[source,shellscript]
+[source,bash]
 ----
 ┃ Local    http://localhost:4322/
 ┃ Network  use --host to expose

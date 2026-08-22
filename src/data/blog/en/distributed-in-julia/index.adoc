@@ -27,7 +27,7 @@ The basic idea is that there is a _main process_ and _worker processes_, and the
 
 .hosts
 [[lst-hosts]]
-[source,shellscript]
+[source,bash]
 ----
 localhost
 2*localhost

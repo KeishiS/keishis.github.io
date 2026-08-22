@@ -2,20 +2,21 @@
   description = "CV environment";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    adocweave.url = "github:KeishiS/adocweave?ref=v0.44.1";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      nixpkgs-unstable,
+      adocweave,
     }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-      pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+      };
     in
     {
       devShells.${system}.default = pkgs.mkShell {
@@ -23,15 +24,15 @@
           with pkgs;
           [
             pnpm
-            nodejs_24
-            bubblewrap
+            nodejs_26
+            jq
 
             typst
             typstyle
             typst-live
           ]
           ++ [
-            pkgs-unstable.claude-code
+            adocweave.packages.${system}.default
           ];
         shellHook = ''
           export SHELL="${pkgs.zsh}"/bin/zsh

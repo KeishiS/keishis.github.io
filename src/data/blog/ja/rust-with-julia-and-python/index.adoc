@@ -76,7 +76,7 @@ Pythonのそれに対応付けたりするためのクレートであり， `mat
 PyPIへのパッケージのアップロードにおいて，パッケージ名はリポジトリ全体で一意でなければならないため，
 そのことを考慮して名前を決めてください．
 
-[source,shellscript]
+[source,bash]
 ----
 > maturin new -b pyo3 keishis_sandbox
 ----
@@ -143,7 +143,7 @@ mod keishis_sandbox {
 
 .実行手順
 [[exec:pymodule_in_rust]]
-[source,shellscript]
+[source,bash]
 ----
 > uv sync
 > maturin develop
@@ -236,7 +236,7 @@ __all__ = ["mysub", "mysum"]
 
 .実行手順
 [[exec:rename_init_py]]
-[source,shellscript]
+[source,bash]
 ----
 > maturin develop
 > source .venv/bin/activate
@@ -467,7 +467,7 @@ jobs:
 
 .タグのpush
 [[push_python_tag]]
-[source,shellscript]
+[source,bash]
 ----
 > git tag -a py-v0.1.0 -m "first deploy"
 > git push origin py-v0.1.0
@@ -477,7 +477,7 @@ jobs:
 
 .動作確認
 [[python_publish_check]]
-[source,shellscript]
+[source,bash]
 ----
 > uv init check && cd check
 > uv add keishis-sandbox # パッケージ名だとunderlineはハイフンになるので注意
@@ -719,7 +719,7 @@ tar.gzファイルが添付されているのでこれにJuliaパッケージか
 
 .手順
 [[generate_julia_pkg]]
-[source,shellscript]
+[source,bash]
 ----
 > julia
 
@@ -794,7 +794,7 @@ end
 
 .動作確認
 [[exec_julia]]
-[source,shellscript]
+[source,bash]
 ----
 > julia --project=.
 julia> using keishis_sandbox
@@ -809,7 +809,7 @@ julia> mysum(1,2)
 
 最後にまっさらな環境にインストールできることを確認します．以下が動作すれば成功です．
 
-[source,shellscript]
+[source,bash]
 ----
 > mkdir test && cd test
 > julia --project=.

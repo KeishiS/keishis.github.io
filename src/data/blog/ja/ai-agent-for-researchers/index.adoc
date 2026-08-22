@@ -94,7 +94,7 @@ SSGに該当するツールは数多あり，私の周りでは https://quarto.o
 
 さて早速個人ページ作成に着手しましょう．WindowsであればPowerShell，Mac/Linuxの方は適当なターミナルソフトを起動して `pnpm create astro@latest --template blog` を実行してみましょう．すると _Where should we create your new project?_ と聞かれるので適当なプロジェクト名（ディレクトリ名，ここでは `personal-page` ）を入れてください．
 
-[source,shellscript]
+[source,bash]
 ----
 > pnpm create astro@latest --template blog
 
@@ -136,7 +136,7 @@ SSGに該当するツールは数多あり，私の周りでは https://quarto.o
 
 次に作成されたディレクトリへ `cd personal-page` などで移動し `pnpm dev` を実行すると，
 
-[source,shellscript]
+[source,bash]
 ----
 ┃ Local    http://localhost:4322/
 ┃ Network  use --host to expose

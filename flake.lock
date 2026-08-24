@@ -6,32 +6,32 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1787371396,
-        "narHash": "sha256-u0zSm7irEJymzwvbIqqUxQ0SS0LBt6N7trTNpubzCMw=",
+        "lastModified": 1787486932,
+        "narHash": "sha256-hV6/niysqFtqpd8o4RdJ+v7JaVJa7S9S/ZJANKYZuEI=",
         "owner": "KeishiS",
         "repo": "adocweave",
-        "rev": "dedfb816560831639a9e7fd2bb59de525cf0b555",
+        "rev": "771a243c4ed5ceeaead4fabee527fdd68d079fe2",
         "type": "github"
       },
       "original": {
         "owner": "KeishiS",
-        "ref": "v0.44.1",
+        "ref": "adocweave-cli/v0.47.0",
         "repo": "adocweave",
         "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1784497964,
-        "narHash": "sha256-vlHUuqAcbcH2RKmHbPiuQzbv1pnzzavXnI62RD0bqCU=",
+        "lastModified": 1787204541,
+        "narHash": "sha256-OURZPknrTjQrlNyxPdqzyqmU/81Wes1CUP/Ft1Rv/YI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "241313f4e8e508cb9b13278c2b0fa25b9ca27163",
+        "rev": "5880666fd9eb563038431edb35c2d0aa595884e6",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "ref": "nixos-26.05",
         "repo": "nixpkgs",
         "type": "github"
       }

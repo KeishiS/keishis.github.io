@@ -1,44 +1,22 @@
 import fg from "fast-glob";
-import { readFileSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import type { Loader, LoaderContext } from "astro/loaders";
-import {
-    initSync,
-    process as processWithAdocWeave,
-} from "../../vendor/adocweave/wasm/adocweave_wasm.js";
+import { WASM_PACKAGE_VERSION } from "@adocweave/wasm";
+import { analyze } from "@adocweave/wasm/direct";
 import type {
-    AdocWeaveWasmResponse,
-    Diagnostic,
-    ProductSet,
-    ResolvedResource,
-    ResourceQuery,
-    WasmRequest,
-} from "../../vendor/adocweave/worker/protocol.generated.d.mts";
+    AdocWeaveResult,
+    AnalyzeRequest,
+    WasmDiagnostic,
+    WasmProductSet,
+    WasmResolvedResource,
+    WasmResourceQuery,
+} from "@adocweave/wasm";
 import {
     getOptionalPrivatePageSalt,
     getPrivatePageHash,
     PRIVATE_PAGE_SALT_ENV,
 } from "./privatePages";
-
-// ---------------------------------------------------------------------------
-// AdocWeave (WebAssembly) の初期化
-// ---------------------------------------------------------------------------
-
-const vendorDir = fileURLToPath(new URL("../../vendor/adocweave/", import.meta.url));
-const release = JSON.parse(readFileSync(path.join(vendorDir, "release.json"), "utf-8")) as {
-    version: string;
-};
-
-let initialized = false;
-
-function ensureAdocWeave(): void {
-    if (initialized) return;
-    const wasmBytes = readFileSync(path.join(vendorDir, "wasm", "adocweave_wasm_bg.wasm"));
-    initSync({ module: wasmBytes });
-    initialized = true;
-}
 
 /** 記事側の `[.role]` のうち、HTMLへ `role-<name>` classとして出力を許可する名前 */
 const ALLOWED_BLOCK_ROLES = [
@@ -51,7 +29,7 @@ const ALLOWED_BLOCK_ROLES = [
     "lead",
 ];
 
-const NO_PRODUCTS: ProductSet = {
+const NO_PRODUCTS: WasmProductSet = {
     syntax: false,
     canonicalAst: false,
     html: false,
@@ -63,18 +41,8 @@ const NO_PRODUCTS: ProductSet = {
     projection: false,
 };
 
-function runAdocWeave(
-    request: Omit<WasmRequest, "packageVersion" | "version" | "generation">,
-    generation: number,
-): AdocWeaveWasmResponse {
-    ensureAdocWeave();
-    const full: WasmRequest = {
-        packageVersion: release.version,
-        version: 1,
-        generation,
-        ...request,
-    };
-    return processWithAdocWeave(full) as AdocWeaveWasmResponse;
+function runAdocWeave(request: AnalyzeRequest): Promise<AdocWeaveResult> {
+    return analyze(request);
 }
 
 // ---------------------------------------------------------------------------
@@ -100,7 +68,7 @@ const MEDIA_TYPES: Record<string, string> = {
     ".mov": "video/quicktime",
 };
 
-function guessMediaType(target: string, purpose: ResourceQuery["purpose"]): string {
+function guessMediaType(target: string, purpose: WasmResourceQuery["purpose"]): string {
     const ext = path.posix.extname(new URL(target, "file:///").pathname).toLowerCase();
     const known = MEDIA_TYPES[ext];
     if (known) return known;
@@ -200,7 +168,7 @@ async function convertArticle({
     logger: LoaderContext["logger"];
 }): Promise<ConvertedArticle> {
     const isJa = article.lang === "ja";
-    const analysisOptions: WasmRequest["analysisOptions"] = {
+    const analysisOptions: AnalyzeRequest["analysisOptions"] = {
         attributes: {
             "figure-caption": isJa ? "図" : "Figure",
             "table-caption": isJa ? "表" : "Table",
@@ -215,21 +183,18 @@ async function convertArticle({
         },
     };
 
-    const first = runAdocWeave(
-        {
-            sourceId: article.relativePath,
-            source: content,
-            analysisOptions,
-            products: {
-                ...NO_PRODUCTS,
-                attributeOccurrences: true,
-                resourceQueries: true,
-                diagnostics: true,
-                projection: true,
-            },
+    const first = await runAdocWeave({
+        sourceId: article.relativePath,
+        source: content,
+        analysisOptions,
+        products: {
+            ...NO_PRODUCTS,
+            attributeOccurrences: true,
+            resourceQueries: true,
+            diagnostics: true,
+            projection: true,
         },
-        1,
-    );
+    });
 
     const sourceBytes = Buffer.from(content, "utf-8");
     reportDiagnostics(first.diagnostics, sourceBytes, article, logger);
@@ -250,38 +215,35 @@ async function convertArticle({
 
     const resources = await resolveResources(first.resourceQueries, article, imagesDir, logger);
 
-    const second = runAdocWeave(
-        {
-            sourceId: article.relativePath,
-            source: content,
-            analysisOptions,
-            products: { ...NO_PRODUCTS, html: true },
-            renderInputs: { resources },
-            renderPolicy: {
-                roles: { allowed: ALLOWED_BLOCK_ROLES },
-                activeUrls: {
-                    allowedSchemes: ["http", "https", "mailto"],
-                    // 記事に書かれた相対リンク（同じ記事ディレクトリの PDF など）を許可する
-                    allowAuthoredRelative: true,
-                    // 画像などの解決済みリソースはサイトのルート相対 URL で渡す
-                    allowResolvedRootRelative: true,
-                },
+    const second = await runAdocWeave({
+        sourceId: article.relativePath,
+        source: content,
+        analysisOptions,
+        products: { ...NO_PRODUCTS, html: true },
+        renderInputs: { resources },
+        renderPolicy: {
+            roles: { allowed: ALLOWED_BLOCK_ROLES },
+            activeUrls: {
+                allowedSchemes: ["http", "https", "mailto"],
+                // 記事に書かれた相対リンク（同じ記事ディレクトリの PDF など）を許可する
+                allowAuthoredRelative: true,
+                // 画像などの解決済みリソースはサイトのルート相対 URL で渡す
+                allowResolvedRootRelative: true,
             },
         },
-        2,
-    );
+    });
     reportDiagnostics(second.renderDiagnostics, sourceBytes, article, logger);
 
     return { title, attributes, html: adaptHtml(second.html) };
 }
 
 async function resolveResources(
-    queries: ResourceQuery[],
+    queries: WasmResourceQuery[],
     article: ArticlePath,
     imagesDir: string,
     logger: LoaderContext["logger"],
-): Promise<ResolvedResource[]> {
-    const resolved: ResolvedResource[] = [];
+): Promise<WasmResolvedResource[]> {
+    const resolved: WasmResolvedResource[] = [];
     for (const query of queries) {
         const range = { sourceStart: query.range.start, sourceEnd: query.range.end };
         const target = query.target;
@@ -293,6 +255,8 @@ async function resolveResources(
                     status: "resolved",
                     href: target,
                     mediaType: guessMediaType(target, query.purpose),
+                    // 外部URLは取得しないため、サイズは分からない
+                    byteLength: null,
                 },
             });
             continue;
@@ -303,9 +267,11 @@ async function resolveResources(
         const inside =
             localPath === article.articleDir ||
             localPath.startsWith(article.articleDir + path.sep);
-        const exists = inside && (await fs.stat(localPath).then((s) => s.isFile(), () => false));
+        const stats = inside
+            ? await fs.stat(localPath).then((s) => (s.isFile() ? s : null), () => null)
+            : null;
 
-        if (!exists) {
+        if (stats === null) {
             logger.warn(`${article.relativePath}: resource not found: ${target}`);
             resolved.push({ ...range, outcome: { status: "failed", kind: "missing" } });
             continue;
@@ -317,6 +283,7 @@ async function resolveResources(
                 status: "resolved",
                 href: `${imagesDir}/${normalized}`,
                 mediaType: guessMediaType(normalized, query.purpose),
+                byteLength: BigInt(stats.size),
             },
         });
     }
@@ -324,7 +291,7 @@ async function resolveResources(
 }
 
 function reportDiagnostics(
-    diagnostics: Diagnostic[],
+    diagnostics: WasmDiagnostic[],
     sourceBytes: Buffer,
     article: ArticlePath,
     logger: LoaderContext["logger"],
@@ -361,7 +328,7 @@ function createAsciidocLoader({
     return {
         name: "asciidoc-loader",
         load: async ({ store, logger, watcher }: LoaderContext) => {
-            logger.info(`Loading adoc files from ${base} (AdocWeave ${release.version})`);
+            logger.info(`Loading adoc files from ${base} (AdocWeave ${WASM_PACKAGE_VERSION})`);
             store.clear();
 
             // ベースディレクトリの絶対パス（ウォッチャーのパスと比較するため）

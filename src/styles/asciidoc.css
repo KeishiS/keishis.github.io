@@ -42,7 +42,7 @@
 
 /* ------------------------------------------------------------------ */
 /* 以下は AdocWeave が生成する HTML 構造に対するスタイルです。          */
-/* 要素と class は vendor/adocweave の版に従います（html-contract）。    */
+/* 要素と class は @adocweave/wasm の版に従います（html-contract）。     */
 /* ------------------------------------------------------------------ */
 
 /* Admonition Blocks (div.admonition.admonition-<type> > div.title + 本文) */

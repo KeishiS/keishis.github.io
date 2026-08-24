@@ -12,6 +12,7 @@
         "format:adoc:check": "adocweave format --check src/data"
     },
     "dependencies": {
+        "@adocweave/wasm": "^0.48.0",
         "@astrojs/check": "^0.9.6",
         "@astrojs/react": "^4.4.2",
         "@astrojs/rss": "^4.0.14",

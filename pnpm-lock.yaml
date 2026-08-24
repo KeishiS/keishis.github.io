@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@adocweave/wasm':
+        specifier: ^0.48.0
+        version: 0.48.0
       '@astrojs/check':
         specifier: ^0.9.6
         version: 0.9.6(prettier@3.7.3)(typescript@5.9.3)
@@ -74,6 +77,9 @@ importers:
         version: 5.9.3
 
 packages:
+
+  '@adocweave/wasm@0.48.0':
+    resolution: {integrity: sha512-vhBf35ClNB6J1pW2tNr6gr8IqeqhaRCko+sRf3RKzJjk38oPBtZNIfxw7gksrhAdh28BJhCRlFF2E613UeJUhg==}
 
   '@astrojs/check@0.9.6':
     resolution: {integrity: sha512-jlaEu5SxvSgmfGIFfNgcn5/f+29H61NJzEMfAZ82Xopr4XBchXB1GVlcJsE+elUlsYSbXlptZLX+JMG3b/wZEA==}
@@ -2567,6 +2573,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
+
+  '@adocweave/wasm@0.48.0': {}
 
   '@astrojs/check@0.9.6(prettier@3.7.3)(typescript@5.9.3)':
     dependencies:
